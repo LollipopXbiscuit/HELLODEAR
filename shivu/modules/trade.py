@@ -1,8 +1,10 @@
 from pyrogram import filters, enums
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import InlineKeyboardMarkup as PyrogramInlineKeyboardMarkup, InlineKeyboardButton as PyrogramInlineKeyboardButton
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton, Update
+from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext
 from html import escape
 
-from shivu import user_collection, shivuu, collection
+from shivu import user_collection, shivuu, collection, application
 from shivu.config import Config
 
 pending_trades = {}
@@ -369,5 +371,175 @@ async def give(client, message):
             f"👤 Given to: User ID `{receiver_id}`\n"
             f"🆔 Character ID: `{character['id']}`"
         )
+
+
+# python-telegram-bot version (works with webhooks)
+async def gift_ptb(update: Update, context: CallbackContext):
+    """Gift a character to another user - python-telegram-bot version"""
+    sender_id = update.effective_user.id
+    
+    if not update.message.reply_to_message:
+        await update.message.reply_text("You need to reply to a user's message to gift a character!")
+        return
+    
+    receiver_id = update.message.reply_to_message.from_user.id
+    receiver_username = update.message.reply_to_message.from_user.username
+    receiver_first_name = update.message.reply_to_message.from_user.first_name
+    
+    if sender_id == receiver_id:
+        await update.message.reply_text("You can't gift a character to yourself!")
+        return
+    
+    if not context.args or len(context.args) != 1:
+        await update.message.reply_text("You need to provide a character ID!\nUsage: /gift <character_id>")
+        return
+    
+    character_id = context.args[0]
+    
+    sender = await user_collection.find_one({'id': sender_id})
+    
+    # Check if user exists and has characters field
+    if not sender or not sender.get('characters'):
+        await update.message.reply_text("You don't have any characters to gift!")
+        return
+    
+    character = next((character for character in sender['characters'] if character['id'] == character_id), None)
+    
+    if not character:
+        await update.message.reply_text("You don't have this character in your collection!")
+        return
+    
+    # Store pending gift
+    pending_gifts[(sender_id, receiver_id)] = {
+        'character': character,
+        'receiver_username': receiver_username,
+        'receiver_first_name': receiver_first_name
+    }
+    
+    # Create keyboard
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("✅ Confirm Gift", callback_data="confirm_gift")],
+        [InlineKeyboardButton("❌ Cancel Gift", callback_data="cancel_gift")]
+    ])
+    
+    # Rarity emoji mapping
+    rarity_emojis = {
+        "Common": "⚪️",
+        "Uncommon": "🟢",
+        "Rare": "🔵",
+        "Epic": "🟣",
+        "Legendary": "🟡",
+        "Mythic": "🏵",
+        "Retro": "🍥",
+        "Zenith": "🪩",
+        "Limited Edition": "🍬"
+    }
+    
+    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+    
+    caption = (f"🎁 <b>Do you want to gift this character?</b>\n\n"
+               f"🎴 <b>Name:</b> {escape(character['name'])}\n"
+               f"📺 <b>Anime:</b> {escape(character['anime'])}\n"
+               f"🌟 <b>Rarity:</b> {rarity_emoji} {character.get('rarity', 'Unknown')}\n"
+               f"🆔 <b>ID:</b> <code>{character['id']}</code>\n\n"
+               f"👤 <b>To:</b> {escape(update.message.reply_to_message.from_user.first_name)}")
+    
+    try:
+        if 'img_url' in character:
+            from shivu import process_image_url
+            processed_url = await process_image_url(character['img_url'])
+            await update.message.reply_photo(
+                photo=processed_url,
+                caption=caption,
+                parse_mode='HTML',
+                reply_markup=keyboard
+            )
+        else:
+            await update.message.reply_text(caption, parse_mode='HTML', reply_markup=keyboard)
+    except Exception as e:
+        await update.message.reply_text(caption, parse_mode='HTML', reply_markup=keyboard)
+
+
+async def gift_callback_handler(update: Update, context: CallbackContext):
+    """Handle gift confirmation/cancellation callbacks"""
+    query = update.callback_query
+    sender_id = query.from_user.id
+    
+    # Find the pending gift for this sender
+    gift_key = None
+    gift = None
+    for (sid, rid), g in pending_gifts.items():
+        if sid == sender_id:
+            gift_key = (sid, rid)
+            gift = g
+            receiver_id = rid
+            break
+    
+    if not gift_key:
+        await query.answer("This is not for you!", show_alert=True)
+        return
+    
+    if query.data == "confirm_gift":
+        # Get sender from database
+        sender = await user_collection.find_one({'id': sender_id})
+        receiver = await user_collection.find_one({'id': receiver_id})
+        
+        # Check if sender still exists and has characters
+        if not sender or not sender.get('characters'):
+            await query.answer("You no longer have characters to gift!", show_alert=True)
+            return
+        
+        # Remove character from sender
+        sender['characters'].remove(gift['character'])
+        await user_collection.update_one({'id': sender_id}, {'$set': {'characters': sender['characters']}})
+        
+        # Add to receiver
+        if receiver:
+            await user_collection.update_one({'id': receiver_id}, {'$push': {'characters': gift['character']}})
+        else:
+            await user_collection.insert_one({
+                'id': receiver_id,
+                'username': gift['receiver_username'],
+                'first_name': gift['receiver_first_name'],
+                'characters': [gift['character']],
+            })
+        
+        # Remove from pending
+        del pending_gifts[gift_key]
+        
+        success_message = f"✅ <b>Gift successful!</b>\n\nYou have successfully gifted your character to <a href=\"tg://user?id={receiver_id}\">{escape(gift['receiver_first_name'])}</a>!"
+        
+        # Edit the message
+        try:
+            if query.message.photo:
+                await query.message.edit_caption(caption=success_message, parse_mode='HTML')
+            else:
+                await query.message.edit_text(success_message, parse_mode='HTML')
+        except:
+            await query.message.edit_text(success_message, parse_mode='HTML')
+        
+        await query.answer("Gift sent successfully!")
+        
+    elif query.data == "cancel_gift":
+        # Remove from pending
+        del pending_gifts[gift_key]
+        
+        cancel_message = "❌ <b>Gift cancelled.</b>"
+        
+        # Edit the message
+        try:
+            if query.message.photo:
+                await query.message.edit_caption(caption=cancel_message, parse_mode='HTML')
+            else:
+                await query.message.edit_text(cancel_message, parse_mode='HTML')
+        except:
+            await query.message.edit_text(cancel_message, parse_mode='HTML')
+        
+        await query.answer("Gift cancelled")
+
+
+# Register handlers
+application.add_handler(CommandHandler("gift", gift_ptb, block=False))
+application.add_handler(CallbackQueryHandler(gift_callback_handler, pattern="^(confirm_gift|cancel_gift)$", block=False))
 
 
