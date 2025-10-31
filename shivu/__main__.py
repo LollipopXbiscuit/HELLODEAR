@@ -2,6 +2,8 @@ import importlib
 import random
 import asyncio
 import time
+import os
+from aiohttp import web
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CommandHandler, CallbackContext, MessageHandler, filters
@@ -468,18 +470,49 @@ async def post_init(application):
     LOGGER.info("Bot commands set successfully")
 
 
-def main() -> None:
-    """Run bot."""
+async def health_check(request):
+    """Health check endpoint for Render"""
+    return web.Response(text="Bot is running!")
+
+async def run_web_server():
+    """Run web server for Render health checks"""
+    app = web.Application()
+    app.router.add_get('/', health_check)
+    app.router.add_get('/health', health_check)
     
+    port = int(os.environ.get('PORT', 10000))
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, '0.0.0.0', port)
+    await site.start()
+    LOGGER.info(f"Web server started on 0.0.0.0:{port}")
+
+async def run_bot():
+    """Run the Telegram bot"""
     application.add_handler(CommandHandler(["marry"], guess, block=False))
     application.add_handler(MessageHandler(filters.ALL, message_counter, block=False))
-
-    # Set up post-init callback for bot commands
     application.post_init = post_init
-
-    application.run_polling(drop_pending_updates=True)
     
-if __name__ == "__main__":
+    await application.initialize()
+    await application.start()
+    await application.updater.start_polling(drop_pending_updates=True)
+    LOGGER.info("Bot polling started")
+    
+    await asyncio.Event().wait()
+
+async def main_async():
+    """Run both web server and bot"""
     shivuu.start()
     LOGGER.info("Bot started")
+    
+    await asyncio.gather(
+        run_web_server(),
+        run_bot()
+    )
+
+def main() -> None:
+    """Run bot."""
+    asyncio.run(main_async())
+    
+if __name__ == "__main__":
     main()
