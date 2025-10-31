@@ -73,6 +73,26 @@ def detect_spam(user_id: int) -> bool:
     
     return False
 
+def is_video_url(url):
+    """Check if a URL points to a video file"""
+    if not url:
+        return False
+    return any(ext in url.lower() for ext in ['.mp4', '.mov', '.avi', '.mkv', '.webm', '.flv'])
+
+def is_video_character(character):
+    """Check if a character is a video by URL extension or name marker"""
+    if not character:
+        return False
+    
+    url = character.get('img_url', '')
+    if is_video_url(url):
+        return True
+    
+    name = character.get('name', '')
+    if '🎬' in name:
+        return True
+    
+    return False
 
 async def message_counter(update: Update, context: CallbackContext) -> None:
     chat_id = update.effective_chat.id
@@ -194,11 +214,29 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     try:
         from shivu import process_image_url
         processed_url = await process_image_url(character['img_url'])
-        await context.bot.send_photo(
-            chat_id=chat_id,
-            photo=processed_url,
-            caption=f"""{rarity_emoji} A beauty has been summoned! Use /marry to add them to your harem!""",
-            parse_mode='Markdown')
+        
+        caption_text = f"""{rarity_emoji} A beauty has been summoned! Use /marry to add them to your harem!"""
+        
+        if is_video_character(character):
+            try:
+                await context.bot.send_video(
+                    chat_id=chat_id,
+                    video=processed_url,
+                    caption=caption_text,
+                    parse_mode='Markdown')
+            except Exception as video_error:
+                LOGGER.warning(f"Failed to send as video, trying as photo: {str(video_error)}")
+                await context.bot.send_photo(
+                    chat_id=chat_id,
+                    photo=processed_url,
+                    caption=f"🎬 {caption_text}",
+                    parse_mode='Markdown')
+        else:
+            await context.bot.send_photo(
+                chat_id=chat_id,
+                photo=processed_url,
+                caption=caption_text,
+                parse_mode='Markdown')
     except Exception as e:
         LOGGER.error(f"Error sending character image: {str(e)}")
         await context.bot.send_message(
@@ -256,11 +294,29 @@ async def send_retro_character(update: Update, context: CallbackContext) -> None
     try:
         from shivu import process_image_url
         processed_url = await process_image_url(character['img_url'])
-        await context.bot.send_photo(
-            chat_id=chat_id,
-            photo=processed_url,
-            caption=f"🍥 A rare RETRO beauty has appeared! Use /marry to add them to your harem!",
-            parse_mode='Markdown')
+        
+        caption_text = f"🍥 A rare RETRO beauty has appeared! Use /marry to add them to your harem!"
+        
+        if is_video_character(character):
+            try:
+                await context.bot.send_video(
+                    chat_id=chat_id,
+                    video=processed_url,
+                    caption=caption_text,
+                    parse_mode='Markdown')
+            except Exception as video_error:
+                LOGGER.warning(f"Failed to send retro video, trying as photo: {str(video_error)}")
+                await context.bot.send_photo(
+                    chat_id=chat_id,
+                    photo=processed_url,
+                    caption=f"🎬 {caption_text}",
+                    parse_mode='Markdown')
+        else:
+            await context.bot.send_photo(
+                chat_id=chat_id,
+                photo=processed_url,
+                caption=caption_text,
+                parse_mode='Markdown')
     except Exception as e:
         LOGGER.error(f"Error sending retro character image: {str(e)}")
         await context.bot.send_message(
