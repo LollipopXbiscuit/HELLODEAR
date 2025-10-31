@@ -502,8 +502,8 @@ async def run_bot():
 
 async def main_async():
     """Run both web server and bot"""
-    shivuu.start()
-    LOGGER.info("Bot started")
+    await shivuu.start()
+    LOGGER.info("Pyrogram client started")
     
     await asyncio.gather(
         run_web_server(),
