@@ -474,31 +474,23 @@ async def health_check(request):
     """Health check endpoint for Render"""
     return web.Response(text="Bot is running!")
 
-async def keep_alive():
-    """Ping the server every 10 minutes to prevent Render from sleeping"""
-    import aiohttp
-    
-    await asyncio.sleep(60)
-    
-    port = int(os.environ.get('PORT', 10000))
-    url = f"http://0.0.0.0:{port}/health"
-    
-    while True:
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as response:
-                    if response.status == 200:
-                        LOGGER.info("Keep-alive ping successful")
-        except Exception as e:
-            LOGGER.warning(f"Keep-alive ping failed: {e}")
-        
-        await asyncio.sleep(600)
+async def webhook_handler(request):
+    """Handle incoming webhook updates from Telegram"""
+    try:
+        data = await request.json()
+        update = Update.de_json(data, application.bot)
+        await application.update_queue.put(update)
+        return web.Response(text="OK")
+    except Exception as e:
+        LOGGER.error(f"Webhook error: {e}")
+        return web.Response(text="ERROR", status=500)
 
 async def run_web_server():
-    """Run web server for Render health checks"""
+    """Run web server for webhooks and health checks"""
     app = web.Application()
     app.router.add_get('/', health_check)
     app.router.add_get('/health', health_check)
+    app.router.add_post('/webhook', webhook_handler)
     
     port = int(os.environ.get('PORT', 10000))
     runner = web.AppRunner(app)
@@ -508,15 +500,20 @@ async def run_web_server():
     LOGGER.info(f"Web server started on 0.0.0.0:{port}")
 
 async def run_bot():
-    """Run the Telegram bot"""
+    """Run the Telegram bot with webhooks"""
     application.add_handler(CommandHandler(["marry"], guess, block=False))
     application.add_handler(MessageHandler(filters.ALL, message_counter, block=False))
     application.post_init = post_init
     
     await application.initialize()
     await application.start()
-    await application.updater.start_polling(drop_pending_updates=True)
-    LOGGER.info("Bot polling started")
+    
+    webhook_url = os.environ.get('WEBHOOK_URL')
+    if webhook_url:
+        await application.bot.set_webhook(url=f"{webhook_url}/webhook")
+        LOGGER.info(f"Webhook set to {webhook_url}/webhook")
+    else:
+        LOGGER.warning("WEBHOOK_URL not set, webhook not configured")
     
     await asyncio.Event().wait()
 
@@ -527,8 +524,7 @@ async def main_async():
     
     await asyncio.gather(
         run_web_server(),
-        run_bot(),
-        keep_alive()
+        run_bot()
     )
 
 def main() -> None:
