@@ -474,6 +474,26 @@ async def health_check(request):
     """Health check endpoint for Render"""
     return web.Response(text="Bot is running!")
 
+async def keep_alive():
+    """Ping the server every 10 minutes to prevent Render from sleeping"""
+    import aiohttp
+    
+    await asyncio.sleep(60)
+    
+    port = int(os.environ.get('PORT', 10000))
+    url = f"http://0.0.0.0:{port}/health"
+    
+    while True:
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    if response.status == 200:
+                        LOGGER.info("Keep-alive ping successful")
+        except Exception as e:
+            LOGGER.warning(f"Keep-alive ping failed: {e}")
+        
+        await asyncio.sleep(600)
+
 async def run_web_server():
     """Run web server for Render health checks"""
     app = web.Application()
@@ -507,7 +527,8 @@ async def main_async():
     
     await asyncio.gather(
         run_web_server(),
-        run_bot()
+        run_bot(),
+        keep_alive()
     )
 
 def main() -> None:
