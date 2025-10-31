@@ -538,8 +538,208 @@ async def gift_callback_handler(update: Update, context: CallbackContext):
         await query.answer("Gift cancelled")
 
 
+# python-telegram-bot version of /trade command (works with webhooks)
+async def trade_ptb(update: Update, context: CallbackContext):
+    """Trade characters between users - PTB version"""
+    sender_id = update.effective_user.id
+
+    if not update.message.reply_to_message:
+        await update.message.reply_text("You need to reply to a user's message to trade a character!")
+        return
+
+    receiver_id = update.message.reply_to_message.from_user.id
+
+    if sender_id == receiver_id:
+        await update.message.reply_text("You can't trade a character with yourself!")
+        return
+
+    if not context.args or len(context.args) != 2:
+        await update.message.reply_text("You need to provide two character IDs!\nUsage: /trade [your_character_id] [their_character_id]")
+        return
+
+    sender_character_id, receiver_character_id = context.args[0], context.args[1]
+
+    sender = await user_collection.find_one({'id': sender_id})
+    receiver = await user_collection.find_one({'id': receiver_id})
+
+    if not sender or not sender.get('characters'):
+        await update.message.reply_text("You don't have any characters to trade!")
+        return
+        
+    if not receiver or not receiver.get('characters'):
+        await update.message.reply_text("The other user doesn't have any characters to trade!")
+        return
+
+    sender_character = next((character for character in sender['characters'] if character['id'] == sender_character_id), None)
+    receiver_character = next((character for character in receiver['characters'] if character['id'] == receiver_character_id), None)
+
+    if not sender_character:
+        await update.message.reply_text("You don't have the character you're trying to trade!")
+        return
+
+    if not receiver_character:
+        await update.message.reply_text("The other user doesn't have the character they're trying to trade!")
+        return
+
+    pending_trades[(sender_id, receiver_id)] = (sender_character_id, receiver_character_id)
+
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Confirm Trade", callback_data="confirm_trade")],
+        [InlineKeyboardButton("Cancel Trade", callback_data="cancel_trade")]
+    ])
+
+    await update.message.reply_text(
+        f"{update.message.reply_to_message.from_user.mention_html()}, do you accept this trade?",
+        parse_mode='HTML',
+        reply_markup=keyboard
+    )
+
+
+async def trade_callback_ptb(update: Update, context: CallbackContext):
+    """Handle trade confirmation/cancellation - PTB version"""
+    query = update.callback_query
+    receiver_id = query.from_user.id
+
+    # Find the pending trade for this receiver
+    trade_key = None
+    for (sender_id, _receiver_id), (sender_character_id, receiver_character_id) in pending_trades.items():
+        if _receiver_id == receiver_id:
+            trade_key = (sender_id, _receiver_id)
+            break
+    else:
+        await query.answer("This is not for you!", show_alert=True)
+        return
+
+    if query.data == "confirm_trade":
+        sender = await user_collection.find_one({'id': sender_id})
+        receiver = await user_collection.find_one({'id': receiver_id})
+
+        if not sender or not sender.get('characters'):
+            await query.answer("Sender no longer has characters!", show_alert=True)
+            return
+            
+        if not receiver or not receiver.get('characters'):
+            await query.answer("Receiver no longer has characters!", show_alert=True)
+            return
+
+        sender_character = next((character for character in sender['characters'] if character['id'] == sender_character_id), None)
+        receiver_character = next((character for character in receiver['characters'] if character['id'] == receiver_character_id), None)
+
+        if not sender_character or not receiver_character:
+            await query.answer("One of the characters is no longer available!", show_alert=True)
+            return
+        
+        sender['characters'].remove(sender_character)
+        receiver['characters'].remove(receiver_character)
+
+        await user_collection.update_one({'id': sender_id}, {'$set': {'characters': sender['characters']}})
+        await user_collection.update_one({'id': receiver_id}, {'$set': {'characters': receiver['characters']}})
+
+        sender['characters'].append(receiver_character)
+        receiver['characters'].append(sender_character)
+
+        await user_collection.update_one({'id': sender_id}, {'$set': {'characters': sender['characters']}})
+        await user_collection.update_one({'id': receiver_id}, {'$set': {'characters': receiver['characters']}})
+
+        del pending_trades[trade_key]
+
+        await query.message.edit_text(f"✅ Trade successful! You have exchanged characters.")
+        await query.answer("Trade completed!")
+
+    elif query.data == "cancel_trade":
+        del pending_trades[trade_key]
+        await query.message.edit_text("❌ Trade cancelled.")
+        await query.answer("Trade cancelled")
+
+
+# python-telegram-bot version of /give command (works with webhooks)
+async def give_ptb(update: Update, context: CallbackContext):
+    """Admin command to give characters to users - PTB version"""
+    sender_id = update.effective_user.id
+    
+    if str(sender_id) not in Config.sudo_users:
+        await update.message.reply_text("🚫 This command is only available to administrators.")
+        return
+    
+    if update.message.reply_to_message:
+        if not context.args or len(context.args) != 1:
+            await update.message.reply_text(
+                "📝 **Give Character**\n\n"
+                "Usage when replying: `/give <character_id>`\n"
+                "Example: `/give 1`",
+                parse_mode='Markdown'
+            )
+            return
+            
+        character_id = context.args[0]
+        receiver_id = update.message.reply_to_message.from_user.id
+        receiver_username = update.message.reply_to_message.from_user.username
+        receiver_first_name = update.message.reply_to_message.from_user.first_name
+        
+    else:
+        if not context.args or len(context.args) != 2:
+            await update.message.reply_text(
+                "📝 **Give Character**\n\n"
+                "Usage: `/give <character_id> <user_id>`\n"
+                "Example: `/give 1 123456789`\n\n"
+                "Or reply to a user: `/give <character_id>`",
+                parse_mode='Markdown'
+            )
+            return
+            
+        character_id = context.args[0]
+        try:
+            receiver_id = int(context.args[1])
+            receiver_username = None
+            receiver_first_name = "Unknown"
+        except ValueError:
+            await update.message.reply_text("❌ Invalid user ID! Please provide a valid numeric user ID.")
+            return
+    
+    character = await collection.find_one({'id': character_id})
+    if not character:
+        await update.message.reply_text(f"❌ Character with ID `{character_id}` not found in the database.")
+        return
+    
+    receiver = await user_collection.find_one({'id': receiver_id})
+    if receiver:
+        await user_collection.update_one(
+            {'id': receiver_id}, 
+            {'$push': {'characters': character}}
+        )
+    else:
+        await user_collection.insert_one({
+            'id': receiver_id,
+            'username': receiver_username,
+            'first_name': receiver_first_name,
+            'characters': [character],
+        })
+    
+    if update.message.reply_to_message:
+        await update.message.reply_text(
+            f"✅ **Character Given!**\n\n"
+            f"🎴 **{character['name']}** ({character['rarity']})\n"
+            f"📺 From: **{character['anime']}**\n"
+            f"👤 Given to: {update.message.reply_to_message.from_user.mention_html()}\n"
+            f"🆔 Character ID: `{character['id']}`",
+            parse_mode='HTML'
+        )
+    else:
+        await update.message.reply_text(
+            f"✅ **Character Given!**\n\n"
+            f"🎴 **{character['name']}** ({character['rarity']})\n"
+            f"📺 From: **{character['anime']}**\n"
+            f"👤 Given to: User ID `{receiver_id}`\n"
+            f"🆔 Character ID: `{character['id']}`",
+            parse_mode='Markdown'
+        )
+
+
 # Register handlers
 application.add_handler(CommandHandler("gift", gift_ptb, block=False))
 application.add_handler(CallbackQueryHandler(gift_callback_handler, pattern="^(confirm_gift|cancel_gift)$", block=False))
+application.add_handler(CommandHandler("trade", trade_ptb, block=False))
+application.add_handler(CallbackQueryHandler(trade_callback_ptb, pattern="^(confirm_trade|cancel_trade)$", block=False))
+application.add_handler(CommandHandler("give", give_ptb, block=False))
 
 

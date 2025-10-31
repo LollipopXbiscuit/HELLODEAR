@@ -764,9 +764,149 @@ async def transfer_harem(update: Update, context: CallbackContext) -> None:
         parse_mode='HTML'
     )
 
+
+# python-telegram-bot version of /fav command (works with webhooks)
+async def fav_ptb(update: Update, context: CallbackContext):
+    """Set a favorite character with confirmation - PTB version"""
+    user_id = update.effective_user.id
+    
+    if not context.args or len(context.args) != 1:
+        await update.message.reply_text(
+            "💕 <b>Set Favorite Character</b>\n\n"
+            "Usage: <code>/fav [character_id]</code>\n\n"
+            "Example: <code>/fav 123</code>",
+            parse_mode='HTML'
+        )
+        return
+    
+    character_id = context.args[0]
+    
+    # Get user's collection
+    user = await user_collection.find_one({'id': user_id})
+    if not user or not user.get('characters'):
+        await update.message.reply_text("❌ You don't have any characters yet!")
+        return
+    
+    # Find the character
+    character = next((c for c in user['characters'] if c['id'] == character_id), None)
+    if not character:
+        await update.message.reply_text(f"❌ You don't have character ID `{character_id}` in your collection!", parse_mode='Markdown')
+        return
+    
+    # Store pending favorite
+    pending_favorites[user_id] = character
+    
+    # Create confirmation keyboard
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("✅ Confirm", callback_data="confirm_fav")],
+        [InlineKeyboardButton("❌ Cancel", callback_data="cancel_fav")]
+    ])
+    
+    # Send character image with confirmation
+    rarity_emojis = {
+        "Common": "⚪️", "Uncommon": "🟢", "Rare": "🔵", "Epic": "🟣",
+        "Legendary": "🟡", "Mythic": "🏵", "Retro": "🍥", "Zenith": "🪩",
+        "Limited Edition": "🍬"
+    }
+    
+    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+    
+    caption = (f"💕 <b>Do you want to favorite this character?</b>\n\n"
+               f"🎴 <b>Name:</b> {escape(character['name'])}\n"
+               f"📺 <b>Anime:</b> {escape(character['anime'])}\n"
+               f"🌟 <b>Rarity:</b> {rarity_emoji} {character['rarity']}\n"
+               f"🆔 <b>ID:</b> <code>{character['id']}</code>")
+    
+    try:
+        if 'img_url' in character:
+            from shivu import process_image_url, LOGGER
+            processed_url = await process_image_url(character['img_url'])
+            
+            # Check if it's a video
+            if is_video_character(character):
+                try:
+                    await update.message.reply_video(
+                        video=processed_url,
+                        caption=caption,
+                        parse_mode='HTML',
+                        reply_markup=keyboard
+                    )
+                except Exception as video_error:
+                    LOGGER.warning(f"/fav PTB: Video failed, trying photo")
+                    try:
+                        await update.message.reply_photo(
+                            photo=processed_url,
+                            caption=f"🎬 [Video] {caption}",
+                            parse_mode='HTML',
+                            reply_markup=keyboard
+                        )
+                    except:
+                        await update.message.reply_text(f"{caption}\n\n⚠️ Media display failed.", parse_mode='HTML', reply_markup=keyboard)
+            else:
+                await update.message.reply_photo(
+                    photo=processed_url,
+                    caption=caption,
+                    parse_mode='HTML',
+                    reply_markup=keyboard
+                )
+        else:
+            await update.message.reply_text(caption, parse_mode='HTML', reply_markup=keyboard)
+    except Exception as e:
+        await update.message.reply_text(caption, parse_mode='HTML', reply_markup=keyboard)
+
+
+async def fav_callback_ptb(update: Update, context: CallbackContext):
+    """Handle favorite confirmation callbacks - PTB version"""
+    query = update.callback_query
+    user_id = query.from_user.id
+    
+    if user_id not in pending_favorites:
+        await query.answer("❌ No pending favorite found!", show_alert=True)
+        return
+    
+    if query.data == "confirm_fav":
+        character = pending_favorites[user_id]
+        
+        # Update user's favorite
+        await user_collection.update_one(
+            {'id': user_id},
+            {'$set': {'favorites': [character['id']]}},
+            upsert=True
+        )
+        
+        try:
+            await query.edit_message_caption(
+                caption=f"💕 <b>Favorite Set!</b>\n\n🎴 <b>{escape(character['name'])}\n</b>📺 <b>{escape(character['anime'])}\n</b>✨ This character is now your favorite!",
+                parse_mode='HTML'
+            )
+        except:
+            await query.message.edit_text(
+                text=f"💕 <b>Favorite Set!</b>\n\n🎴 <b>{escape(character['name'])}\n</b>📺 <b>{escape(character['anime'])}\n</b>✨ This character is now your favorite!",
+                parse_mode='HTML'
+            )
+        
+    elif query.data == "cancel_fav":
+        try:
+            await query.edit_message_caption(
+                caption="❌ <b>Favorite cancelled.</b>",
+                parse_mode='HTML'
+            )
+        except:
+            await query.message.edit_text("❌ <b>Favorite cancelled.</b>", parse_mode='HTML')
+    
+    # Clean up pending favorite
+    if user_id in pending_favorites:
+        del pending_favorites[user_id]
+    
+    await query.answer()
+
+
 application.add_handler(CommandHandler(["harem", "collection"], harem,block=False))
 application.add_handler(CommandHandler("sorts", sorts, block=False))
 application.add_handler(CommandHandler("transfer", transfer_harem, block=False))
+application.add_handler(CommandHandler("fav", fav_ptb, block=False))
 harem_handler = CallbackQueryHandler(harem_callback, pattern='^harem', block=False)
 application.add_handler(harem_handler)
+fav_callback_handler = CallbackQueryHandler(fav_callback_ptb, pattern="^(confirm_fav|cancel_fav)$", block=False)
+application.add_handler(fav_callback_handler)
     
