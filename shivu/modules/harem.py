@@ -7,8 +7,9 @@ import random
 
 from telegram.ext import CommandHandler, CallbackContext, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from pyrogram import filters
+from pyrogram import filters, enums
 from pyrogram.types import InlineKeyboardButton as PyroInlineKeyboardButton, InlineKeyboardMarkup as PyroInlineKeyboardMarkup
+from pyrogram.errors import UserNotParticipant, ChatAdminRequired, PeerIdInvalid
 
 from shivu import collection, user_collection, application, SUPPORT_CHAT, CHARA_CHANNEL_ID, shivuu, sudo_users
 
@@ -35,6 +36,22 @@ def is_video_character(character):
     
     return False
 
+# Main group for membership checking
+MAIN_GROUP = "@CollectorOfficialGroup"
+
+async def check_group_membership(user_id: int) -> bool:
+    """Check if user is a member of the main group"""
+    try:
+        member = await shivuu.get_chat_member(MAIN_GROUP, user_id)
+        # Check if user is member, admin, or creator
+        return member.status in [enums.ChatMemberStatus.MEMBER, enums.ChatMemberStatus.ADMINISTRATOR, enums.ChatMemberStatus.OWNER]
+    except (UserNotParticipant, ChatAdminRequired, PeerIdInvalid):
+        return False
+    except Exception as e:
+        # Fail-closed: deny access on any unexpected error
+        from shivu import LOGGER
+        LOGGER.error(f"Error checking group membership for user {user_id}: {e}")
+        return False
 
 async def sorts(update: Update, context: CallbackContext) -> None:
     """Set harem filtering and sorting preferences"""
@@ -187,6 +204,20 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
         return
         
     user_id = update.effective_user.id
+
+    # Check if user is a member of the main group
+    if not await check_group_membership(user_id):
+        message_text = (
+            "🚫 <b>Access Restricted</b>\n\n"
+            f"To use the /harem command, you must join our main group:\n"
+            f"👥 {MAIN_GROUP}\n\n"
+            f"Once you've joined, you'll be able to access your harem!"
+        )
+        if update.message:
+            await update.message.reply_text(message_text, parse_mode='HTML')
+        elif update.callback_query:
+            await update.callback_query.edit_message_text(message_text, parse_mode='HTML')
+        return
 
     user = await user_collection.find_one({'id': user_id})
     if not user:
