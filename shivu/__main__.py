@@ -531,15 +531,10 @@ async def health_check(request):
     return web.Response(text="Bot is running!")
 
 async def webhook_handler(request):
-    """Handle incoming webhook updates from Telegram"""
-    try:
-        data = await request.json()
-        update = Update.de_json(data, application.bot)
-        await application.update_queue.put(update)
-        return web.Response(text="OK")
-    except Exception as e:
-        LOGGER.error(f"Webhook error: {e}")
-        return web.Response(text="ERROR", status=500)
+    """Handle incoming webhook updates from Telegram (not used, but kept for compatibility)"""
+    # This endpoint is no longer used - both bots use long polling
+    # Kept for backwards compatibility and health monitoring
+    return web.Response(text="OK")
 
 async def run_web_server():
     """Run web server for webhooks and health checks"""
