@@ -98,7 +98,7 @@ async def sorts(update: Update, context: CallbackContext) -> None:
     # Handle filtering options
     if sort_type == 'rarity':
         if len(args) < 2:
-            valid_rarities = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic", "Retro", "Zenith", "Limited Edition"]
+            valid_rarities = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic", "Retro", "Star", "Zenith", "Limited Edition"]
             await update.message.reply_text(
                 "❌ Please specify a rarity!\n\n"
                 "<b>Valid rarities:</b>\n" + 
@@ -108,7 +108,7 @@ async def sorts(update: Update, context: CallbackContext) -> None:
             return
         
         rarity_filter = ' '.join(args[1:]).title()
-        valid_rarities = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic", "Retro", "Zenith", "Limited Edition"]
+        valid_rarities = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic", "Retro", "Star", "Zenith", "Limited Edition"]
         
         if rarity_filter not in valid_rarities:
             await update.message.reply_text(
@@ -242,14 +242,14 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
     # Then apply sorting
     if sort_preference == 'rarity':
         # Sort by rarity (rarest first) then by name
-        rarity_order = ["Limited Edition", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]
+        rarity_order = ["Limited Edition", "Star", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]
         characters = sorted(characters, key=lambda x: (rarity_order.index(x.get('rarity', 'Common')), x['name']))
     elif sort_preference == 'name':
         # Sort by character name alphabetically
         characters = sorted(characters, key=lambda x: x['name'])
     elif sort_preference == 'limited_time':
         # Sort by limited time cards first, then by rarity, then by name
-        rarity_order = ["Limited Edition", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]
+        rarity_order = ["Limited Edition", "Star", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]
         characters = sorted(characters, key=lambda x: (
             0 if x.get('rarity') == 'Limited Edition' else 1,  # Limited Edition first
             rarity_order.index(x.get('rarity', 'Common')),
@@ -901,10 +901,84 @@ async def fav_callback_ptb(update: Update, context: CallbackContext):
     await query.answer()
 
 
+async def all_rarities(update: Update, context: CallbackContext) -> None:
+    """Show collection progress for all rarities"""
+    if not update.effective_user or not update.message:
+        return
+    
+    user_id = update.effective_user.id
+    
+    user = await user_collection.find_one({'id': user_id})
+    if not user:
+        await update.message.reply_text(
+            "❌ You haven't started collecting yet!\n\n"
+            "Characters appear every 100 messages. Use /marry to collect them!",
+            parse_mode='HTML'
+        )
+        return
+    
+    user_characters = user.get('characters', [])
+    if not user_characters:
+        await update.message.reply_text(
+            "❌ You don't have any characters yet!\n\n"
+            "Characters appear every 100 messages. Use /marry to collect them!",
+            parse_mode='HTML'
+        )
+        return
+    
+    # Count user's characters by rarity
+    user_rarity_counts = Counter(char.get('rarity', 'Common') for char in user_characters)
+    
+    # Get total counts for each rarity from the collection
+    all_characters = await collection.find().to_list(length=None)
+    total_rarity_counts = Counter(char.get('rarity', 'Common') for char in all_characters)
+    
+    # Define rarity order and emojis (Star above Zenith as requested)
+    rarity_order = ["Limited Edition", "Star", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]
+    rarity_emojis = {
+        "Common": "⚪️",
+        "Uncommon": "🟢",
+        "Rare": "🟠",
+        "Epic": "🟣",
+        "Legendary": "🟡",
+        "Mythic": "🏵",
+        "Retro": "🍥",
+        "Star": "⭐",
+        "Zenith": "🪩",
+        "Limited Edition": "🍬"
+    }
+    
+    # Build message
+    message_text = f"📊 <b>{escape(update.effective_user.first_name)}'s Collection Progress</b>\n\n"
+    
+    for rarity in rarity_order:
+        owned = user_rarity_counts.get(rarity, 0)
+        total = total_rarity_counts.get(rarity, 0)
+        
+        if total == 0:
+            continue
+        
+        percentage = int((owned / total) * 100) if total > 0 else 0
+        
+        # Create progress bar (10 blocks)
+        filled_blocks = int((owned / total) * 10) if total > 0 else 0
+        progress_bar = "▰" * filled_blocks + "▱" * (10 - filled_blocks)
+        
+        emoji = rarity_emojis.get(rarity, "✨")
+        
+        message_text += f"{emoji} <b>{rarity}:</b> {owned}/{total}\n"
+        message_text += f"{progress_bar} {percentage}%\n"
+    
+    message_text += f"\n✨ <b>Total Characters:</b> {len(user_characters)}/{len(all_characters)}"
+    
+    await update.message.reply_text(message_text, parse_mode='HTML')
+
+
 application.add_handler(CommandHandler(["harem", "collection"], harem,block=False))
 application.add_handler(CommandHandler("sorts", sorts, block=False))
 application.add_handler(CommandHandler("transfer", transfer_harem, block=False))
 application.add_handler(CommandHandler("fav", fav_ptb, block=False))
+application.add_handler(CommandHandler("all", all_rarities, block=False))
 harem_handler = CallbackQueryHandler(harem_callback, pattern='^harem', block=False)
 application.add_handler(harem_handler)
 fav_callback_handler = CallbackQueryHandler(fav_callback_ptb, pattern="^(confirm_fav|cancel_fav)$", block=False)

@@ -20,6 +20,7 @@ sent_characters = {}
 first_correct_guesses = {}
 message_counts = {}
 retro_message_counts = {}  # Track messages for Retro spawns (every 4k messages)
+star_message_counts = {}  # Track messages for Star spawns (every 200 messages)
 manually_summoned = {}  # Track manually summoned characters to allow multiple marriages
 
 # Spam detection system
@@ -150,9 +151,20 @@ async def message_counter(update: Update, context: CallbackContext) -> None:
         else:
             retro_message_counts[chat_id] = 1
             
-        if retro_message_counts[chat_id] % 4000 == 0:
+        if retro_message_counts[chat_id] % 2000 == 0:
             await send_retro_character(update, context)
             retro_message_counts[chat_id] = 0
+        
+        # Check for Star spawn (every 200 messages in specific chat only)
+        if chat_id == -1002961536913:
+            if chat_id in star_message_counts:
+                star_message_counts[chat_id] += 1
+            else:
+                star_message_counts[chat_id] = 1
+                
+            if star_message_counts[chat_id] % 200 == 0:
+                await send_star_character(update, context)
+                star_message_counts[chat_id] = 0
             
 async def send_image(update: Update, context: CallbackContext) -> None:
     chat_id = update.effective_chat.id
@@ -160,9 +172,9 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     # Get locked character IDs
     locked_character_ids = [doc['character_id'] for doc in await locked_spawns_collection.find().to_list(length=None)]
     
-    # Only get spawnable characters (exclude Limited Edition, Zenith, Retro, and locked characters)
+    # Only get spawnable characters (exclude Limited Edition, Zenith, Retro, Star, and locked characters)
     filter_criteria = {
-        'rarity': {'$nin': ['Limited Edition', 'Zenith', 'Retro']},
+        'rarity': {'$nin': ['Limited Edition', 'Zenith', 'Retro', 'Star']},
         'id': {'$nin': locked_character_ids}
     }
     all_characters = list(await collection.find(filter_criteria).to_list(length=None))
@@ -205,6 +217,7 @@ async def send_image(update: Update, context: CallbackContext) -> None:
         "Legendary": "🟡",
         "Mythic": "🏵",
         "Retro": "🍥",
+        "Star": "⭐",
         "Zenith": "🪩",
         "Limited Edition": "🍬"
     }
@@ -246,7 +259,7 @@ async def send_image(update: Update, context: CallbackContext) -> None:
 
 
 async def send_retro_character(update: Update, context: CallbackContext) -> None:
-    """Send a Retro character every 4000 messages"""
+    """Send a Retro character every 2000 messages"""
     chat_id = update.effective_chat.id
     
     # Get only Retro characters
@@ -322,6 +335,86 @@ async def send_retro_character(update: Update, context: CallbackContext) -> None
         await context.bot.send_message(
             chat_id=chat_id,
             text=f"🍥 A rare RETRO beauty has appeared! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
+            parse_mode='Markdown')
+
+
+async def send_star_character(update: Update, context: CallbackContext) -> None:
+    """Send a Star character every 200 messages in the main GC"""
+    chat_id = update.effective_chat.id
+    
+    # Get only Star characters
+    star_characters = list(await collection.find({
+        'rarity': 'Star'
+    }).to_list(length=None))
+    
+    if not star_characters:
+        LOGGER.warning("No Star characters available to spawn")
+        return
+    
+    # Filter out locked characters
+    locked_character_ids = await locked_spawns_collection.distinct('character_id')
+    star_characters = [char for char in star_characters if char['id'] not in locked_character_ids]
+    
+    if not star_characters:
+        LOGGER.info("No unlocked Star characters available to spawn")
+        return
+    
+    # Track sent Star characters separately to avoid repeats
+    star_sent_key = f"{chat_id}_star"
+    
+    if star_sent_key not in sent_characters:
+        sent_characters[star_sent_key] = []
+
+    if len(sent_characters[star_sent_key]) == len(star_characters):
+        sent_characters[star_sent_key] = []
+
+    available_star = [c for c in star_characters if c['id'] not in sent_characters[star_sent_key]]
+    if not available_star:
+        available_star = star_characters
+        sent_characters[star_sent_key] = []
+    
+    character = random.choice(available_star)
+    sent_characters[star_sent_key].append(character['id'])
+    last_characters[chat_id] = character
+
+    if chat_id in first_correct_guesses:
+        del first_correct_guesses[chat_id]
+    
+    # Clear manually summoned flag for automatic spawns
+    if chat_id in manually_summoned:
+        del manually_summoned[chat_id]
+
+    try:
+        from shivu import process_image_url
+        processed_url = await process_image_url(character['img_url'])
+        
+        caption_text = f"⭐ A shining STAR beauty has appeared! Use /marry to add them to your harem!"
+        
+        if is_video_character(character):
+            try:
+                await context.bot.send_video(
+                    chat_id=chat_id,
+                    video=processed_url,
+                    caption=caption_text,
+                    parse_mode='Markdown')
+            except Exception as video_error:
+                LOGGER.warning(f"Failed to send star video, trying as photo: {str(video_error)}")
+                await context.bot.send_photo(
+                    chat_id=chat_id,
+                    photo=processed_url,
+                    caption=f"🎬 {caption_text}",
+                    parse_mode='Markdown')
+        else:
+            await context.bot.send_photo(
+                chat_id=chat_id,
+                photo=processed_url,
+                caption=caption_text,
+                parse_mode='Markdown')
+    except Exception as e:
+        LOGGER.error(f"Error sending star character image: {str(e)}")
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text=f"⭐ A shining STAR beauty has appeared! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
             parse_mode='Markdown')
 
 
