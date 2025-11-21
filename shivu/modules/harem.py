@@ -926,8 +926,11 @@ async def all_rarities(update: Update, context: CallbackContext) -> None:
         )
         return
     
-    # Count user's characters by rarity
-    user_rarity_counts = Counter(char.get('rarity', 'Common') for char in user_characters)
+    # Get unique characters only (no duplicates)
+    unique_user_characters = list({char['id']: char for char in user_characters}.values())
+    
+    # Count unique user's characters by rarity
+    user_rarity_counts = Counter(char.get('rarity', 'Common') for char in unique_user_characters)
     
     # Get total counts for each rarity from the collection
     all_characters = await collection.find().to_list(length=None)
@@ -969,7 +972,7 @@ async def all_rarities(update: Update, context: CallbackContext) -> None:
         message_text += f"{emoji} <b>{rarity}:</b> {owned}/{total}\n"
         message_text += f"{progress_bar} {percentage}%\n"
     
-    message_text += f"\n✨ <b>Total Characters:</b> {len(user_characters)}/{len(all_characters)}"
+    message_text += f"\n✨ <b>Total Unique Characters:</b> {len(unique_user_characters)}/{len(all_characters)}"
     
     await update.message.reply_text(message_text, parse_mode='HTML')
 
