@@ -309,6 +309,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                 "Legendary": "🟡",
                 "Mythic": "🏵",
                 "Retro": "🍥",
+                "Star": "⭐",
                 "Zenith": "🪩",
                 "Limited Edition": "🍬"
             }
@@ -589,6 +590,7 @@ async def fav(client, message):
         "Legendary": "🟡",
         "Mythic": "🏵",
         "Retro": "🍥",
+        "Star": "⭐",
         "Zenith": "🪩",
         "Limited Edition": "🍬"
     }
@@ -805,8 +807,8 @@ async def fav_ptb(update: Update, context: CallbackContext):
     # Send character image with confirmation
     rarity_emojis = {
         "Common": "⚪️", "Uncommon": "🟢", "Rare": "🔵", "Epic": "🟣",
-        "Legendary": "🟡", "Mythic": "🏵", "Retro": "🍥", "Zenith": "🪩",
-        "Limited Edition": "🍬"
+        "Legendary": "🟡", "Mythic": "🏵", "Retro": "🍥", "Star": "⭐",
+        "Zenith": "🪩", "Limited Edition": "🍬"
     }
     
     rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")

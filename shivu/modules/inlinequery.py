@@ -42,6 +42,7 @@ rarity_emojis = {
     "Legendary": "🟡",
     "Mythic": "🏵",
     "Retro": "🍥",
+    "Star": "⭐",
     "Zenith": "🪩",
     "Limited Edition": "🍬"
 }

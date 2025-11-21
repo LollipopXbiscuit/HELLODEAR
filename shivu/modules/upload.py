@@ -18,6 +18,7 @@ rarity_styles = {
     "Legendary": "🟡",
     "Mythic": "🏵",
     "Retro": "🍥",
+    "Star": "⭐",
     "Zenith": "🪩",
     "Limited Edition": "🍬"
 }
@@ -35,8 +36,9 @@ Use rarity number accordingly:
 5 = 🟡 Legendary
 6 = 🏵 Mythic
 7 = 🍥 Retro
-8 = 🪩 Zenith
-9 = 🍬 Limited Edition
+8 = ⭐ Star
+9 = 🪩 Zenith
+10 = 🍬 Limited Edition
 
 ✅ Supported: Discord CDN links, direct image/video URLs (including MP4), and other standard hosting services"""
 
@@ -189,13 +191,14 @@ async def upload(update: Update, context: CallbackContext) -> None:
             5: "Legendary", 
             6: "Mythic", 
             7: "Retro", 
-            8: "Zenith", 
-            9: "Limited Edition"
+            8: "Star", 
+            9: "Zenith", 
+            10: "Limited Edition"
         }
         try:
             rarity = rarity_map[int(args[3])]
         except KeyError:
-            await update.message.reply_text('Invalid rarity. Please use 1-9:\n1=Common, 2=Uncommon, 3=Rare, 4=Epic, 5=Legendary, 6=Mythic, 7=Retro, 8=Zenith, 9=Limited Edition')
+            await update.message.reply_text('Invalid rarity. Please use 1-10:\n1=Common, 2=Uncommon, 3=Rare, 4=Epic, 5=Legendary, 6=Mythic, 7=Retro, 8=Star, 9=Zenith, 10=Limited Edition')
             return
 
         id = str(await get_next_sequence_number('character_id'))
@@ -305,6 +308,7 @@ async def summon(update: Update, context: CallbackContext) -> None:
             "Legendary": 2,
             "Mythic": 0.8,
             "Retro": 0.3,
+            "Star": 0,
             "Zenith": 0,
             "Limited Edition": 0
         }
@@ -598,13 +602,14 @@ async def update(update: Update, context: CallbackContext) -> None:
                 5: "Legendary", 
                 6: "Mythic", 
                 7: "Retro", 
-                8: "Zenith", 
-                9: "Limited Edition"
+                8: "Star", 
+                9: "Zenith", 
+                10: "Limited Edition"
             }
             try:
                 new_value = rarity_map[int(args[2])]
             except KeyError:
-                await update.message.reply_text('Invalid rarity. Please use 1-9:\n1=Common, 2=Uncommon, 3=Rare, 4=Epic, 5=Legendary, 6=Mythic, 7=Retro, 8=Zenith, 9=Limited Edition')
+                await update.message.reply_text('Invalid rarity. Please use 1-10:\n1=Common, 2=Uncommon, 3=Rare, 4=Epic, 5=Legendary, 6=Mythic, 7=Retro, 8=Star, 9=Zenith, 10=Limited Edition')
                 return
         else:
             new_value = args[2]
