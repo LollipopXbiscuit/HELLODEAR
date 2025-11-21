@@ -4,6 +4,21 @@ This is a Telegram character catcher bot called "Waifu & Husbando Catcher" that 
 
 # Recent Changes
 
+## November 21, 2025
+- **Star Rarity System**: Added new Star (⭐) rarity tier positioned above Zenith in the rarity hierarchy
+  - Star characters only spawn in the main group chat (ID: -1002961536913) every 200 messages
+  - Added Star to all rarity emoji mappings and ordering lists throughout the codebase
+  - Star characters are excluded from regular spawn pools and appear only in the designated chat
+  - Updated `/rarity` command to display Star spawn information
+- **Retro Spawn Interval Update**: Changed Retro character spawn frequency from every 4000 messages to every 2000 messages
+  - Updated all documentation and help text to reflect new 2000-message interval
+  - Retro spawn logic in message_counter now triggers at 2000-message intervals
+- **/all Command**: Added new `/all` command to display collection progress across all rarities
+  - Shows owned vs total characters for each rarity tier
+  - Displays visual progress bars (10 blocks: ▰ filled, ▱ empty) with percentage completion
+  - Rarity order: Limited Edition, Star, Zenith, Retro, Mythic, Legendary, Epic, Rare, Uncommon, Common
+  - Format example: "🏵 Mythic: 57/249 ▰▰▱▱▱▱▱▱▱▱ 23%"
+
 ## September 30, 2025
 - **Video Detection Fix for URLs Without Extensions**: Fixed video detection to work with URLs that don't have file extensions (like cloudflare /dl/ links)
   - Changed all video detection checks from `is_video_url()` to `is_video_character()` across harem.py, inlinequery.py, and upload.py
@@ -56,7 +71,7 @@ Preferred communication style: Simple, everyday language.
 ## Command System
 - **Modular Design**: Commands organized in separate modules for maintainability
 - **Admin Controls**: Role-based permissions using Pyrogram's chat member status
-- **User Commands**: `/guess`, `/fav`, `/trade`, `/gift`, `/collection`, `/topgroups`
+- **User Commands**: `/guess`, `/fav`, `/trade`, `/gift`, `/collection`, `/topgroups`, `/all`
 - **Admin Commands**: `/upload`, `/changetime`, `/broadcast`
 
 ## Caching Strategy
@@ -66,7 +81,13 @@ Preferred communication style: Simple, everyday language.
 - **Database Indexing**: Strategic indexes on frequently queried fields
 
 ## Rarity System
-- **Tiered Rarity**: 4-tier system (Common ⚪️, Medium 🟢, Rare 🟣, Legendary 🟡)
+- **Tiered Rarity**: 10-tier system with varying spawn rates and conditions
+  - Common ⚪️, Uncommon 🟢, Rare 🔵, Epic 🟣 (regular spawns every 100 messages)
+  - Legendary 🟡, Mythic 🏵 (rare spawns every 100 messages)
+  - Retro 🍥 (special spawns every 2000 messages)
+  - Star ⭐ (exclusive to main GC, spawns every 200 messages)
+  - Zenith 🪩, Limited Edition 🍬 (non-spawning, exclusive rarities)
+- **Chat-Specific Spawning**: Star rarity only spawns in designated main group chat
 - **Auto-incrementing IDs**: Sequence-based character ID generation
 - **Image Validation**: URL validation before character upload
 
