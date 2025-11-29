@@ -282,10 +282,10 @@ async def rarity(client, message):
         "Epic": {"emoji": "🟣", "rate": "~11%", "spawns": "✅"},
         "Legendary": {"emoji": "🟡", "rate": "~3.6%", "spawns": "✅"},
         "Mythic": {"emoji": "🏵", "rate": "~1.8%", "spawns": "✅"},
-        "Retro": {"emoji": "🍥", "rate": "Special", "spawns": "🔥 Special (2000 msgs)"},
+        "Retro": {"emoji": "🍥", "rate": "~0.7%", "spawns": "✅ Rare"},
         "Star": {"emoji": "⭐", "rate": "Special", "spawns": "⭐ Main GC only (200 msgs)"},
-        "Zenith": {"emoji": "🪩", "rate": "~0.4%", "spawns": "✅ Ultra Rare"},
-        "Limited Edition": {"emoji": "🍬", "rate": "~0.2%", "spawns": "✅ Super Rare"}
+        "Zenith": {"emoji": "🪩", "rate": "~0.04%", "spawns": "✅ EXTREMELY Rare"},
+        "Limited Edition": {"emoji": "🍬", "rate": "~0.02%", "spawns": "✅ LEGENDARY Rare"}
     }
     
     message_text = (
@@ -299,19 +299,20 @@ async def rarity(client, message):
         info = rarity_info[rarity]
         message_text += f"{info['emoji']} **{rarity}:** {info['rate']} chance\n"
     
-    message_text += "\n💎 **Ultra Rare Spawns (every 100 messages):**\n"
+    message_text += "\n🍥 **Rare Spawns:**\n"
+    message_text += f"{rarity_info['Retro']['emoji']} **Retro:** {rarity_info['Retro']['rate']} chance\n"
+    
+    message_text += "\n💎 **EXTREMELY Rare Spawns:**\n"
     message_text += f"{rarity_info['Zenith']['emoji']} **Zenith:** {rarity_info['Zenith']['rate']} chance\n"
     message_text += f"{rarity_info['Limited Edition']['emoji']} **Limited Edition:** {rarity_info['Limited Edition']['rate']} chance\n"
     
-    message_text += "\n🔥 **Special Spawns:**\n"
-    message_text += f"{rarity_info['Retro']['emoji']} **Retro:** Exclusive (every 2000 messages)\n"
+    message_text += "\n⭐ **Special Spawns:**\n"
     message_text += f"{rarity_info['Star']['emoji']} **Star:** Exclusive to main GC (every 200 messages)\n"
     
     message_text += (
         "\n💡 **Tips:**\n"
         "• Higher rarity = lower spawn chance\n"
-        "• Zenith & Limited Edition are ultra rare but can spawn!\n"
-        "• Retro cards only spawn every 2000 messages\n"
+        "• Zenith & Limited Edition are EXTREMELY rare!\n"
         "• Star cards only spawn in the main GC every 200 messages\n"
         "• Use `/lockspawn` to prevent specific cards from spawning (admin only)\n\n"
         "✨ Good luck collecting!"

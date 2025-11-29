@@ -9,13 +9,15 @@ This is a Telegram character catcher bot called "Waifu & Husbando Catcher" that 
   - Previously: System used `random.choice` which gave equal chance to all characters regardless of rarity
   - Now: Uses `random.choices` with proper weights to select rarity FIRST, then picks a random character from that rarity
   - This fixes the bug where Mythic characters spawned as often as Common ones
-- **Zenith & Limited Edition Now Spawn**: Enabled these ultra-rare tiers in regular spawns
-  - Zenith: ~0.4% spawn chance (weight: 1)
-  - Limited Edition: ~0.2% spawn chance (weight: 0.5)
+- **Retro Added to Regular Spawns**: Removed separate 2000-message Retro system, now spawns in regular weighted system
+- **Zenith & Limited Edition EXTREMELY Rare**: Made these ultra-rare tiers nearly impossible to get
+  - Zenith: ~0.04% spawn chance (weight: 0.1)
+  - Limited Edition: ~0.02% spawn chance (weight: 0.05)
 - **New Spawn Weights** (approximate percentages):
   - Common: ~36% | Uncommon: ~29% | Rare: ~18% | Epic: ~11%
-  - Legendary: ~3.6% | Mythic: ~1.8% | Zenith: ~0.4% | Limited Edition: ~0.2%
-  - Retro: Special spawns every 2000 messages | Star: Main GC only every 200 messages
+  - Legendary: ~3.6% | Mythic: ~1.8% | Retro: ~0.7%
+  - Zenith: ~0.04% | Limited Edition: ~0.02%
+  - Star: Main GC only every 200 messages (special system)
 - **Star Rarity in /upload**: Added Star rarity (number 8) to upload command, shifted Zenith to 9 and Limited Edition to 10
 
 ## November 21, 2025
@@ -97,9 +99,8 @@ Preferred communication style: Simple, everyday language.
 ## Rarity System
 - **Tiered Rarity**: 10-tier system with weighted spawn rates
   - Common ⚪️ (~36%), Uncommon 🟢 (~29%), Rare 🔵 (~18%), Epic 🟣 (~11%)
-  - Legendary 🟡 (~3.6%), Mythic 🏵 (~1.8%)
-  - Zenith 🪩 (~0.4%), Limited Edition 🍬 (~0.2%) - ultra rare regular spawns
-  - Retro 🍥 (special spawns every 2000 messages)
+  - Legendary 🟡 (~3.6%), Mythic 🏵 (~1.8%), Retro 🍥 (~0.7%)
+  - Zenith 🪩 (~0.04%), Limited Edition 🍬 (~0.02%) - EXTREMELY rare
   - Star ⭐ (exclusive to main GC, spawns every 200 messages)
 - **Weighted Selection**: System picks rarity first using weights, then selects random character from that rarity
 - **Chat-Specific Spawning**: Star rarity only spawns in designated main group chat

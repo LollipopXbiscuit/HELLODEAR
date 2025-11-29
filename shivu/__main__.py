@@ -145,16 +145,6 @@ async def message_counter(update: Update, context: CallbackContext) -> None:
             
             message_counts[chat_id] = 0
         
-        # Check for Retro spawn (every 4000 messages)
-        if chat_id in retro_message_counts:
-            retro_message_counts[chat_id] += 1
-        else:
-            retro_message_counts[chat_id] = 1
-            
-        if retro_message_counts[chat_id] % 2000 == 0:
-            await send_retro_character(update, context)
-            retro_message_counts[chat_id] = 0
-        
         # Check for Star spawn (every 200 messages in specific chat only)
         if chat_id == -1002961536913:
             if chat_id in star_message_counts:
@@ -172,9 +162,9 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     # Get locked character IDs
     locked_character_ids = [doc['character_id'] for doc in await locked_spawns_collection.find().to_list(length=None)]
     
-    # Get spawnable characters (exclude Retro and Star as they have their own spawn functions)
+    # Get spawnable characters (exclude Star as it has its own spawn function in main GC)
     filter_criteria = {
-        'rarity': {'$nin': ['Retro', 'Star']},
+        'rarity': {'$nin': ['Star']},
         'id': {'$nin': locked_character_ids}
     }
     all_characters = list(await collection.find(filter_criteria).to_list(length=None))
@@ -186,6 +176,7 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     
     # Define rarity weights for weighted random selection
     # Higher weight = more likely to spawn
+    # Zenith and Limited Edition are EXTREMELY rare
     rarity_weights = {
         "Common": 100,
         "Uncommon": 80,
@@ -193,8 +184,9 @@ async def send_image(update: Update, context: CallbackContext) -> None:
         "Epic": 30,
         "Legendary": 10,
         "Mythic": 5,
-        "Zenith": 1,
-        "Limited Edition": 0.5
+        "Retro": 2,
+        "Zenith": 0.1,
+        "Limited Edition": 0.05
     }
     
     # Group characters by rarity
@@ -299,86 +291,6 @@ async def send_image(update: Update, context: CallbackContext) -> None:
         await context.bot.send_message(
             chat_id=chat_id,
             text=f"{rarity_emoji} A beauty has been summoned! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
-            parse_mode='Markdown')
-
-
-async def send_retro_character(update: Update, context: CallbackContext) -> None:
-    """Send a Retro character every 2000 messages"""
-    chat_id = update.effective_chat.id
-    
-    # Get only Retro characters
-    retro_characters = list(await collection.find({
-        'rarity': 'Retro'
-    }).to_list(length=None))
-    
-    if not retro_characters:
-        LOGGER.warning("No Retro characters available to spawn")
-        return
-    
-    # Filter out locked characters
-    locked_character_ids = await locked_spawns_collection.distinct('character_id')
-    retro_characters = [char for char in retro_characters if char['id'] not in locked_character_ids]
-    
-    if not retro_characters:
-        LOGGER.info("No unlocked Retro characters available to spawn")
-        return
-    
-    # Track sent Retro characters separately to avoid repeats
-    retro_sent_key = f"{chat_id}_retro"
-    
-    if retro_sent_key not in sent_characters:
-        sent_characters[retro_sent_key] = []
-
-    if len(sent_characters[retro_sent_key]) == len(retro_characters):
-        sent_characters[retro_sent_key] = []
-
-    available_retro = [c for c in retro_characters if c['id'] not in sent_characters[retro_sent_key]]
-    if not available_retro:
-        available_retro = retro_characters
-        sent_characters[retro_sent_key] = []
-    
-    character = random.choice(available_retro)
-    sent_characters[retro_sent_key].append(character['id'])
-    last_characters[chat_id] = character
-
-    if chat_id in first_correct_guesses:
-        del first_correct_guesses[chat_id]
-    
-    # Clear manually summoned flag for automatic spawns
-    if chat_id in manually_summoned:
-        del manually_summoned[chat_id]
-
-    try:
-        from shivu import process_image_url
-        processed_url = await process_image_url(character['img_url'])
-        
-        caption_text = f"🍥 A rare RETRO beauty has appeared! Use /marry to add them to your harem!"
-        
-        if is_video_character(character):
-            try:
-                await context.bot.send_video(
-                    chat_id=chat_id,
-                    video=processed_url,
-                    caption=caption_text,
-                    parse_mode='Markdown')
-            except Exception as video_error:
-                LOGGER.warning(f"Failed to send retro video, trying as photo: {str(video_error)}")
-                await context.bot.send_photo(
-                    chat_id=chat_id,
-                    photo=processed_url,
-                    caption=f"🎬 {caption_text}",
-                    parse_mode='Markdown')
-        else:
-            await context.bot.send_photo(
-                chat_id=chat_id,
-                photo=processed_url,
-                caption=caption_text,
-                parse_mode='Markdown')
-    except Exception as e:
-        LOGGER.error(f"Error sending retro character image: {str(e)}")
-        await context.bot.send_message(
-            chat_id=chat_id,
-            text=f"🍥 A rare RETRO beauty has appeared! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
             parse_mode='Markdown')
 
 
