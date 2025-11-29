@@ -177,17 +177,33 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     
     # Define rarity weights for weighted random selection
     # Higher weight = more likely to spawn
-    rarity_weights = {
-        "Common": 100,
-        "Uncommon": 80,
-        "Rare": 50,
-        "Epic": 30,
-        "Legendary": 10,
-        "Mythic": 5,
-        "Retro": 5,
-        "Zenith": 1,
-        "Limited Edition": 0.25
-    }
+    # Check if we're in main GC for boosted Retro/Zenith rates
+    if chat_id == -1002961536913:
+        # Main GC: Significantly higher Retro and Zenith rates
+        rarity_weights = {
+            "Common": 100,
+            "Uncommon": 80,
+            "Rare": 50,
+            "Epic": 30,
+            "Legendary": 10,
+            "Mythic": 5,
+            "Retro": 20,
+            "Zenith": 10,
+            "Limited Edition": 0.25
+        }
+    else:
+        # Other chats: Normal rates
+        rarity_weights = {
+            "Common": 100,
+            "Uncommon": 80,
+            "Rare": 50,
+            "Epic": 30,
+            "Legendary": 10,
+            "Mythic": 5,
+            "Retro": 5,
+            "Zenith": 1,
+            "Limited Edition": 0.25
+        }
     
     # Group characters by rarity
     characters_by_rarity = {}
