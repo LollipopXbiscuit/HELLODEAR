@@ -284,8 +284,8 @@ async def rarity(client, message):
         "Mythic": {"emoji": "🏵", "rate": "~1.8%", "spawns": "✅"},
         "Retro": {"emoji": "🍥", "rate": "~0.7%", "spawns": "✅ Rare"},
         "Star": {"emoji": "⭐", "rate": "Special", "spawns": "⭐ Main GC only (200 msgs)"},
-        "Zenith": {"emoji": "🪩", "rate": "~0.04%", "spawns": "✅ EXTREMELY Rare"},
-        "Limited Edition": {"emoji": "🍬", "rate": "~0.02%", "spawns": "✅ LEGENDARY Rare"}
+        "Zenith": {"emoji": "🪩", "rate": "~0.36%", "spawns": "✅ Very Rare"},
+        "Limited Edition": {"emoji": "🍬", "rate": "~0.09%", "spawns": "✅ Ultra Rare"}
     }
     
     message_text = (

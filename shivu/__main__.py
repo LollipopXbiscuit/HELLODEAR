@@ -176,7 +176,6 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     
     # Define rarity weights for weighted random selection
     # Higher weight = more likely to spawn
-    # Zenith and Limited Edition are EXTREMELY rare
     rarity_weights = {
         "Common": 100,
         "Uncommon": 80,
@@ -185,8 +184,8 @@ async def send_image(update: Update, context: CallbackContext) -> None:
         "Legendary": 10,
         "Mythic": 5,
         "Retro": 2,
-        "Zenith": 0.1,
-        "Limited Edition": 0.05
+        "Zenith": 1,
+        "Limited Edition": 0.25
     }
     
     # Group characters by rarity

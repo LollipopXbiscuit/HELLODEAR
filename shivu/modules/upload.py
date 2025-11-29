@@ -301,7 +301,6 @@ async def summon(update: Update, context: CallbackContext) -> None:
         
         # Get characters grouped by rarity for weighted selection
         # Higher weight = more likely to spawn
-        # Zenith and Limited Edition are EXTREMELY rare
         rarities_weights = {
             "Common": 100,
             "Uncommon": 80,
@@ -311,8 +310,8 @@ async def summon(update: Update, context: CallbackContext) -> None:
             "Mythic": 5,
             "Retro": 2,
             "Star": 0,
-            "Zenith": 0.1,
-            "Limited Edition": 0.05
+            "Zenith": 1,
+            "Limited Edition": 0.25
         }
         
         # Get available rarities from database (excluding Limited Edition)
