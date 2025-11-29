@@ -3,8 +3,9 @@ from pyrogram.types import InlineKeyboardMarkup as PyrogramInlineKeyboardMarkup,
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton, Update
 from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext
 import math
+import asyncio
 
-from shivu import collection, locked_spawns_collection, shivuu, application
+from shivu import collection, locked_spawns_collection, shivuu, application, user_collection, group_user_totals_collection
 from shivu.config import Config
 
 @shivuu.on_message(filters.command("lockspawn"))
@@ -573,20 +574,18 @@ async def rarity_ptb(update: Update, context: CallbackContext):
         info = rarity_info[rarity]
         message_text += f"{info['emoji']} **{rarity}:** {info['rate']} chance\n"
     
-    message_text += "\n🔥 **Special Spawns:**\n"
-    message_text += f"{rarity_info['Retro']['emoji']} **Retro:** {rarity_info['Retro']['rate']} chance (every 2000 messages)\n"
-    message_text += f"{rarity_info['Star']['emoji']} **Star:** Exclusive to main GC (every 200 messages)\n"
-    
-    message_text += "\n❌ **Non-Spawning Rarities:**\n"
-    for rarity in ["Zenith", "Limited Edition"]:
+    message_text += "\n🔥 **Rare Spawns:**\n"
+    for rarity in ["Retro", "Zenith", "Limited Edition"]:
         info = rarity_info[rarity]
-        message_text += f"{info['emoji']} **{rarity}:** {info['spawns']}\n"
+        message_text += f"{info['emoji']} **{rarity}:** {info['rate']} - {info['spawns']}\n"
+    
+    message_text += "\n⭐ **Special Spawns:**\n"
+    message_text += f"{rarity_info['Star']['emoji']} **Star:** {rarity_info['Star']['spawns']}\n"
     
     message_text += (
         "\n💡 **Tips:**\n"
         "• Higher rarity = lower spawn chance\n"
-        "• Zenith & Limited Edition cards are exclusive\n"
-        "• Retro cards only spawn every 2000 messages\n"
+        "• Zenith & Limited Edition are very rare but CAN spawn!\n"
         "• Star cards only spawn in the main GC every 200 messages\n"
         "• Use `/lockspawn` to prevent specific cards from spawning (admin only)\n\n"
         "✨ Good luck collecting!"
@@ -595,10 +594,281 @@ async def rarity_ptb(update: Update, context: CallbackContext):
     await update.message.reply_text(message_text, parse_mode='Markdown')
 
 
+# ============== BROADCAST COMMAND ==============
+
+@shivuu.on_message(filters.command("broadcast"))
+async def broadcast(client, message):
+    """Broadcast a message to all players and/or groups (owner only)"""
+    sender_id = message.from_user.id
+    
+    if str(sender_id) not in [str(u) for u in Config.sudo_users]:
+        await message.reply_text("🚫 This command is only available to administrators.")
+        return
+    
+    if not message.reply_to_message and len(message.command) < 2:
+        await message.reply_text(
+            "📢 **Broadcast Command**\n\n"
+            "**Usage:**\n"
+            "`/broadcast [message]` - Send to all users & groups\n"
+            "`/broadcast -users [message]` - Send to users only\n"
+            "`/broadcast -groups [message]` - Send to groups only\n\n"
+            "**Or:** Reply to any message with `/broadcast`\n\n"
+            "**Example:**\n"
+            "`/broadcast Hello everyone! New update is here!`",
+            parse_mode=enums.ParseMode.MARKDOWN
+        )
+        return
+    
+    args = message.command[1:] if len(message.command) > 1 else []
+    
+    send_to_users = True
+    send_to_groups = True
+    
+    if args and args[0] == "-users":
+        send_to_groups = False
+        args = args[1:]
+    elif args and args[0] == "-groups":
+        send_to_users = False
+        args = args[1:]
+    
+    if message.reply_to_message:
+        broadcast_message = message.reply_to_message
+        is_reply = True
+    else:
+        broadcast_text = " ".join(args)
+        if not broadcast_text:
+            await message.reply_text("❌ Please provide a message to broadcast!")
+            return
+        is_reply = False
+    
+    status_msg = await message.reply_text("📡 Starting broadcast...")
+    
+    success_users = 0
+    failed_users = 0
+    success_groups = 0
+    failed_groups = 0
+    
+    if send_to_users:
+        all_users = await user_collection.find({}).to_list(length=None)
+        total_users = len(all_users)
+        
+        for i, user in enumerate(all_users):
+            try:
+                user_id = user.get('id')
+                if not user_id:
+                    continue
+                    
+                if is_reply:
+                    await broadcast_message.copy(chat_id=user_id)
+                else:
+                    await client.send_message(chat_id=user_id, text=broadcast_text)
+                    
+                success_users += 1
+                
+                if (i + 1) % 25 == 0:
+                    await status_msg.edit_text(
+                        f"📡 **Broadcasting...**\n\n"
+                        f"👥 Users: {success_users}/{total_users} sent\n"
+                        f"❌ Failed: {failed_users}"
+                    )
+                    
+                await asyncio.sleep(0.05)
+                
+            except Exception as e:
+                failed_users += 1
+    
+    if send_to_groups:
+        all_groups = await group_user_totals_collection.distinct('group_id')
+        total_groups = len(all_groups)
+        
+        for i, group_id in enumerate(all_groups):
+            try:
+                if not group_id:
+                    continue
+                    
+                chat_id = int(group_id) if isinstance(group_id, str) else group_id
+                    
+                if is_reply:
+                    await broadcast_message.copy(chat_id=chat_id)
+                else:
+                    await client.send_message(chat_id=chat_id, text=broadcast_text)
+                    
+                success_groups += 1
+                
+                if (i + 1) % 10 == 0:
+                    await status_msg.edit_text(
+                        f"📡 **Broadcasting...**\n\n"
+                        f"👥 Users: {success_users} sent, {failed_users} failed\n"
+                        f"💬 Groups: {success_groups}/{total_groups} sent\n"
+                        f"❌ Failed: {failed_groups}"
+                    )
+                    
+                await asyncio.sleep(0.1)
+                
+            except Exception as e:
+                failed_groups += 1
+    
+    target_text = ""
+    if send_to_users and send_to_groups:
+        target_text = "users & groups"
+    elif send_to_users:
+        target_text = "users only"
+    else:
+        target_text = "groups only"
+    
+    await status_msg.edit_text(
+        f"✅ **Broadcast Complete!**\n\n"
+        f"📢 Target: {target_text}\n\n"
+        f"👥 **Users:**\n"
+        f"   ✓ Sent: {success_users}\n"
+        f"   ✗ Failed: {failed_users}\n\n"
+        f"💬 **Groups:**\n"
+        f"   ✓ Sent: {success_groups}\n"
+        f"   ✗ Failed: {failed_groups}\n\n"
+        f"📊 **Total:** {success_users + success_groups} messages sent"
+    )
+
+
+async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
+    """PTB wrapper for broadcast command"""
+    sender_id = update.effective_user.id
+    
+    if str(sender_id) not in [str(u) for u in Config.sudo_users]:
+        await update.message.reply_text("🚫 This command is only available to administrators.")
+        return
+    
+    args = context.args if context.args else []
+    
+    if not update.message.reply_to_message and len(args) < 1:
+        await update.message.reply_text(
+            "📢 **Broadcast Command**\n\n"
+            "**Usage:**\n"
+            "`/broadcast [message]` - Send to all users & groups\n"
+            "`/broadcast -users [message]` - Send to users only\n"
+            "`/broadcast -groups [message]` - Send to groups only\n\n"
+            "**Or:** Reply to any message with `/broadcast`\n\n"
+            "**Example:**\n"
+            "`/broadcast Hello everyone! New update is here!`",
+            parse_mode='Markdown'
+        )
+        return
+    
+    send_to_users = True
+    send_to_groups = True
+    
+    if args and args[0] == "-users":
+        send_to_groups = False
+        args = args[1:]
+    elif args and args[0] == "-groups":
+        send_to_users = False
+        args = args[1:]
+    
+    if update.message.reply_to_message:
+        is_reply = True
+        reply_msg = update.message.reply_to_message
+    else:
+        broadcast_text = " ".join(args)
+        if not broadcast_text:
+            await update.message.reply_text("❌ Please provide a message to broadcast!")
+            return
+        is_reply = False
+    
+    status_msg = await update.message.reply_text("📡 Starting broadcast...")
+    
+    success_users = 0
+    failed_users = 0
+    success_groups = 0
+    failed_groups = 0
+    
+    if send_to_users:
+        all_users = await user_collection.find({}).to_list(length=None)
+        total_users = len(all_users)
+        
+        for i, user in enumerate(all_users):
+            try:
+                user_id = user.get('id')
+                if not user_id:
+                    continue
+                    
+                if is_reply:
+                    await reply_msg.copy(chat_id=user_id)
+                else:
+                    await context.bot.send_message(chat_id=user_id, text=broadcast_text)
+                    
+                success_users += 1
+                
+                if (i + 1) % 25 == 0:
+                    await status_msg.edit_text(
+                        f"📡 **Broadcasting...**\n\n"
+                        f"👥 Users: {success_users}/{total_users} sent\n"
+                        f"❌ Failed: {failed_users}",
+                        parse_mode='Markdown'
+                    )
+                    
+                await asyncio.sleep(0.05)
+                
+            except Exception as e:
+                failed_users += 1
+    
+    if send_to_groups:
+        all_groups = await group_user_totals_collection.distinct('group_id')
+        total_groups = len(all_groups)
+        
+        for i, group_id in enumerate(all_groups):
+            try:
+                if not group_id:
+                    continue
+                    
+                chat_id = int(group_id) if isinstance(group_id, str) else group_id
+                    
+                if is_reply:
+                    await reply_msg.copy(chat_id=chat_id)
+                else:
+                    await context.bot.send_message(chat_id=chat_id, text=broadcast_text)
+                    
+                success_groups += 1
+                
+                if (i + 1) % 10 == 0:
+                    await status_msg.edit_text(
+                        f"📡 **Broadcasting...**\n\n"
+                        f"👥 Users: {success_users} sent, {failed_users} failed\n"
+                        f"💬 Groups: {success_groups}/{total_groups} sent\n"
+                        f"❌ Failed: {failed_groups}",
+                        parse_mode='Markdown'
+                    )
+                    
+                await asyncio.sleep(0.1)
+                
+            except Exception as e:
+                failed_groups += 1
+    
+    target_text = ""
+    if send_to_users and send_to_groups:
+        target_text = "users & groups"
+    elif send_to_users:
+        target_text = "users only"
+    else:
+        target_text = "groups only"
+    
+    await status_msg.edit_text(
+        f"✅ **Broadcast Complete!**\n\n"
+        f"📢 Target: {target_text}\n\n"
+        f"👥 **Users:**\n"
+        f"   ✓ Sent: {success_users}\n"
+        f"   ✗ Failed: {failed_users}\n\n"
+        f"💬 **Groups:**\n"
+        f"   ✓ Sent: {success_groups}\n"
+        f"   ✗ Failed: {failed_groups}\n\n"
+        f"📊 **Total:** {success_users + success_groups} messages sent",
+        parse_mode='Markdown'
+    )
+
+
 # Register handlers
 application.add_handler(CommandHandler("lockspawn", lockspawn_ptb, block=False))
 application.add_handler(CommandHandler("unlockspawn", unlockspawn_ptb, block=False))
 application.add_handler(CommandHandler("lockedspawns", lockedspawns_ptb, block=False))
 application.add_handler(CommandHandler("rarity", rarity_ptb, block=False))
+application.add_handler(CommandHandler("broadcast", broadcast_ptb, block=False))
 application.add_handler(CallbackQueryHandler(lockedspawns_callback_ptb, pattern="^lockedspawns:", block=False))
 
