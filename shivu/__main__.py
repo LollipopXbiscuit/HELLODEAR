@@ -9,8 +9,9 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CommandHandler, CallbackContext, MessageHandler, filters
 from html import escape
 
-from shivu import collection, top_global_groups_collection, group_user_totals_collection, user_collection, user_totals_collection, locked_spawns_collection, shivuu
+from shivu import collection, top_global_groups_collection, group_user_totals_collection, user_collection, user_totals_collection, locked_spawns_collection, shivuu, banned_users_collection
 from shivu import application, SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER
+from datetime import datetime
 from shivu.modules import ALL_MODULES
 
 
@@ -376,6 +377,23 @@ async def send_star_character(update: Update, context: CallbackContext) -> None:
 async def guess(update: Update, context: CallbackContext) -> None:
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
+    
+    # Check if user is bonked (banned)
+    ban = await banned_users_collection.find_one({'user_id': user_id})
+    if ban:
+        unban_date = ban.get('unban_date')
+        if datetime.now() >= unban_date:
+            await banned_users_collection.delete_one({'user_id': user_id})
+        else:
+            remaining = unban_date - datetime.now()
+            days = remaining.days
+            hours = remaining.seconds // 3600
+            time_str = f"{days} days" if days > 0 else f"{hours} hours"
+            await update.message.reply_text(
+                f"🔨 You've been bonked for spamming too much.. please wait for **{time_str}**",
+                parse_mode='Markdown'
+            )
+            return
     
     # Check if user is blocked from spam
     if is_user_blocked(user_id):

@@ -5,8 +5,9 @@ from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext
 import math
 import asyncio
 
-from shivu import collection, locked_spawns_collection, shivuu, application, user_collection, group_user_totals_collection
+from shivu import collection, locked_spawns_collection, shivuu, application, user_collection, group_user_totals_collection, banned_users_collection, OWNER_ID
 from shivu.config import Config
+from datetime import datetime, timedelta
 
 @shivuu.on_message(filters.command("lockspawn"))
 async def lockspawn(client, message):
@@ -864,11 +865,267 @@ async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
     )
 
 
+# ============== BONK/UNBONK COMMANDS ==============
+
+@shivuu.on_message(filters.command("bonk"))
+async def bonk(client, message):
+    """Ban a user from using the bot for 2 weeks (owner only)"""
+    sender_id = message.from_user.id
+    
+    if sender_id != int(OWNER_ID):
+        await message.reply_text("🚫 This command is only available to the bot owner.")
+        return
+    
+    target_user = None
+    target_id = None
+    
+    if message.reply_to_message:
+        target_user = message.reply_to_message.from_user
+        target_id = target_user.id
+    elif len(message.command) >= 2:
+        try:
+            target_id = int(message.command[1])
+        except ValueError:
+            await message.reply_text("❌ Invalid user ID!")
+            return
+    else:
+        await message.reply_text(
+            "🔨 **Bonk Command**\n\n"
+            "**Usage:**\n"
+            "• Reply to a user's message with `/bonk`\n"
+            "• Or use `/bonk [user_id]`\n\n"
+            "This will ban the user from using the bot for 2 weeks.",
+            parse_mode=enums.ParseMode.MARKDOWN
+        )
+        return
+    
+    if target_id == int(OWNER_ID):
+        await message.reply_text("❌ You can't bonk yourself!")
+        return
+    
+    existing_ban = await banned_users_collection.find_one({'user_id': target_id})
+    if existing_ban:
+        unban_date = existing_ban.get('unban_date')
+        remaining = unban_date - datetime.now()
+        days = remaining.days
+        await message.reply_text(
+            f"⚠️ User is already bonked!\n"
+            f"🕐 Remaining: {days} days"
+        )
+        return
+    
+    ban_date = datetime.now()
+    unban_date = ban_date + timedelta(weeks=2)
+    
+    await banned_users_collection.insert_one({
+        'user_id': target_id,
+        'banned_by': sender_id,
+        'ban_date': ban_date,
+        'unban_date': unban_date,
+        'reason': 'Spamming'
+    })
+    
+    target_name = target_user.first_name if target_user else str(target_id)
+    
+    await message.reply_text(
+        f"🔨 **BONK!**\n\n"
+        f"👤 **User:** {target_name} (`{target_id}`)\n"
+        f"⏰ **Duration:** 2 weeks\n"
+        f"📅 **Unbanned on:** {unban_date.strftime('%Y-%m-%d %H:%M')}\n\n"
+        f"They won't be able to use the bot until then!",
+        parse_mode=enums.ParseMode.MARKDOWN
+    )
+
+
+@shivuu.on_message(filters.command("unbonk"))
+async def unbonk(client, message):
+    """Unban a user from using the bot (owner only)"""
+    sender_id = message.from_user.id
+    
+    if sender_id != int(OWNER_ID):
+        await message.reply_text("🚫 This command is only available to the bot owner.")
+        return
+    
+    target_user = None
+    target_id = None
+    
+    if message.reply_to_message:
+        target_user = message.reply_to_message.from_user
+        target_id = target_user.id
+    elif len(message.command) >= 2:
+        try:
+            target_id = int(message.command[1])
+        except ValueError:
+            await message.reply_text("❌ Invalid user ID!")
+            return
+    else:
+        await message.reply_text(
+            "✨ **Unbonk Command**\n\n"
+            "**Usage:**\n"
+            "• Reply to a user's message with `/unbonk`\n"
+            "• Or use `/unbonk [user_id]`\n\n"
+            "This will remove the ban and allow them to use the bot again.",
+            parse_mode=enums.ParseMode.MARKDOWN
+        )
+        return
+    
+    existing_ban = await banned_users_collection.find_one({'user_id': target_id})
+    if not existing_ban:
+        await message.reply_text("❌ This user is not bonked!")
+        return
+    
+    await banned_users_collection.delete_one({'user_id': target_id})
+    
+    target_name = target_user.first_name if target_user else str(target_id)
+    
+    await message.reply_text(
+        f"✨ **UNBONKED!**\n\n"
+        f"👤 **User:** {target_name} (`{target_id}`)\n\n"
+        f"They can now use the bot again!",
+        parse_mode=enums.ParseMode.MARKDOWN
+    )
+
+
+async def bonk_ptb(update: Update, context: CallbackContext) -> None:
+    """PTB wrapper for bonk command"""
+    sender_id = update.effective_user.id
+    
+    if sender_id != int(OWNER_ID):
+        await update.message.reply_text("🚫 This command is only available to the bot owner.")
+        return
+    
+    target_user = None
+    target_id = None
+    
+    if update.message.reply_to_message:
+        target_user = update.message.reply_to_message.from_user
+        target_id = target_user.id
+    elif context.args and len(context.args) >= 1:
+        try:
+            target_id = int(context.args[0])
+        except ValueError:
+            await update.message.reply_text("❌ Invalid user ID!")
+            return
+    else:
+        await update.message.reply_text(
+            "🔨 **Bonk Command**\n\n"
+            "**Usage:**\n"
+            "• Reply to a user's message with `/bonk`\n"
+            "• Or use `/bonk [user_id]`\n\n"
+            "This will ban the user from using the bot for 2 weeks.",
+            parse_mode='Markdown'
+        )
+        return
+    
+    if target_id == int(OWNER_ID):
+        await update.message.reply_text("❌ You can't bonk yourself!")
+        return
+    
+    existing_ban = await banned_users_collection.find_one({'user_id': target_id})
+    if existing_ban:
+        unban_date = existing_ban.get('unban_date')
+        remaining = unban_date - datetime.now()
+        days = remaining.days
+        await update.message.reply_text(
+            f"⚠️ User is already bonked!\n"
+            f"🕐 Remaining: {days} days"
+        )
+        return
+    
+    ban_date = datetime.now()
+    unban_date = ban_date + timedelta(weeks=2)
+    
+    await banned_users_collection.insert_one({
+        'user_id': target_id,
+        'banned_by': sender_id,
+        'ban_date': ban_date,
+        'unban_date': unban_date,
+        'reason': 'Spamming'
+    })
+    
+    target_name = target_user.first_name if target_user else str(target_id)
+    
+    await update.message.reply_text(
+        f"🔨 **BONK!**\n\n"
+        f"👤 **User:** {target_name} (`{target_id}`)\n"
+        f"⏰ **Duration:** 2 weeks\n"
+        f"📅 **Unbanned on:** {unban_date.strftime('%Y-%m-%d %H:%M')}\n\n"
+        f"They won't be able to use the bot until then!",
+        parse_mode='Markdown'
+    )
+
+
+async def unbonk_ptb(update: Update, context: CallbackContext) -> None:
+    """PTB wrapper for unbonk command"""
+    sender_id = update.effective_user.id
+    
+    if sender_id != int(OWNER_ID):
+        await update.message.reply_text("🚫 This command is only available to the bot owner.")
+        return
+    
+    target_user = None
+    target_id = None
+    
+    if update.message.reply_to_message:
+        target_user = update.message.reply_to_message.from_user
+        target_id = target_user.id
+    elif context.args and len(context.args) >= 1:
+        try:
+            target_id = int(context.args[0])
+        except ValueError:
+            await update.message.reply_text("❌ Invalid user ID!")
+            return
+    else:
+        await update.message.reply_text(
+            "✨ **Unbonk Command**\n\n"
+            "**Usage:**\n"
+            "• Reply to a user's message with `/unbonk`\n"
+            "• Or use `/unbonk [user_id]`\n\n"
+            "This will remove the ban and allow them to use the bot again.",
+            parse_mode='Markdown'
+        )
+        return
+    
+    existing_ban = await banned_users_collection.find_one({'user_id': target_id})
+    if not existing_ban:
+        await update.message.reply_text("❌ This user is not bonked!")
+        return
+    
+    await banned_users_collection.delete_one({'user_id': target_id})
+    
+    target_name = target_user.first_name if target_user else str(target_id)
+    
+    await update.message.reply_text(
+        f"✨ **UNBONKED!**\n\n"
+        f"👤 **User:** {target_name} (`{target_id}`)\n\n"
+        f"They can now use the bot again!",
+        parse_mode='Markdown'
+    )
+
+
+# Helper function to check if user is banned
+async def check_ban(user_id: int):
+    """Check if a user is banned and return ban info if so"""
+    ban = await banned_users_collection.find_one({'user_id': user_id})
+    if ban:
+        unban_date = ban.get('unban_date')
+        if datetime.now() >= unban_date:
+            await banned_users_collection.delete_one({'user_id': user_id})
+            return None
+        remaining = unban_date - datetime.now()
+        days = remaining.days
+        hours = remaining.seconds // 3600
+        return {'banned': True, 'days': days, 'hours': hours}
+    return None
+
+
 # Register handlers
 application.add_handler(CommandHandler("lockspawn", lockspawn_ptb, block=False))
 application.add_handler(CommandHandler("unlockspawn", unlockspawn_ptb, block=False))
 application.add_handler(CommandHandler("lockedspawns", lockedspawns_ptb, block=False))
 application.add_handler(CommandHandler("rarity", rarity_ptb, block=False))
 application.add_handler(CommandHandler("broadcast", broadcast_ptb, block=False))
+application.add_handler(CommandHandler("bonk", bonk_ptb, block=False))
+application.add_handler(CommandHandler("unbonk", unbonk_ptb, block=False))
 application.add_handler(CallbackQueryHandler(lockedspawns_callback_ptb, pattern="^lockedspawns:", block=False))
 
