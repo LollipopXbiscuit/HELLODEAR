@@ -301,20 +301,18 @@ async def rarity(client, message):
         info = rarity_info[rarity]
         message_text += f"{info['emoji']} **{rarity}:** {info['rate']} chance\n"
     
-    message_text += "\n🍥 **Rare Spawns:**\n"
-    message_text += f"{rarity_info['Retro']['emoji']} **Retro:** {rarity_info['Retro']['rate']} chance\n"
-    
-    message_text += "\n💎 **EXTREMELY Rare Spawns:**\n"
-    message_text += f"{rarity_info['Zenith']['emoji']} **Zenith:** {rarity_info['Zenith']['rate']} chance\n"
-    message_text += f"{rarity_info['Limited Edition']['emoji']} **Limited Edition:** {rarity_info['Limited Edition']['rate']} chance\n"
+    message_text += "\n🔥 **Rare Spawns:**\n"
+    for rarity in ["Retro", "Zenith", "Limited Edition"]:
+        info = rarity_info[rarity]
+        message_text += f"{info['emoji']} **{rarity}:** {info['rate']} - {info['spawns']}\n"
     
     message_text += "\n⭐ **Special Spawns:**\n"
-    message_text += f"{rarity_info['Star']['emoji']} **Star:** Exclusive to main GC (every 200 messages)\n"
+    message_text += f"{rarity_info['Star']['emoji']} **Star:** {rarity_info['Star']['spawns']}\n"
     
     message_text += (
         "\n💡 **Tips:**\n"
         "• Higher rarity = lower spawn chance\n"
-        "• Zenith & Limited Edition are EXTREMELY rare!\n"
+        "• Zenith & Limited Edition are very rare but CAN spawn!\n"
         "• Star cards only spawn in the main GC every 200 messages\n"
         "• Use `/lockspawn` to prevent specific cards from spawning (admin only)\n\n"
         "✨ Good luck collecting!"
