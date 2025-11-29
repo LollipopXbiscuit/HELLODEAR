@@ -308,7 +308,7 @@ async def summon(update: Update, context: CallbackContext) -> None:
             "Epic": 30,
             "Legendary": 10,
             "Mythic": 5,
-            "Retro": 2,
+            "Retro": 5,
             "Star": 0,
             "Zenith": 1,
             "Limited Edition": 0.25

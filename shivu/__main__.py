@@ -184,7 +184,7 @@ async def send_image(update: Update, context: CallbackContext) -> None:
         "Epic": 30,
         "Legendary": 10,
         "Mythic": 5,
-        "Retro": 2,
+        "Retro": 5,
         "Zenith": 1,
         "Limited Edition": 0.25
     }

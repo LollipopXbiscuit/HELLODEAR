@@ -278,16 +278,16 @@ async def rarity(client, message):
     """Show all rarities and their spawn rates"""
     
     rarity_info = {
-        "Common": {"emoji": "⚪️", "rate": "~36%", "spawns": "✅"},
-        "Uncommon": {"emoji": "🟢", "rate": "~29%", "spawns": "✅"}, 
-        "Rare": {"emoji": "🔵", "rate": "~18%", "spawns": "✅"},
-        "Epic": {"emoji": "🟣", "rate": "~11%", "spawns": "✅"},
-        "Legendary": {"emoji": "🟡", "rate": "~3.6%", "spawns": "✅"},
-        "Mythic": {"emoji": "🏵", "rate": "~1.8%", "spawns": "✅"},
-        "Retro": {"emoji": "🍥", "rate": "~0.7%", "spawns": "✅ Rare"},
+        "Common": {"emoji": "⚪️", "rate": "~32%", "spawns": "✅"},
+        "Uncommon": {"emoji": "🟢", "rate": "~26%", "spawns": "✅"}, 
+        "Rare": {"emoji": "🔵", "rate": "~16%", "spawns": "✅"},
+        "Epic": {"emoji": "🟣", "rate": "~10%", "spawns": "✅"},
+        "Legendary": {"emoji": "🟡", "rate": "~3.3%", "spawns": "✅"},
+        "Mythic": {"emoji": "🏵", "rate": "~1.6%", "spawns": "✅"},
+        "Retro": {"emoji": "🍥", "rate": "~1.6%", "spawns": "✅ Common"},
         "Star": {"emoji": "⭐", "rate": "Special", "spawns": "⭐ Main GC only (200 msgs)"},
-        "Zenith": {"emoji": "🪩", "rate": "~0.36%", "spawns": "✅ Very Rare"},
-        "Limited Edition": {"emoji": "🍬", "rate": "~0.09%", "spawns": "✅ Ultra Rare"}
+        "Zenith": {"emoji": "🪩", "rate": "~0.33%", "spawns": "✅ Very Rare"},
+        "Limited Edition": {"emoji": "🍬", "rate": "~0.08%", "spawns": "✅ Ultra Rare"}
     }
     
     message_text = (
@@ -1117,6 +1117,113 @@ async def check_ban(user_id: int):
     return None
 
 
+# ============== RESETM COMMAND ==============
+
+@shivuu.on_message(filters.command("resetm"))
+async def resetm(client, message):
+    """Reset a user's daily marriage limit (sudo users only)"""
+    sender_id = message.from_user.id
+    
+    if str(sender_id) not in [str(u) for u in Config.sudo_users]:
+        await message.reply_text("🚫 This command is only available to administrators.")
+        return
+    
+    target_user = None
+    target_id = None
+    
+    if message.reply_to_message:
+        target_user = message.reply_to_message.from_user
+        target_id = target_user.id
+    elif len(message.command) >= 2:
+        try:
+            target_id = int(message.command[1])
+        except ValueError:
+            await message.reply_text("❌ Invalid user ID!")
+            return
+    else:
+        await message.reply_text(
+            "💒 **Reset Marriage Limit Command**\n\n"
+            "**Usage:**\n"
+            "• Reply to a user's message with `/resetm`\n"
+            "• Or use `/resetm [user_id]`\n\n"
+            "This will reset their daily marriage limit to 0/30.",
+            parse_mode=enums.ParseMode.MARKDOWN
+        )
+        return
+    
+    user = await user_collection.find_one({'id': target_id})
+    if not user:
+        await message.reply_text(f"❌ User ID `{target_id}` not found in database!")
+        return
+    
+    await user_collection.update_one(
+        {'id': target_id},
+        {'$set': {'daily_marriages': {}}}
+    )
+    
+    target_name = target_user.first_name if target_user else str(target_id)
+    
+    await message.reply_text(
+        f"💒 **Marriage Limit Reset!**\n\n"
+        f"👤 **User:** {target_name} (`{target_id}`)\n"
+        f"📊 **Status:** Set to 0/30\n\n"
+        f"They can now marry up to 30 characters again!",
+        parse_mode=enums.ParseMode.MARKDOWN
+    )
+
+
+async def resetm_ptb(update: Update, context: CallbackContext) -> None:
+    """PTB wrapper for resetm command"""
+    sender_id = update.effective_user.id
+    
+    if str(sender_id) not in [str(u) for u in Config.sudo_users]:
+        await update.message.reply_text("🚫 This command is only available to administrators.")
+        return
+    
+    target_user = None
+    target_id = None
+    
+    if update.message.reply_to_message:
+        target_user = update.message.reply_to_message.from_user
+        target_id = target_user.id
+    elif context.args and len(context.args) >= 1:
+        try:
+            target_id = int(context.args[0])
+        except ValueError:
+            await update.message.reply_text("❌ Invalid user ID!")
+            return
+    else:
+        await update.message.reply_text(
+            "💒 **Reset Marriage Limit Command**\n\n"
+            "**Usage:**\n"
+            "• Reply to a user's message with `/resetm`\n"
+            "• Or use `/resetm [user_id]`\n\n"
+            "This will reset their daily marriage limit to 0/30.",
+            parse_mode='Markdown'
+        )
+        return
+    
+    user = await user_collection.find_one({'id': target_id})
+    if not user:
+        await update.message.reply_text(f"❌ User ID `{target_id}` not found in database!")
+        return
+    
+    await user_collection.update_one(
+        {'id': target_id},
+        {'$set': {'daily_marriages': {}}}
+    )
+    
+    target_name = target_user.first_name if target_user else str(target_id)
+    
+    await update.message.reply_text(
+        f"💒 **Marriage Limit Reset!**\n\n"
+        f"👤 **User:** {target_name} (`{target_id}`)\n"
+        f"📊 **Status:** Set to 0/30\n\n"
+        f"They can now marry up to 30 characters again!",
+        parse_mode='Markdown'
+    )
+
+
 # Register handlers
 application.add_handler(CommandHandler("lockspawn", lockspawn_ptb, block=False))
 application.add_handler(CommandHandler("unlockspawn", unlockspawn_ptb, block=False))
@@ -1125,5 +1232,6 @@ application.add_handler(CommandHandler("rarity", rarity_ptb, block=False))
 application.add_handler(CommandHandler("broadcast", broadcast_ptb, block=False))
 application.add_handler(CommandHandler("bonk", bonk_ptb, block=False))
 application.add_handler(CommandHandler("unbonk", unbonk_ptb, block=False))
+application.add_handler(CommandHandler("resetm", resetm_ptb, block=False))
 application.add_handler(CallbackQueryHandler(lockedspawns_callback_ptb, pattern="^lockedspawns:", block=False))
 
