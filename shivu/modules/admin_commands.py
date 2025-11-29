@@ -276,16 +276,16 @@ async def rarity(client, message):
     """Show all rarities and their spawn rates"""
     
     rarity_info = {
-        "Common": {"emoji": "⚪️", "rate": "20%", "spawns": "✅"},
-        "Uncommon": {"emoji": "🟢", "rate": "20%", "spawns": "✅"}, 
-        "Rare": {"emoji": "🔵", "rate": "20%", "spawns": "✅"},
-        "Epic": {"emoji": "🟣", "rate": "20%", "spawns": "✅"},
-        "Legendary": {"emoji": "🟡", "rate": "2%", "spawns": "✅"},
-        "Mythic": {"emoji": "🏵", "rate": "0.8%", "spawns": "✅"},
-        "Retro": {"emoji": "🍥", "rate": "0.3%", "spawns": "🔥 Special (2000 msgs)"},
-        "Star": {"emoji": "⭐", "rate": "0%", "spawns": "⭐ Main GC only (200 msgs)"},
-        "Zenith": {"emoji": "🪩", "rate": "0%", "spawns": "❌ Never spawns"},
-        "Limited Edition": {"emoji": "🍬", "rate": "0%", "spawns": "❌ Never spawns"}
+        "Common": {"emoji": "⚪️", "rate": "~36%", "spawns": "✅"},
+        "Uncommon": {"emoji": "🟢", "rate": "~29%", "spawns": "✅"}, 
+        "Rare": {"emoji": "🔵", "rate": "~18%", "spawns": "✅"},
+        "Epic": {"emoji": "🟣", "rate": "~11%", "spawns": "✅"},
+        "Legendary": {"emoji": "🟡", "rate": "~3.6%", "spawns": "✅"},
+        "Mythic": {"emoji": "🏵", "rate": "~1.8%", "spawns": "✅"},
+        "Retro": {"emoji": "🍥", "rate": "Special", "spawns": "🔥 Special (2000 msgs)"},
+        "Star": {"emoji": "⭐", "rate": "Special", "spawns": "⭐ Main GC only (200 msgs)"},
+        "Zenith": {"emoji": "🪩", "rate": "~0.4%", "spawns": "✅ Ultra Rare"},
+        "Limited Edition": {"emoji": "🍬", "rate": "~0.2%", "spawns": "✅ Super Rare"}
     }
     
     message_text = (
@@ -299,19 +299,18 @@ async def rarity(client, message):
         info = rarity_info[rarity]
         message_text += f"{info['emoji']} **{rarity}:** {info['rate']} chance\n"
     
-    message_text += "\n🔥 **Special Spawns:**\n"
-    message_text += f"{rarity_info['Retro']['emoji']} **Retro:** {rarity_info['Retro']['rate']} chance (every 2000 messages)\n"
-    message_text += f"{rarity_info['Star']['emoji']} **Star:** Exclusive to main GC (every 200 messages)\n"
+    message_text += "\n💎 **Ultra Rare Spawns (every 100 messages):**\n"
+    message_text += f"{rarity_info['Zenith']['emoji']} **Zenith:** {rarity_info['Zenith']['rate']} chance\n"
+    message_text += f"{rarity_info['Limited Edition']['emoji']} **Limited Edition:** {rarity_info['Limited Edition']['rate']} chance\n"
     
-    message_text += "\n❌ **Non-Spawning Rarities:**\n"
-    for rarity in ["Zenith", "Limited Edition"]:
-        info = rarity_info[rarity]
-        message_text += f"{info['emoji']} **{rarity}:** {info['spawns']}\n"
+    message_text += "\n🔥 **Special Spawns:**\n"
+    message_text += f"{rarity_info['Retro']['emoji']} **Retro:** Exclusive (every 2000 messages)\n"
+    message_text += f"{rarity_info['Star']['emoji']} **Star:** Exclusive to main GC (every 200 messages)\n"
     
     message_text += (
         "\n💡 **Tips:**\n"
         "• Higher rarity = lower spawn chance\n"
-        "• Zenith & Limited Edition cards are exclusive\n"
+        "• Zenith & Limited Edition are ultra rare but can spawn!\n"
         "• Retro cards only spawn every 2000 messages\n"
         "• Star cards only spawn in the main GC every 200 messages\n"
         "• Use `/lockspawn` to prevent specific cards from spawning (admin only)\n\n"

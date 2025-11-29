@@ -172,33 +172,77 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     # Get locked character IDs
     locked_character_ids = [doc['character_id'] for doc in await locked_spawns_collection.find().to_list(length=None)]
     
-    # Only get spawnable characters (exclude Limited Edition, Zenith, Retro, Star, and locked characters)
+    # Get spawnable characters (exclude Retro and Star as they have their own spawn functions)
     filter_criteria = {
-        'rarity': {'$nin': ['Limited Edition', 'Zenith', 'Retro', 'Star']},
+        'rarity': {'$nin': ['Retro', 'Star']},
         'id': {'$nin': locked_character_ids}
     }
     all_characters = list(await collection.find(filter_criteria).to_list(length=None))
     
     # Check if there are any spawnable characters
     if not all_characters:
-        LOGGER.warning("No spawnable characters available - all are Limited Edition or Zenith")
+        LOGGER.warning("No spawnable characters available")
         return
     
+    # Define rarity weights for weighted random selection
+    # Higher weight = more likely to spawn
+    rarity_weights = {
+        "Common": 100,
+        "Uncommon": 80,
+        "Rare": 50,
+        "Epic": 30,
+        "Legendary": 10,
+        "Mythic": 5,
+        "Zenith": 1,
+        "Limited Edition": 0.5
+    }
+    
+    # Group characters by rarity
+    characters_by_rarity = {}
+    for char in all_characters:
+        rarity = char.get('rarity', 'Common')
+        if rarity not in characters_by_rarity:
+            characters_by_rarity[rarity] = []
+        characters_by_rarity[rarity].append(char)
+    
+    # Filter out rarities with no characters or zero weight
+    available_rarities = []
+    available_weights = []
+    for rarity, chars in characters_by_rarity.items():
+        weight = rarity_weights.get(rarity, 0)
+        if chars and weight > 0:
+            available_rarities.append(rarity)
+            available_weights.append(weight)
+    
+    if not available_rarities:
+        LOGGER.warning("No spawnable rarities available with valid weights")
+        return
+    
+    # Use weighted random selection to choose a rarity first
+    selected_rarity = random.choices(available_rarities, weights=available_weights, k=1)[0]
+    
+    # Get characters of the selected rarity
+    rarity_characters = characters_by_rarity[selected_rarity]
+    
+    # Track sent characters to avoid immediate repeats
     if chat_id not in sent_characters:
         sent_characters[chat_id] = []
 
-    if len(sent_characters[chat_id]) == len(all_characters):
-        sent_characters[chat_id] = []
-
-    available_characters = [c for c in all_characters if c['id'] not in sent_characters[chat_id]]
-    if not available_characters:
-        # This shouldn't happen due to the reset above, but just in case
-        available_characters = all_characters
-        sent_characters[chat_id] = []
+    # Filter out recently sent characters from this rarity
+    available_characters = [c for c in rarity_characters if c['id'] not in sent_characters[chat_id]]
     
+    if not available_characters:
+        # If all characters of this rarity have been sent, reset and use all
+        available_characters = rarity_characters
+    
+    # Randomly select a character from the chosen rarity
     character = random.choice(available_characters)
-
+    
+    # Keep track of sent characters (limit to last 50 to prevent memory issues)
     sent_characters[chat_id].append(character['id'])
+    if len(sent_characters[chat_id]) > 50:
+        sent_characters[chat_id] = sent_characters[chat_id][-50:]
+
     last_characters[chat_id] = character
 
     if chat_id in first_correct_guesses:
