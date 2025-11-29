@@ -390,8 +390,7 @@ async def guess(update: Update, context: CallbackContext) -> None:
             hours = remaining.seconds // 3600
             time_str = f"{days} days" if days > 0 else f"{hours} hours"
             await update.message.reply_text(
-                f"🔨 You've been bonked for spamming too much.. please wait for **{time_str}**",
-                parse_mode='Markdown'
+                f"🔨 You've been bonked for spamming too much.. please wait for {time_str}"
             )
             return
     
