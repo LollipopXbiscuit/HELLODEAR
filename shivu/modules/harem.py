@@ -12,6 +12,7 @@ from pyrogram.types import InlineKeyboardButton as PyroInlineKeyboardButton, Inl
 from pyrogram.errors import UserNotParticipant, ChatAdminRequired, PeerIdInvalid
 
 from shivu import collection, user_collection, application, SUPPORT_CHAT, CHARA_CHANNEL_ID, shivuu, sudo_users
+from shivu.config import Config
 
 def is_video_url(url):
     """Check if a URL points to a video file"""
@@ -203,21 +204,40 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
     if not update.effective_user:
         return
         
-    user_id = update.effective_user.id
+    requester_id = update.effective_user.id
+    user_id = requester_id
+    is_sudo_viewing_other = False
+    
+    # Check if sudo user is viewing another user's harem
+    if context.args and len(context.args) >= 1:
+        if str(requester_id) in [str(u) for u in Config.sudo_users]:
+            try:
+                target_id = int(context.args[0])
+                user_id = target_id
+                is_sudo_viewing_other = True
+            except ValueError:
+                if update.message:
+                    await update.message.reply_text("❌ Invalid user ID!")
+                return
+        else:
+            if update.message:
+                await update.message.reply_text("🚫 Only admins can view other people's harems!")
+            return
 
-    # Check if user is a member of the main group
-    if not await check_group_membership(user_id):
-        message_text = (
-            "🚫 <b>Access Restricted</b>\n\n"
-            f"To use the /harem command, you must join our main group:\n"
-            f"👥 {MAIN_GROUP}\n\n"
-            f"Once you've joined, you'll be able to access your harem!"
-        )
-        if update.message:
-            await update.message.reply_text(message_text, parse_mode='HTML')
-        elif update.callback_query:
-            await update.callback_query.edit_message_text(message_text, parse_mode='HTML')
-        return
+    # Check if user is a member of the main group (only for non-sudo viewing others)
+    if not is_sudo_viewing_other:
+        if not await check_group_membership(requester_id):
+            message_text = (
+                "🚫 <b>Access Restricted</b>\n\n"
+                f"To use the /harem command, you must join our main group:\n"
+                f"👥 {MAIN_GROUP}\n\n"
+                f"Once you've joined, you'll be able to access your harem!"
+            )
+            if update.message:
+                await update.message.reply_text(message_text, parse_mode='HTML')
+            elif update.callback_query:
+                await update.callback_query.edit_message_text(message_text, parse_mode='HTML')
+            return
 
     user = await user_collection.find_one({'id': user_id})
     if not user:
