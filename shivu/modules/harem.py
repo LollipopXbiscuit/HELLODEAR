@@ -551,11 +551,16 @@ async def harem_callback(update: Update, context: CallbackContext) -> None:
     except ValueError:
         return
 
-    if query.from_user and query.from_user.id != user_id:
-        await query.answer("its Not Your Harem", show_alert=True)
-        return
+    # Check if the user is allowed to navigate this harem
+    if query.from_user:
+        viewer_id = query.from_user.id
+        is_owner = viewer_id == user_id
+        is_sudo = str(viewer_id) in [str(u) for u in Config.sudo_users]
+        
+        if not is_owner and not is_sudo:
+            await query.answer("This is not your harem!", show_alert=True)
+            return
 
-    
     await harem(update, context, page)
 
 

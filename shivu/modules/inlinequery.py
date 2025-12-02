@@ -64,11 +64,12 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
     # Debug logging to help troubleshoot
     LOGGER.info(f"Inline query received: '{query}', offset: {offset}")
 
+    # Initialize user variable to avoid unbound errors
+    user = None
+    all_characters = []
+
     if query.startswith('collection.'):
         # Handle user collection queries
-        user = None  # Initialize to prevent NameError
-        all_characters = []
-        
         try:
             # Parse the query: "collection.user_id optional_search_terms"
             parts = query.split(' ', 1)  # Split into max 2 parts
@@ -96,10 +97,14 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                         
                         # Apply search filter if provided
                         if search_terms.strip():
-                            regex = re.compile(search_terms.strip(), re.IGNORECASE)
-                            all_characters = [character for character in all_characters 
-                                           if regex.search(character.get('name', '')) or 
-                                              regex.search(character.get('anime', ''))]
+                            try:
+                                escaped_search = re.escape(search_terms.strip())
+                                regex = re.compile(escaped_search, re.IGNORECASE)
+                                all_characters = [character for character in all_characters 
+                                               if regex.search(character.get('name', '')) or 
+                                                  regex.search(character.get('anime', ''))]
+                            except re.error as e:
+                                LOGGER.error(f"Regex error for search terms '{search_terms}': {str(e)}")
                         
                         LOGGER.info(f"Found {len(all_characters)} characters for user {user_id}")
                     else:
@@ -118,8 +123,14 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
         # Handle general character search
         if query:
             # Search for specific characters by name or anime
-            regex = re.compile(query, re.IGNORECASE)
-            all_characters = list(await collection.find({"$or": [{"name": regex}, {"anime": regex}]}).to_list(length=None))
+            # Escape special regex characters to prevent errors with user input
+            try:
+                escaped_query = re.escape(query)
+                regex = re.compile(escaped_query, re.IGNORECASE)
+                all_characters = list(await collection.find({"$or": [{"name": regex}, {"anime": regex}]}).to_list(length=None))
+            except re.error as e:
+                LOGGER.error(f"Regex error for query '{query}': {str(e)}")
+                all_characters = []
         else:
             # Empty query - show popular/random characters like Yandex image search
             if 'all_characters' in all_characters_cache:
