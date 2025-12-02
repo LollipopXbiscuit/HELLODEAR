@@ -4,6 +4,18 @@ This is a Telegram character catcher bot called "Waifu & Husbando Catcher" that 
 
 # Recent Changes
 
+## December 2, 2025
+- **Inline Query Search Fix**: Fixed bug where searching characters with special characters (like `(`, `)`, `[`, `]`, `*`, etc.) would crash the inline query
+  - Added proper regex escaping using `re.escape()` for user search input
+  - Search queries now work correctly with any characters the user types
+  - Applied fix to both general character search and collection search filters
+- **Inline Query Variable Fix**: Fixed potential unbound variable error in inline query handler
+  - Moved `user` and `all_characters` initialization to beginning of function
+  - Prevents errors when processing non-collection queries
+- **Harem Navigation Fix**: Fixed bug where sudo users couldn't navigate through other users' harem pages
+  - Sudo users viewing another user's harem can now use the navigation buttons
+  - Non-sudo users still cannot access others' harems (security preserved)
+
 ## November 29, 2025
 - **Spawn System Overhaul**: Fixed weighted random selection to properly respect rarity spawn rates
   - Previously: System used `random.choice` which gave equal chance to all characters regardless of rarity
