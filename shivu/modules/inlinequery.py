@@ -153,52 +153,13 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
             # Get rarity emoji for consistent display
             rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
             
-            # Get enhanced statistics
-            global_count = await user_collection.count_documents({'characters.id': character['id']})
-            
-            # Optimized display with proper rarity emojis and enhanced styling
-            if query.startswith('collection.') and user:
-                # For user collections, show detailed stats with owner info
-                anime_characters = await collection.count_documents({'anime': character['anime']})
-                user_character_count = sum(c['id'] == character['id'] for c in user['characters'])
-                user_anime_characters = sum(c['anime'] == character['anime'] for c in user['characters'])
-                
-                # Get top 5 users who have this character
-                top_users = await user_collection.find(
-                    {'characters.id': character['id']}, 
-                    {'first_name': 1, 'characters': 1}
-                ).limit(5).to_list(length=5)
-                user_list = ", ".join([f"{user.get('first_name', 'User')} (x{sum(1 for c in user.get('characters', []) if c['id'] == character['id'])})" for user in top_users])
-                
-                caption = (
-                    f"OwO! Check out this waifu!\n\n"
-                    f"{character['anime']}\n"
-                    f"{character['id']}: {character['name']} \n"
-                    f"({rarity_emoji}𝙍𝘼𝙍𝙄𝙏𝙔:  {character.get('rarity', 'Unknown').lower()})"
-                )
-            elif query:
-                # For search queries, show detailed global stats
-                # Get top 3 users who have this character for display
-                top_users = await user_collection.find(
-                    {'characters.id': character['id']}, 
-                    {'first_name': 1, 'characters': 1}
-                ).limit(3).to_list(length=3)
-                user_list = ", ".join([f"{user.get('first_name', 'User')} (x{sum(1 for c in user.get('characters', []) if c['id'] == character['id'])})" for user in top_users])
-                
-                caption = (
-                    f"OwO! Check out this waifu!\n\n"
-                    f"{character['anime']}\n"
-                    f"{character['id']}: {character['name']} \n"
-                    f"({rarity_emoji}𝙍𝘼𝙍𝙄𝙏𝙔:  {character.get('rarity', 'Unknown').lower()})"
-                )
-            else:
-                # For empty query, show simplified but styled info
-                caption = (
-                    f"OwO! Check out this waifu!\n\n"
-                    f"{character['anime']}\n"
-                    f"{character['id']}: {character['name']} \n"
-                    f"({rarity_emoji}𝙍𝘼𝙍𝙄𝙏𝙔:  {character.get('rarity', 'Unknown').lower()})"
-                )
+            # Simple caption without slow database queries
+            caption = (
+                f"OwO! Check out this waifu!\n\n"
+                f"{character['anime']}\n"
+                f"{character['id']}: {character['name']} \n"
+                f"({rarity_emoji}𝙍𝘼𝙍𝙄𝙏𝙔:  {character.get('rarity', 'Unknown').lower()})"
+            )
             
             # Process image URL for compatibility (handles JFIF and other formats)
             from shivu import process_image_url
