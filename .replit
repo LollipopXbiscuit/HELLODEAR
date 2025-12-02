@@ -32,3 +32,7 @@ args = "python -m shivu"
 [deployment]
 deploymentTarget = "vm"
 run = ["python3", "-m", "shivu"]
+
+[[ports]]
+localPort = 10000
+externalPort = 80

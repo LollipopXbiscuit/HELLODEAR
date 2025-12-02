@@ -637,7 +637,7 @@ async def run_web_server():
     LOGGER.info(f"Web server started on 0.0.0.0:{port}")
 
 async def run_bot():
-    """Run the Telegram bot with webhooks"""
+    """Run the Telegram bot with webhooks or polling"""
     application.add_handler(CommandHandler(["marry"], guess, block=False))
     application.add_handler(MessageHandler(filters.ALL, message_counter, block=False))
     application.post_init = post_init
@@ -649,10 +649,12 @@ async def run_bot():
     if webhook_url:
         await application.bot.set_webhook(url=f"{webhook_url}/webhook")
         LOGGER.info(f"Webhook set to {webhook_url}/webhook")
+        await asyncio.Event().wait()
     else:
-        LOGGER.warning("WEBHOOK_URL not set, webhook not configured")
-    
-    await asyncio.Event().wait()
+        LOGGER.info("Using polling mode (no WEBHOOK_URL set)")
+        await application.bot.delete_webhook()
+        await application.updater.start_polling(drop_pending_updates=True)
+        await asyncio.Event().wait()
 
 async def main_async():
     """Run both web server and bot"""
