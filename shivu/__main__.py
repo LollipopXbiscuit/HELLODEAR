@@ -658,13 +658,15 @@ async def run_bot():
 
 async def main_async():
     """Run both web server and bot"""
+    # Start web server FIRST for health checks (Render needs this quickly)
+    await run_web_server()
+    LOGGER.info("Web server started - ready for health checks")
+    
+    # Now start the Pyrogram client and bot
     await shivuu.start()
     LOGGER.info("Pyrogram client started")
     
-    await asyncio.gather(
-        run_web_server(),
-        run_bot()
-    )
+    await run_bot()
 
 def main() -> None:
     """Run bot."""
