@@ -619,7 +619,7 @@ async def update(update: Update, context: CallbackContext) -> None:
 
         # Update user collections when character properties change
         from shivu import user_collection
-        if args[1] in ['name', 'anime', 'rarity']:
+        if args[1] in ['name', 'anime', 'rarity', 'img_url']:
             await user_collection.update_many(
                 {'characters.id': args[0]},
                 {'$set': {f'characters.$[elem].{args[1]}': new_value}},

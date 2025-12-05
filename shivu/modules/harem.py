@@ -437,12 +437,68 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                         if update.callback_query:
                             await update.callback_query.answer("Failed to update media")
         else:
-            if update.message:
-                await update.message.reply_text(harem_message, parse_mode='HTML', reply_markup=reply_markup)
+            # Favorite not found or has no img_url - fall back to random character
+            if user['characters']:
+                random_character = random.choice(user['characters'])
+                if 'img_url' in random_character:
+                    if update.message:
+                        try:
+                            from shivu import process_image_url, LOGGER
+                            processed_url = await process_image_url(random_character['img_url'])
+                            
+                            if is_video_character(random_character):
+                                try:
+                                    await update.message.reply_video(video=processed_url, parse_mode='HTML', caption=harem_message, reply_markup=reply_markup)
+                                except Exception:
+                                    try:
+                                        await update.message.reply_photo(photo=processed_url, parse_mode='HTML', caption=harem_message, reply_markup=reply_markup)
+                                    except Exception:
+                                        await update.message.reply_text(harem_message, parse_mode='HTML', reply_markup=reply_markup)
+                            else:
+                                await update.message.reply_photo(photo=processed_url, parse_mode='HTML', caption=harem_message, reply_markup=reply_markup)
+                        except Exception:
+                            await update.message.reply_text(harem_message, parse_mode='HTML', reply_markup=reply_markup)
+                    else:
+                        try:
+                            from shivu import process_image_url, LOGGER
+                            from telegram import InputMediaPhoto, InputMediaVideo
+                            processed_url = await process_image_url(random_character['img_url'])
+                            
+                            if is_video_character(random_character):
+                                try:
+                                    media = InputMediaVideo(media=processed_url, caption=harem_message, parse_mode='HTML')
+                                    await update.callback_query.edit_message_media(media=media, reply_markup=reply_markup)
+                                    await update.callback_query.answer()
+                                except Exception:
+                                    try:
+                                        media = InputMediaPhoto(media=processed_url, caption=harem_message, parse_mode='HTML')
+                                        await update.callback_query.edit_message_media(media=media, reply_markup=reply_markup)
+                                        await update.callback_query.answer()
+                                    except Exception:
+                                        if update.callback_query and update.callback_query.message:
+                                            await update.callback_query.edit_message_caption(caption=harem_message, reply_markup=reply_markup, parse_mode='HTML')
+                                        await update.callback_query.answer()
+                            else:
+                                media = InputMediaPhoto(media=processed_url, caption=harem_message, parse_mode='HTML')
+                                await update.callback_query.edit_message_media(media=media, reply_markup=reply_markup)
+                                await update.callback_query.answer()
+                        except Exception:
+                            if update.callback_query and update.callback_query.message:
+                                await update.callback_query.edit_message_caption(caption=harem_message, reply_markup=reply_markup, parse_mode='HTML')
+                            if update.callback_query:
+                                await update.callback_query.answer()
+                else:
+                    if update.message:
+                        await update.message.reply_text(harem_message, parse_mode='HTML', reply_markup=reply_markup)
+                    else:
+                        if update.callback_query and update.callback_query.message and update.callback_query.message.text != harem_message:
+                            await update.callback_query.edit_message_text(harem_message, parse_mode='HTML', reply_markup=reply_markup)
             else:
-                
-                if update.callback_query and update.callback_query.message and update.callback_query.message.text != harem_message:
-                    await update.callback_query.edit_message_text(harem_message, parse_mode='HTML', reply_markup=reply_markup)
+                if update.message:
+                    await update.message.reply_text(harem_message, parse_mode='HTML', reply_markup=reply_markup)
+                else:
+                    if update.callback_query and update.callback_query.message and update.callback_query.message.text != harem_message:
+                        await update.callback_query.edit_message_text(harem_message, parse_mode='HTML', reply_markup=reply_markup)
     else:
         
         if user['characters']:
