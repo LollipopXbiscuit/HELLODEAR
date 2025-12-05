@@ -4,6 +4,16 @@ This is a Telegram character catcher bot called "Waifu & Husbando Catcher" that 
 
 # Recent Changes
 
+## December 5, 2025
+- **Image URL Update Sync Fix**: Fixed bug where updating a character's image URL with `/update` command didn't reflect in `/fav` or harem showcase
+  - Previously: Only `name`, `anime`, and `rarity` updates were synced to user collections
+  - Now: `img_url` updates are also synced to all user collections who own that character
+  - Users will immediately see the new image after an admin updates it
+- **Harem Random Waifu Fallback Fix**: Fixed bug where harem showcase wouldn't show any image when favorite character is missing or has no image
+  - Previously: If user had a favorite set but that character was missing from collection or had no img_url, only text was shown
+  - Now: Falls back to displaying a random character's image from the user's collection
+  - Handles both regular messages and callback query navigation cases
+
 ## December 2, 2025
 - **Inline Query Search Fix**: Fixed bug where searching characters with special characters (like `(`, `)`, `[`, `]`, `*`, etc.) would crash the inline query
   - Added proper regex escaping using `re.escape()` for user search input
