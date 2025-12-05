@@ -617,14 +617,14 @@ async def update(update: Update, context: CallbackContext) -> None:
 
         await collection.find_one_and_update({'id': args[0]}, {'$set': {args[1]: new_value}})
 
-        # Update user collections when character properties change
+        # Update user collections when character properties change (including img_url)
         from shivu import user_collection
-        if args[1] in ['name', 'anime', 'rarity', 'img_url']:
-            await user_collection.update_many(
-                {'characters.id': args[0]},
-                {'$set': {f'characters.$[elem].{args[1]}': new_value}},
-                array_filters=[{'elem.id': args[0]}]
-            )
+        user_update_result = await user_collection.update_many(
+            {'characters.id': args[0]},
+            {'$set': {f'characters.$[elem].{args[1]}': new_value}},
+            array_filters=[{'elem.id': args[0]}]
+        )
+        users_updated = user_update_result.modified_count
 
         if args[1] == 'img_url':
             await context.bot.delete_message(chat_id=CHARA_CHANNEL_ID, message_id=character['message_id'])
@@ -669,7 +669,7 @@ async def update(update: Update, context: CallbackContext) -> None:
                 parse_mode='HTML'
             )
 
-        await update.message.reply_text('Updated Done in Database.... But sometimes it Takes Time to edit Caption in Your Channel..So wait..')
+        await update.message.reply_text(f'✅ Updated Done in Database!\n\n📊 {users_updated} user collection(s) synced.\n\nNote: Channel caption may take a moment to update.')
     except Exception as e:
         await update.message.reply_text(f'I guess did not added bot in channel.. or character uploaded Long time ago.. Or character not exits.. orr Wrong id')
 
