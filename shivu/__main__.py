@@ -22,6 +22,7 @@ first_correct_guesses = {}
 message_counts = {}
 retro_message_counts = {}  # Track messages for Retro spawns (every 4k messages)
 star_message_counts = {}  # Track messages for Star spawns (every 200 messages)
+zenith_event_message_counts = {}  # Track messages for Zenith spawns during Christmas event (every 3015 messages)
 manually_summoned = {}  # Track manually summoned characters to allow multiple marriages
 
 # Spam detection system
@@ -156,6 +157,18 @@ async def message_counter(update: Update, context: CallbackContext) -> None:
             if star_message_counts[chat_id] % 200 == 0:
                 await send_star_character(update, context)
                 star_message_counts[chat_id] = 0
+        
+        # Check for Zenith spawn during Christmas event (every 3015 messages)
+        active_event = await event_settings_collection.find_one({'active': True})
+        if active_event and active_event.get('event_type') == 'christmas':
+            if chat_id in zenith_event_message_counts:
+                zenith_event_message_counts[chat_id] += 1
+            else:
+                zenith_event_message_counts[chat_id] = 1
+            
+            if zenith_event_message_counts[chat_id] % 3015 == 0:
+                await send_zenith_event_character(update, context)
+                zenith_event_message_counts[chat_id] = 0
             
 async def send_image(update: Update, context: CallbackContext) -> None:
     chat_id = update.effective_chat.id
@@ -403,6 +416,89 @@ async def send_star_character(update: Update, context: CallbackContext) -> None:
         await context.bot.send_message(
             chat_id=chat_id,
             text=f"⭐ A shining STAR beauty has appeared! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
+            parse_mode='Markdown')
+
+
+async def send_zenith_event_character(update: Update, context: CallbackContext) -> None:
+    """Send a Zenith character with 🎄 every 3015 messages during Christmas event"""
+    chat_id = update.effective_chat.id
+    
+    # Get Zenith characters with 🎄 in name for Christmas event
+    zenith_filter = {
+        'rarity': 'Zenith',
+        'name': {'$regex': '🎄'}
+    }
+    
+    zenith_characters = list(await collection.find(zenith_filter).to_list(length=None))
+    
+    if not zenith_characters:
+        LOGGER.warning("No Zenith Christmas characters available to spawn")
+        return
+    
+    # Filter out locked characters
+    locked_character_ids = await locked_spawns_collection.distinct('character_id')
+    zenith_characters = [char for char in zenith_characters if char['id'] not in locked_character_ids]
+    
+    if not zenith_characters:
+        LOGGER.info("No unlocked Zenith Christmas characters available to spawn")
+        return
+    
+    # Track sent Zenith event characters separately to avoid repeats
+    zenith_sent_key = f"{chat_id}_zenith_event"
+    
+    if zenith_sent_key not in sent_characters:
+        sent_characters[zenith_sent_key] = []
+
+    if len(sent_characters[zenith_sent_key]) == len(zenith_characters):
+        sent_characters[zenith_sent_key] = []
+
+    available_zenith = [c for c in zenith_characters if c['id'] not in sent_characters[zenith_sent_key]]
+    if not available_zenith:
+        available_zenith = zenith_characters
+        sent_characters[zenith_sent_key] = []
+    
+    character = random.choice(available_zenith)
+    sent_characters[zenith_sent_key].append(character['id'])
+    last_characters[chat_id] = character
+
+    if chat_id in first_correct_guesses:
+        del first_correct_guesses[chat_id]
+    
+    # Clear manually summoned flag for automatic spawns
+    if chat_id in manually_summoned:
+        del manually_summoned[chat_id]
+
+    try:
+        from shivu import process_image_url
+        processed_url = await process_image_url(character['img_url'])
+        
+        caption_text = f"🪩🎄 A rare ZENITH Christmas beauty has appeared! Use /marry to add them to your harem!"
+        
+        if is_video_character(character):
+            try:
+                await context.bot.send_video(
+                    chat_id=chat_id,
+                    video=processed_url,
+                    caption=caption_text,
+                    parse_mode='Markdown')
+            except Exception as video_error:
+                LOGGER.warning(f"Failed to send zenith video, trying as photo: {str(video_error)}")
+                await context.bot.send_photo(
+                    chat_id=chat_id,
+                    photo=processed_url,
+                    caption=f"🎬 {caption_text}",
+                    parse_mode='Markdown')
+        else:
+            await context.bot.send_photo(
+                chat_id=chat_id,
+                photo=processed_url,
+                caption=caption_text,
+                parse_mode='Markdown')
+    except Exception as e:
+        LOGGER.error(f"Error sending zenith event character image: {str(e)}")
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text=f"🪩🎄 A rare ZENITH Christmas beauty has appeared! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
             parse_mode='Markdown')
 
 
