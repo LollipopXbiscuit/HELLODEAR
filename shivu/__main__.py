@@ -10,7 +10,7 @@ from telegram.ext import CommandHandler, CallbackContext, MessageHandler, filter
 from html import escape
 
 from shivu import collection, top_global_groups_collection, group_user_totals_collection, user_collection, user_totals_collection, locked_spawns_collection, shivuu, banned_users_collection, event_settings_collection
-from shivu import application, SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER
+from shivu import application, SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER, OWNER_ID, sudo_users
 from datetime import datetime
 from shivu.modules import ALL_MODULES
 
@@ -105,8 +105,11 @@ async def message_counter(update: Update, context: CallbackContext) -> None:
     if user_id is None:
         return
     
-    # Check for spam and block user if necessary
-    if detect_spam(user_id):
+    # Skip spam detection for owner and sudo users
+    is_privileged = str(user_id) == str(OWNER_ID) or str(user_id) in sudo_users
+    
+    # Check for spam and block user if necessary (skip for privileged users)
+    if not is_privileged and detect_spam(user_id):
         await update.message.reply_text(
             "⚠️ **Spam Detected!** ⚠️\n\n"
             "You've been temporarily blocked for sending too many messages quickly.\n"
@@ -119,8 +122,8 @@ async def message_counter(update: Update, context: CallbackContext) -> None:
         )
         return
     
-    # Skip message counting if user is blocked
-    if is_user_blocked(user_id):
+    # Skip message counting if user is blocked (skip check for privileged users)
+    if not is_privileged and is_user_blocked(user_id):
         return
 
     if chat_id not in locks:
