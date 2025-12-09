@@ -292,8 +292,18 @@ async def summon(update: Update, context: CallbackContext) -> None:
         return
         
     try:
+        from shivu import event_settings_collection
+        
+        # Check for active event
+        active_event = await event_settings_collection.find_one({'active': True})
+        
+        # Build filter criteria based on event
+        filter_criteria = {}
+        if active_event and active_event.get('event_type') == 'christmas':
+            filter_criteria['name'] = {'$regex': '🎄'}
+        
         # Get total character count
-        total_characters = await collection.count_documents({})
+        total_characters = await collection.count_documents(filter_criteria)
         
         if total_characters == 0:
             await update.message.reply_text('📭 No characters in database to summon!\n\nUpload some characters first using /upload')
@@ -314,8 +324,11 @@ async def summon(update: Update, context: CallbackContext) -> None:
             "Limited Edition": 0.25
         }
         
-        # Get available rarities from database (excluding Limited Edition)
-        available_rarities = await collection.distinct('rarity', {'rarity': {'$ne': 'Limited Edition'}})
+        # Get available rarities from database (excluding Limited Edition, respecting event filter)
+        event_filter = {'rarity': {'$ne': 'Limited Edition'}}
+        if active_event and active_event.get('event_type') == 'christmas':
+            event_filter['name'] = {'$regex': '🎄'}
+        available_rarities = await collection.distinct('rarity', event_filter)
         
         if not available_rarities:
             await update.message.reply_text('❌ No spawnable characters available!\n\nAll characters in the database appear to be Limited Edition or non-spawnable. Please upload some common characters using /upload.')
@@ -336,9 +349,13 @@ async def summon(update: Update, context: CallbackContext) -> None:
             k=1
         )[0]
         
-        # Get a random character from the selected rarity
+        # Get a random character from the selected rarity (respecting event filter)
+        match_criteria = {'rarity': selected_rarity}
+        if active_event and active_event.get('event_type') == 'christmas':
+            match_criteria['name'] = {'$regex': '🎄'}
+        
         random_character = await collection.aggregate([
-            {'$match': {'rarity': selected_rarity}},
+            {'$match': match_criteria},
             {'$sample': {'size': 1}}
         ]).to_list(length=1)
         

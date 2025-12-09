@@ -9,7 +9,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CommandHandler, CallbackContext, MessageHandler, filters
 from html import escape
 
-from shivu import collection, top_global_groups_collection, group_user_totals_collection, user_collection, user_totals_collection, locked_spawns_collection, shivuu, banned_users_collection
+from shivu import collection, top_global_groups_collection, group_user_totals_collection, user_collection, user_totals_collection, locked_spawns_collection, shivuu, banned_users_collection, event_settings_collection
 from shivu import application, SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER
 from datetime import datetime
 from shivu.modules import ALL_MODULES
@@ -163,11 +163,19 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     # Get locked character IDs
     locked_character_ids = [doc['character_id'] for doc in await locked_spawns_collection.find().to_list(length=None)]
     
+    # Check for active event
+    active_event = await event_settings_collection.find_one({'active': True})
+    
     # Get spawnable characters (exclude Star as it has its own spawn function in main GC)
     filter_criteria = {
         'rarity': {'$nin': ['Star']},
         'id': {'$nin': locked_character_ids}
     }
+    
+    # If Christmas event is active, only spawn characters with 🎄 in name
+    if active_event and active_event.get('event_type') == 'christmas':
+        filter_criteria['name'] = {'$regex': '🎄'}
+    
     all_characters = list(await collection.find(filter_criteria).to_list(length=None))
     
     # Check if there are any spawnable characters
@@ -314,13 +322,21 @@ async def send_star_character(update: Update, context: CallbackContext) -> None:
     """Send a Star character every 200 messages in the main GC"""
     chat_id = update.effective_chat.id
     
-    # Get only Star characters
-    star_characters = list(await collection.find({
-        'rarity': 'Star'
-    }).to_list(length=None))
+    # Check for active event
+    active_event = await event_settings_collection.find_one({'active': True})
+    
+    # Build filter criteria for Star characters
+    star_filter = {'rarity': 'Star'}
+    
+    # If Christmas event is active, only spawn Star characters with 🎄 in name
+    if active_event and active_event.get('event_type') == 'christmas':
+        star_filter['name'] = {'$regex': '🎄'}
+    
+    # Get Star characters (respecting event filter)
+    star_characters = list(await collection.find(star_filter).to_list(length=None))
     
     if not star_characters:
-        LOGGER.warning("No Star characters available to spawn")
+        LOGGER.warning("No Star characters available to spawn (event filter may be active)")
         return
     
     # Filter out locked characters
