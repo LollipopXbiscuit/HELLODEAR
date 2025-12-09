@@ -4,6 +4,21 @@ This is a Telegram character catcher bot called "Waifu & Husbando Catcher" that 
 
 # Recent Changes
 
+## December 9, 2025
+- **Christmas Event System**: Added comprehensive event system for seasonal character spawning
+  - `/startevent` - Sudo-only command to start Christmas event where only 🎄 characters spawn
+  - `/endevent` - Sudo-only command to end the event and return to normal spawns
+  - `/eventstatus` - Public command to check if an event is active
+  - All spawn paths (regular, Star, and /summon) respect the event filter
+  - Event state persisted in MongoDB across bot restarts
+  - Safety check prevents starting event when no matching characters exist
+- **Database**: Added `event_settings_collection` for event state persistence
+- **/update Command Fix**: Fixed critical bug where updating a character's image didn't sync to user collections
+  - Now properly updates img_url in all user collections when a character is updated
+  - Shows confirmation with count of updated user collections
+- **Harem Display Fix**: Fixed issue where harem showed text-only output when favorite character is missing
+  - Now falls back to displaying a random character from user's collection
+
 ## December 2, 2025
 - **Inline Query Search Fix**: Fixed bug where searching characters with special characters (like `(`, `)`, `[`, `]`, `*`, etc.) would crash the inline query
   - Added proper regex escaping using `re.escape()` for user search input
@@ -89,6 +104,7 @@ Preferred communication style: Simple, everyday language.
   - `group_user_totalsssssss`: Group-specific user statistics
   - `top_global_groups`: Global group leaderboards
   - `total_pm_users`: Private message users tracking
+  - `event_settings`: Stores active event state (type, active flag, start time)
 
 ## Message Processing Architecture
 - **Message Counter System**: Tracks messages per group with customizable frequency (default 100 messages)
@@ -100,7 +116,8 @@ Preferred communication style: Simple, everyday language.
 - **Modular Design**: Commands organized in separate modules for maintainability
 - **Admin Controls**: Role-based permissions using Pyrogram's chat member status
 - **User Commands**: `/guess`, `/fav`, `/trade`, `/gift`, `/collection`, `/topgroups`, `/all`
-- **Admin Commands**: `/upload`, `/changetime`, `/broadcast`
+- **Admin Commands**: `/upload`, `/changetime`, `/broadcast`, `/startevent`, `/endevent`
+- **Event Commands**: `/eventstatus` (public)
 
 ## Caching Strategy
 - **TTL Cache**: Uses cachetools for temporary data storage
