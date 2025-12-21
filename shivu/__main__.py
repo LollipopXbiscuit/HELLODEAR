@@ -161,15 +161,17 @@ async def message_counter(update: Update, context: CallbackContext) -> None:
                 await send_star_character(update, context)
                 star_message_counts[chat_id] = 0
         
-        # Check for Zenith spawn (every 3015 messages in all chats)
-        if chat_id in zenith_event_message_counts:
-            zenith_event_message_counts[chat_id] += 1
-        else:
-            zenith_event_message_counts[chat_id] = 1
-        
-        if zenith_event_message_counts[chat_id] % 3015 == 0:
-            await send_zenith_event_character(update, context)
-            zenith_event_message_counts[chat_id] = 0
+        # Check for Zenith spawn during Christmas event (every 3015 messages)
+        active_event = await event_settings_collection.find_one({'active': True})
+        if active_event and active_event.get('event_type') == 'christmas':
+            if chat_id in zenith_event_message_counts:
+                zenith_event_message_counts[chat_id] += 1
+            else:
+                zenith_event_message_counts[chat_id] = 1
+            
+            if zenith_event_message_counts[chat_id] % 3015 == 0:
+                await send_zenith_event_character(update, context)
+                zenith_event_message_counts[chat_id] = 0
             
 async def send_image(update: Update, context: CallbackContext) -> None:
     chat_id = update.effective_chat.id
@@ -421,18 +423,19 @@ async def send_star_character(update: Update, context: CallbackContext) -> None:
 
 
 async def send_zenith_event_character(update: Update, context: CallbackContext) -> None:
-    """Send a Zenith character every 3015 messages in all chats"""
+    """Send a Zenith character with 🎄 every 3015 messages during Christmas event"""
     chat_id = update.effective_chat.id
     
-    # Get Zenith characters
+    # Get Zenith characters with 🎄 in name for Christmas event
     zenith_filter = {
-        'rarity': 'Zenith'
+        'rarity': 'Zenith',
+        'name': {'$regex': '🎄'}
     }
     
     zenith_characters = list(await collection.find(zenith_filter).to_list(length=None))
     
     if not zenith_characters:
-        LOGGER.warning("No Zenith characters available to spawn")
+        LOGGER.warning("No Zenith Christmas characters available to spawn")
         return
     
     # Filter out locked characters
@@ -440,7 +443,7 @@ async def send_zenith_event_character(update: Update, context: CallbackContext) 
     zenith_characters = [char for char in zenith_characters if char['id'] not in locked_character_ids]
     
     if not zenith_characters:
-        LOGGER.info("No unlocked Zenith characters available to spawn")
+        LOGGER.info("No unlocked Zenith Christmas characters available to spawn")
         return
     
     # Track sent Zenith event characters separately to avoid repeats
@@ -472,7 +475,7 @@ async def send_zenith_event_character(update: Update, context: CallbackContext) 
         from shivu import process_image_url
         processed_url = await process_image_url(character['img_url'])
         
-        caption_text = f"🪩 A rare ZENITH beauty has appeared! Use /marry to add them to your harem!"
+        caption_text = f"🪩🎄 A rare ZENITH Christmas beauty has appeared! Use /marry to add them to your harem!"
         
         if is_video_character(character):
             try:
@@ -498,7 +501,7 @@ async def send_zenith_event_character(update: Update, context: CallbackContext) 
         LOGGER.error(f"Error sending zenith event character image: {str(e)}")
         await context.bot.send_message(
             chat_id=chat_id,
-            text=f"🪩 A rare ZENITH beauty has appeared! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
+            text=f"🪩🎄 A rare ZENITH Christmas beauty has appeared! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
             parse_mode='Markdown')
 
 
