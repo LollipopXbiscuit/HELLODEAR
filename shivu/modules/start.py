@@ -49,7 +49,7 @@ async def start(update: Update, context: CallbackContext) -> None:
         """
         
         keyboard = [
-            [InlineKeyboardButton("ADD ME", url=f'http://t.me/{BOT_USERNAME}?startgroup=new')],
+            [InlineKeyboardButton("SUPPORT", url=f'http://t.me/{SUPPORT_CHAT}')],
             [InlineKeyboardButton("HELP", callback_data='help')]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -62,7 +62,7 @@ async def start(update: Update, context: CallbackContext) -> None:
         from shivu import process_image_url
         photo_url = await process_image_url(random.choice(PHOTO_URL))
         keyboard = [
-            [InlineKeyboardButton("ADD ME", url=f'http://t.me/{BOT_USERNAME}?startgroup=new')],
+            [InlineKeyboardButton("SUPPORT", url=f'http://t.me/{SUPPORT_CHAT}')],
             [InlineKeyboardButton("HELP", callback_data='help')]
         ]
         
@@ -110,7 +110,7 @@ async def button(update: Update, context: CallbackContext) -> None:
 
         
         keyboard = [
-            [InlineKeyboardButton("ADD ME", url=f'http://t.me/{BOT_USERNAME}?startgroup=new')],
+            [InlineKeyboardButton("SUPPORT", url=f'http://t.me/{SUPPORT_CHAT}')],
             [InlineKeyboardButton("HELP", callback_data='help')]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
