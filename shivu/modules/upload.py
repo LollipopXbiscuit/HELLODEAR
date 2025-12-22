@@ -561,12 +561,12 @@ async def summon(update: Update, context: CallbackContext) -> None:
             "Retro": 5,
             "Star": 0,
             "Zenith": 1,
-            "Limited Edition": 0,
+            "Limited Edition": 0.25,
             "Custom": 0
         }
         
-        # Get available rarities from database (excluding Limited Edition and Custom which never spawn, respecting event filter)
-        event_filter = {'rarity': {'$nin': ['Limited Edition', 'Custom']}}
+        # Get available rarities from database (excluding Custom which never spawn, respecting event filter)
+        event_filter = {'rarity': {'$ne': 'Custom'}}
         if active_event and active_event.get('event_type') == 'christmas':
             event_filter['name'] = {'$regex': '🎄'}
         available_rarities = await collection.distinct('rarity', event_filter)
