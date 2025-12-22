@@ -250,6 +250,117 @@ async def upload(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         await update.message.reply_text(f'Character Upload Unsuccessful. Error: {str(e)}\nIf you think this is a source error, forward to: {SUPPORT_CHAT}')
 
+
+async def update_card(update: Update, context: CallbackContext) -> None:
+    if not update.effective_user or not update.message:
+        return
+        
+    if not await can_upload(update.effective_user.id):
+        await update.message.reply_text('Ask My Owner or authorized uploader...')
+        return
+
+    try:
+        args = context.args
+        if not args or len(args) < 5:
+            await update.message.reply_text(
+                "Usage: /update ID img_url character-name anime-name rarity-number\n\n"
+                "Example: /update 1 https://example.com/img.jpg Muzan-Kibutsuji Demon-Slayer 5"
+            )
+            return
+
+        character_id = args[0]
+        new_img_url = args[1]
+        character_name = args[2].replace('-', ' ').title()
+        anime = args[3].replace('-', ' ').title()
+
+        # Find the character
+        character = await collection.find_one({'id': character_id})
+        if not character:
+            await update.message.reply_text(f'❌ Character with ID #{character_id} not found!')
+            return
+
+        # Validate URL
+        is_valid, validation_message = validate_url(new_img_url)
+        if not is_valid:
+            await update.message.reply_text(f'Invalid URL: {validation_message}')
+            return
+        
+        is_video = 'video' in validation_message.lower() or any(ext in new_img_url.lower() for ext in ['.mp4', '.mov', '.avi', '.mkv'])
+
+        rarity_map = {
+            1: "Common", 2: "Uncommon", 3: "Rare", 4: "Epic", 5: "Legendary", 
+            6: "Mythic", 7: "Retro", 8: "Star", 9: "Zenith", 10: "Limited Edition"
+        }
+        try:
+            rarity = rarity_map[int(args[4])]
+        except (KeyError, ValueError):
+            await update.message.reply_text('Invalid rarity (1-10).')
+            return
+
+        rarity_emoji = rarity_styles.get(rarity, "")
+        from shivu import process_image_url
+        processed_url = await process_image_url(new_img_url)
+        
+        caption = (
+            f"✨ <b>{character_name}</b> (UPDATED) ✨\n"
+            f"🎌 <i>{anime}</i>\n"
+            f"━━━━━━━━━━━━━━━━\n"
+            f"{rarity_emoji} <b>{rarity}</b>\n"
+            f"🆔 <b>ID:</b> #{character_id}\n"
+            f"━━━━━━━━━━━━━━━━\n"
+            f"📤 Updated by <a href='tg://user?id={update.effective_user.id}'>{update.effective_user.first_name}</a>"
+        )
+        
+        try:
+            if is_video:
+                message = await context.bot.send_video(
+                    chat_id=CHARA_CHANNEL_ID,
+                    video=processed_url,
+                    caption=caption,
+                    parse_mode='HTML'
+                )
+            else:
+                message = await context.bot.send_photo(
+                    chat_id=CHARA_CHANNEL_ID,
+                    photo=processed_url,
+                    caption=caption,
+                    parse_mode='HTML'
+                )
+            
+            # Update database
+            update_data = {
+                'img_url': new_img_url,
+                'name': character_name,
+                'anime': anime,
+                'rarity': rarity,
+                'message_id': message.message_id
+            }
+            
+            await collection.update_one({'id': character_id}, {'$set': update_data})
+            
+            # Try to delete old message if exists
+            if 'message_id' in character:
+                try:
+                    await context.bot.delete_message(chat_id=CHARA_CHANNEL_ID, message_id=character['message_id'])
+                except:
+                    pass
+            
+            await update.message.reply_text(f'✅ Character #{character_id} updated successfully!')
+            
+        except Exception as e:
+            # Fallback update if channel sending fails
+            await collection.update_one({'id': character_id}, {'$set': {
+                'img_url': new_img_url,
+                'name': character_name,
+                'anime': anime,
+                'rarity': rarity
+            }})
+            await update.message.reply_text(f'Character updated in DB but failed to update in channel: {str(e)}')
+
+    except Exception as e:
+        await update.message.reply_text(f'Update failed: {str(e)}')
+
+
 async def delete(update: Update, context: CallbackContext) -> None:
     if not update.effective_user or not update.message:
         return
@@ -880,9 +991,9 @@ SUMMON_HANDLER = CommandHandler('summon', summon, block=False)
 application.add_handler(SUMMON_HANDLER)
 FIND_HANDLER = CommandHandler('find', find, block=False)
 application.add_handler(FIND_HANDLER)
-UPDATE_HANDLER = CommandHandler('update', update, block=False)
+UPDATE_HANDLER = CommandHandler('update', update_card, block=False)
 application.add_handler(UPDATE_HANDLER)
-EDIT_HANDLER = CommandHandler('edit', update, block=False)
+EDIT_HANDLER = CommandHandler('edit', update_card, block=False)
 application.add_handler(EDIT_HANDLER)
 REMOVE_HANDLER = CommandHandler('remove', remove_character_from_user, block=False)
 application.add_handler(REMOVE_HANDLER)

@@ -16,3 +16,8 @@ pymongo
 pyrogram
 python-telegram-bot
 requests
+aiohttp
+motor
+pyrogram
+python-telegram-bot
+tgcrypto
