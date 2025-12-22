@@ -182,9 +182,9 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     # Check for active event
     active_event = await event_settings_collection.find_one({'active': True})
     
-    # Get spawnable characters (exclude Star as it has its own spawn function in main GC)
+    # Get spawnable characters (exclude Star as it has its own spawn function, and Custom which never spawns)
     filter_criteria = {
-        'rarity': {'$nin': ['Star']},
+        'rarity': {'$nin': ['Star', 'Custom']},
         'id': {'$nin': locked_character_ids}
     }
     

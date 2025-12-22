@@ -277,45 +277,19 @@ async def lockedspawns_callback(client, callback_query):
 async def rarity(client, message):
     """Show all rarities and their spawn rates"""
     
-    rarity_info = {
-        "Common": {"emoji": "⚪️", "rate": "~32%", "spawns": "✅"},
-        "Uncommon": {"emoji": "🟢", "rate": "~26%", "spawns": "✅"}, 
-        "Rare": {"emoji": "🔵", "rate": "~16%", "spawns": "✅"},
-        "Epic": {"emoji": "🟣", "rate": "~10%", "spawns": "✅"},
-        "Legendary": {"emoji": "🟡", "rate": "~3.3%", "spawns": "✅"},
-        "Mythic": {"emoji": "🏵", "rate": "~1.6%", "spawns": "✅"},
-        "Retro": {"emoji": "🍥", "rate": "~1.6%", "spawns": "✅ Common"},
-        "Star": {"emoji": "⭐", "rate": "Special", "spawns": "⭐ Main GC only (200 msgs)"},
-        "Zenith": {"emoji": "🪩", "rate": "~0.33%", "spawns": "✅ Very Rare"},
-        "Limited Edition": {"emoji": "🍬", "rate": "~0.08%", "spawns": "✅ Ultra Rare"}
-    }
-    
     message_text = (
-        "🌟 **Character Rarity System** 🌟\n\n"
-        "Here's how character rarities work in our bot:\n\n"
-    )
-    
-    # Add regular spawning rarities
-    message_text += "📊 **Regular Spawns (every 100 messages):**\n"
-    for rarity in ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic"]:
-        info = rarity_info[rarity]
-        message_text += f"{info['emoji']} **{rarity}:** {info['rate']} chance\n"
-    
-    message_text += "\n🔥 **Rare Spawns:**\n"
-    for rarity in ["Retro", "Zenith", "Limited Edition"]:
-        info = rarity_info[rarity]
-        message_text += f"{info['emoji']} **{rarity}:** {info['rate']} - {info['spawns']}\n"
-    
-    message_text += "\n⭐ **Special Spawns:**\n"
-    message_text += f"{rarity_info['Star']['emoji']} **Star:** {rarity_info['Star']['spawns']}\n"
-    
-    message_text += (
-        "\n💡 **Tips:**\n"
-        "• Higher rarity = lower spawn chance\n"
-        "• Zenith & Limited Edition are very rare but CAN spawn!\n"
-        "• Star cards only spawn in the main GC every 200 messages\n"
-        "• Use `/lockspawn` to prevent specific cards from spawning (admin only)\n\n"
-        "✨ Good luck collecting!"
+        "🎏 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳 𝘙𝘢𝘳𝘪𝘵𝘺 𝘚𝘺𝘴𝘵𝘦𝘮 🎏\n\n"
+        "🎐 𝘙𝘦𝘨𝘶𝘭𝘢𝘳 𝘚𝘱𝘢𝘸𝘯𝘴 (𝘦𝘷𝘦𝘳𝘺 100 𝘮𝘦𝘴𝘴𝘢𝘨𝘦𝘴)\n\n"
+        "⚪️ 𝘊𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🟢 𝘜𝘯𝘤𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🔵 𝘙𝘢𝘳𝘦 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🟣 𝘌𝘱𝘪𝘤 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🟡 𝘓𝘦𝘨𝘦𝘯𝘥𝘢𝘳𝘺 : 2% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🏵 𝘔𝘺𝘵𝘩𝘪𝘤 : 0.8% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🍥 𝘙𝘦𝘵𝘳𝘰 : 0.4% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🪩 𝘡𝘦𝘯𝘪𝘵𝘩 : 0.01% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🍬 𝘓𝘪𝘮𝘪𝘵𝘦𝘥 𝘌𝘥𝘪𝘵𝘪𝘰𝘯 : 0.001% 𝘤𝘩𝘢𝘯𝘤𝘦\n\n"
+        "👾 𝘊𝘶𝘴𝘵𝘰𝘮 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳𝘴 𝘢𝘳𝘦 𝘰𝘳𝘥𝘦𝘳𝘦𝘥 𝘵𝘰 𝘛𝘩𝘦 𝘖𝘸𝘯𝘦𝘳 𝘢𝘯𝘥 𝘵𝘩𝘦𝘺 𝘤𝘢𝘯 𝘰𝘯𝘭𝘺 𝘩𝘢𝘷𝘦 𝘶𝘱 𝘵𝘰 2 𝘖𝘸𝘯𝘦𝘳𝘴. (𝘛𝘩𝘦𝘺 𝘸𝘪𝘭𝘭 𝘯𝘦𝘷𝘦𝘳 𝘴𝘱𝘢𝘸𝘯)"
     )
   
     await message.reply_text(message_text, parse_mode=enums.ParseMode.MARKDOWN)
@@ -550,44 +524,20 @@ async def lockedspawns_callback_ptb(update: Update, context: CallbackContext):
 
 async def rarity_ptb(update: Update, context: CallbackContext):
     """Show all rarities and their spawn rates - PTB version"""
-    rarity_info = {
-        "Common": {"emoji": "⚪️", "rate": "20%", "spawns": "✅"},
-        "Uncommon": {"emoji": "🟢", "rate": "20%", "spawns": "✅"}, 
-        "Rare": {"emoji": "🔵", "rate": "20%", "spawns": "✅"},
-        "Epic": {"emoji": "🟣", "rate": "20%", "spawns": "✅"},
-        "Legendary": {"emoji": "🟡", "rate": "2%", "spawns": "✅"},
-        "Mythic": {"emoji": "🏵", "rate": "0.8%", "spawns": "✅"},
-        "Retro": {"emoji": "🍥", "rate": "0.3%", "spawns": "🔥 Special (2000 msgs)"},
-        "Star": {"emoji": "⭐", "rate": "0%", "spawns": "⭐ Main GC only (200 msgs)"},
-        "Zenith": {"emoji": "🪩", "rate": "0%", "spawns": "❌ Never spawns"},
-        "Limited Edition": {"emoji": "🍬", "rate": "0%", "spawns": "❌ Never spawns"}
-    }
     
     message_text = (
-        "🌟 **Character Rarity System** 🌟\n\n"
-        "Here's how character rarities work in our bot:\n\n"
-    )
-    
-    message_text += "📊 **Regular Spawns (every 100 messages):**\n"
-    for rarity in ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic"]:
-        info = rarity_info[rarity]
-        message_text += f"{info['emoji']} **{rarity}:** {info['rate']} chance\n"
-    
-    message_text += "\n🔥 **Rare Spawns:**\n"
-    for rarity in ["Retro", "Zenith", "Limited Edition"]:
-        info = rarity_info[rarity]
-        message_text += f"{info['emoji']} **{rarity}:** {info['rate']} - {info['spawns']}\n"
-    
-    message_text += "\n⭐ **Special Spawns:**\n"
-    message_text += f"{rarity_info['Star']['emoji']} **Star:** {rarity_info['Star']['spawns']}\n"
-    
-    message_text += (
-        "\n💡 **Tips:**\n"
-        "• Higher rarity = lower spawn chance\n"
-        "• Zenith & Limited Edition are very rare but CAN spawn!\n"
-        "• Star cards only spawn in the main GC every 200 messages\n"
-        "• Use `/lockspawn` to prevent specific cards from spawning (admin only)\n\n"
-        "✨ Good luck collecting!"
+        "🎏 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳 𝘙𝘢𝘳𝘪𝘵𝘺 𝘚𝘺𝘴𝘵𝘦𝘮 🎏\n\n"
+        "🎐 𝘙𝘦𝘨𝘶𝘭𝘢𝘳 𝘚𝘱𝘢𝘸𝘯𝘴 (𝘦𝘷𝘦𝘳𝘺 100 𝘮𝘦𝘴𝘴𝘢𝘨𝘦𝘴)\n\n"
+        "⚪️ 𝘊𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🟢 𝘜𝘯𝘤𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🔵 𝘙𝘢𝘳𝘦 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🟣 𝘌𝘱𝘪𝘤 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🟡 𝘓𝘦𝘨𝘦𝘯𝘥𝘢𝘳𝘺 : 2% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🏵 𝘔𝘺𝘵𝘩𝘪𝘤 : 0.8% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🍥 𝘙𝘦𝘵𝘳𝘰 : 0.4% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🪩 𝘡𝘦𝘯𝘪𝘵𝘩 : 0.01% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "🍬 𝘓𝘪𝘮𝘪𝘵𝘦𝘥 𝘌𝘥𝘪𝘵𝘪𝘰𝘯 : 0.001% 𝘤𝘩𝘢𝘯𝘤𝘦\n\n"
+        "👾 𝘊𝘶𝘴𝘵𝘰𝘮 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳𝘴 𝘢𝘳𝘦 𝘰𝘳𝘥𝘦𝘳𝘦𝘥 𝘵𝘰 𝘛𝘩𝘦 𝘖𝘸𝘯𝘦𝘳 𝘢𝘯𝘥 𝘵𝘩𝘦𝘺 𝘤𝘢𝘯 𝘰𝘯𝘭𝘺 𝘩𝘢𝘷𝘦 𝘶𝘱 𝘵𝘰 2 𝘖𝘸𝘯𝘦𝘳𝘴. (𝘛𝘩𝘦𝘺 𝘸𝘪𝘭𝘭 𝘯𝘦𝘷𝘦𝘳 𝘴𝘱𝘢𝘸𝘯)"
     )
   
     await update.message.reply_text(message_text, parse_mode='Markdown')
