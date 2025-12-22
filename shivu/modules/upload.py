@@ -20,14 +20,54 @@ rarity_styles = {
     "Retro": "🍥",
     "Star": "⭐",
     "Zenith": "🪩",
-    "Limited Edition": "🍬"
+    "Limited Edition": "🍬",
+    "Custom": "👾"
 }
 
-WRONG_FORMAT_TEXT = """Wrong ❌️ format...  eg. /upload Img_url muzan-kibutsuji Demon-slayer 5
+def get_format_text(level):
+    if level == 1:
+        return """Wrong ❌️ format...  eg. /upload Img_url muzan-kibutsuji Demon-slayer 5
 
 img_url character-name anime-name rarity-number
 
-Use rarity number accordingly:
+𝘠𝘰𝘶 𝘤𝘢𝘯 𝘶𝘱𝘭𝘰𝘢𝘥 𝘵𝘩𝘦𝘴𝘦 𝘳𝘢𝘳𝘪𝘵𝘪𝘦𝘴 :
+
+1 = ⚪️ Common
+2 = 🟢 Uncommon  
+3 = 🔵 Rare
+4 = 🟣 Epic
+5 = 🟡 Legendary
+6 = 🏵 Mythic
+
+𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 1 🪄 !
+
+✅ Supported: Discord CDN links, direct image/video URLs (including MP4), and other standard hosting services"""
+    elif level == 2:
+        return """Wrong ❌️ format...  eg. /upload Img_url muzan-kibutsuji Demon-slayer 5
+
+img_url character-name anime-name rarity-number
+
+𝘠𝘰𝘶 𝘤𝘢𝘯 𝘶𝘱𝘭𝘰𝘢𝘥 𝘵𝘩𝘦𝘴𝘦 𝘳𝘢𝘳𝘪𝘵𝘪𝘦𝘴 :
+
+1 = ⚪️ Common
+2 = 🟢 Uncommon  
+3 = 🔵 Rare
+4 = 🟣 Epic
+5 = 🟡 Legendary
+6 = 🏵 Mythic
+7 = 🍥 Retro
+8 = ⭐ Star
+9 = 🪩 Zenith
+
+𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 2 🎏 !
+
+✅ Supported: Discord CDN links, direct image/video URLs (including MP4), and other standard hosting services"""
+    else:
+        return """Wrong ❌️ format...  eg. /upload Img_url muzan-kibutsuji Demon-slayer 5
+
+img_url character-name anime-name rarity-number
+
+𝘠𝘰𝘶 𝘤𝘢𝘯 𝘶𝘱𝘭𝘰𝘢𝘥 𝘢𝘭𝘭 𝘳𝘢𝘳𝘪𝘵𝘪𝘦𝘴 :
 
 1 = ⚪️ Common
 2 = 🟢 Uncommon  
@@ -39,8 +79,65 @@ Use rarity number accordingly:
 8 = ⭐ Star
 9 = 🪩 Zenith
 10 = 🍬 Limited Edition
+11 = 👾 Custom 
+
+𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 3 🎐 !
 
 ✅ Supported: Discord CDN links, direct image/video URLs (including MP4), and other standard hosting services"""
+
+
+async def get_uploader_level(user_id):
+    """Get uploader level from database (default 1) or 3 for sudo users"""
+    user_id_str = str(user_id)
+    if user_id_str in sudo_users:
+        return 3
+    
+    dynamic_uploaders_collection = db['dynamic_uploading_users']
+    uploader = await dynamic_uploaders_collection.find_one({'user_id': user_id_str})
+    if uploader:
+        return uploader.get('level', 1)
+    
+    if user_id_str in uploading_users:
+        return 1
+    return 0
+
+
+async def can_upload(user_id):
+    """Check if user has upload permissions (sudo_users, uploading_users env var, or dynamic uploading_users)"""
+    return await get_uploader_level(user_id) > 0
+
+
+async def promote(update: Update, context: CallbackContext) -> None:
+    if not update.effective_user or not update.message:
+        return
+        
+    if str(update.effective_user.id) not in sudo_users:
+        await update.message.reply_text('Only Owners can use this command.')
+        return
+
+    try:
+        args = context.args
+        if not args or len(args) != 2:
+            await update.message.reply_text('Usage: /promote <user_id> <level>')
+            return
+
+        user_id = args[0]
+        level = int(args[1])
+
+        if level not in [1, 2, 3]:
+            await update.message.reply_text('Level must be 1, 2, or 3.')
+            return
+
+        dynamic_uploaders_collection = db['dynamic_uploading_users']
+        await dynamic_uploaders_collection.update_one(
+            {'user_id': user_id},
+            {'$set': {'level': level}},
+            upsert=True
+        )
+        
+        await update.message.reply_text(f'✅ User {user_id} promoted to level {level}.')
+    except Exception as e:
+        await update.message.reply_text(f'Error: {str(e)}')
 
 
 def is_discord_cdn_url(url):
@@ -157,14 +254,15 @@ async def upload(update: Update, context: CallbackContext) -> None:
     if not update.effective_user or not update.message:
         return
         
-    if not await can_upload(update.effective_user.id):
+    level = await get_uploader_level(update.effective_user.id)
+    if level == 0:
         await update.message.reply_text('Ask My Owner or authorized uploader...')
         return
 
     try:
         args = context.args
         if not args or len(args) != 4:
-            await update.message.reply_text(WRONG_FORMAT_TEXT)
+            await update.message.reply_text(get_format_text(level), parse_mode='HTML')
             return
 
         character_name = args[1].replace('-', ' ').title()
@@ -193,12 +291,22 @@ async def upload(update: Update, context: CallbackContext) -> None:
             7: "Retro", 
             8: "Star", 
             9: "Zenith", 
-            10: "Limited Edition"
+            10: "Limited Edition",
+            11: "Custom"
         }
         try:
-            rarity = rarity_map[int(args[3])]
-        except KeyError:
-            await update.message.reply_text('Invalid rarity. Please use 1-10:\n1=Common, 2=Uncommon, 3=Rare, 4=Epic, 5=Legendary, 6=Mythic, 7=Retro, 8=Star, 9=Zenith, 10=Limited Edition')
+            rarity_num = int(args[3])
+            # Level restrictions
+            if level == 1 and rarity_num > 6:
+                await update.message.reply_text('❌ Level 1 uploaders can only upload up to Mythic rank (1-6).')
+                return
+            if level == 2 and rarity_num > 9:
+                await update.message.reply_text('❌ Level 2 uploaders can only upload up to Zenith rank (1-9).')
+                return
+            
+            rarity = rarity_map[rarity_num]
+        except (KeyError, ValueError):
+            await update.message.reply_text(get_format_text(level), parse_mode='HTML')
             return
 
         id = str(await get_next_sequence_number('character_id'))
