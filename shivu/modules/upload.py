@@ -1020,6 +1020,7 @@ async def adduploader(update: Update, context: CallbackContext) -> None:
         # Add to uploaders collection
         await dynamic_uploaders_collection.insert_one({
             'user_id': user_id_to_add,
+            'level': 1,
             'added_by': update.effective_user.id,
             'added_by_username': update.effective_user.username or update.effective_user.first_name,
             'added_at': update.message.date
@@ -1111,3 +1112,5 @@ ADDUPLOADER_HANDLER = CommandHandler('adduploader', adduploader, block=False)
 application.add_handler(ADDUPLOADER_HANDLER)
 REMOVEUPLOADER_HANDLER = CommandHandler('removeuploader', removeuploader, block=False)
 application.add_handler(REMOVEUPLOADER_HANDLER)
+PROMOTE_HANDLER = CommandHandler('promote', promote, block=False)
+application.add_handler(PROMOTE_HANDLER)
