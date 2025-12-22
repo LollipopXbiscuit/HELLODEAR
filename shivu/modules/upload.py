@@ -265,8 +265,29 @@ async def upload(update: Update, context: CallbackContext) -> None:
             await update.message.reply_text(get_format_text(level), parse_mode='HTML')
             return
 
-        character_name = args[1].replace('-', ' ').title()
-        anime = args[2].replace('-', ' ').title()
+        # Clean character name: remove special Unicode chars, replace separators with spaces
+        import unicodedata
+        character_name = args[1]
+        # Replace common Arabic diacritics and special characters with spaces
+        character_name = character_name.replace('ـ', ' ')  # Arabic Tatweel
+        character_name = character_name.replace('-', ' ')
+        character_name = character_name.replace('_', ' ')
+        # Remove combining marks and normalize Unicode
+        character_name = ''.join(c for c in unicodedata.normalize('NFKD', character_name) 
+                                 if not unicodedata.combining(c))
+        # Clean up multiple spaces
+        character_name = ' '.join(character_name.split())
+        character_name = character_name.title()
+        
+        # Clean anime name similarly
+        anime = args[2]
+        anime = anime.replace('ـ', ' ')
+        anime = anime.replace('-', ' ')
+        anime = anime.replace('_', ' ')
+        anime = ''.join(c for c in unicodedata.normalize('NFKD', anime) 
+                       if not unicodedata.combining(c))
+        anime = ' '.join(anime.split())
+        anime = anime.title()
 
         # Validate URL with enhanced Discord CDN support
         is_valid, validation_message = validate_url(args[0])
