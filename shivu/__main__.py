@@ -182,9 +182,9 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     # Check for active event
     active_event = await event_settings_collection.find_one({'active': True})
     
-    # Get spawnable characters (exclude Star as it has its own spawn function, and Custom which never spawns)
+    # Get spawnable characters (exclude Star as it has its own spawn function, and Custom/Limited Edition which never spawn)
     filter_criteria = {
-        'rarity': {'$nin': ['Star', 'Custom']},
+        'rarity': {'$nin': ['Star', 'Custom', 'Limited Edition']},
         'id': {'$nin': locked_character_ids}
     }
     
@@ -213,7 +213,8 @@ async def send_image(update: Update, context: CallbackContext) -> None:
             "Mythic": 5,
             "Retro": 20,
             "Zenith": 10,
-            "Limited Edition": 0.25
+            "Limited Edition": 0.001,
+            "Custom": 0
         }
     else:
         # Other chats: Normal rates
@@ -226,7 +227,8 @@ async def send_image(update: Update, context: CallbackContext) -> None:
             "Mythic": 5,
             "Retro": 5,
             "Zenith": 1,
-            "Limited Edition": 0.25
+            "Limited Edition": 0.001,
+            "Custom": 0
         }
     
     # Group characters by rarity

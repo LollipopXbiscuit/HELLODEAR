@@ -561,7 +561,7 @@ async def summon(update: Update, context: CallbackContext) -> None:
             "Retro": 5,
             "Star": 0,
             "Zenith": 1,
-            "Limited Edition": 0.25,
+            "Limited Edition": 0,
             "Custom": 0
         }
         
