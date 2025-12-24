@@ -139,7 +139,7 @@ async def stats(update: Update, context: CallbackContext) -> None:
 
 async def send_users_document(update: Update, context: CallbackContext) -> None:
     if str(update.effective_user.id) not in SUDO_USERS:
-        update.message.reply_text('only For Sudo users...')
+        await update.message.reply_text('only For Sudo users...')
         return
     cursor = user_collection.find({})
     users = []
@@ -156,7 +156,7 @@ async def send_users_document(update: Update, context: CallbackContext) -> None:
 
 async def send_groups_document(update: Update, context: CallbackContext) -> None:
     if str(update.effective_user.id) not in SUDO_USERS:
-        update.message.reply_text('Only For Sudo users...')
+        await update.message.reply_text('Only For Sudo users...')
         return
     cursor = top_global_groups_collection.find({})
     groups = []
