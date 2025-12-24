@@ -786,6 +786,15 @@ async def find(update: Update, context: CallbackContext) -> None:
         from shivu.modules.harem import get_character_display_url
         user_id = update.effective_user.id if update.effective_user else None
         display_url = await get_character_display_url(character, character_id, user_id)
+        
+        # Handle custom characters without URLs
+        if not display_url or display_url == '':
+            caption += "\n⚠️ No image available yet."
+            if character.get('rarity') == 'Custom':
+                caption += "\nPlease upload slots using /customupload"
+            await update.message.reply_text(caption, parse_mode='HTML')
+            return
+        
         processed_url = await process_image_url(display_url)
         
         # Check if it's a video and use appropriate send method
