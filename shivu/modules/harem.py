@@ -708,10 +708,11 @@ async def fav(client, message):
     try:
         if 'img_url' in character:
             from shivu import process_image_url, LOGGER
-            processed_url = await process_image_url(character['img_url'])
+            display_url = await get_character_display_url(character, character.get('id'))
+            processed_url = await process_image_url(display_url)
             
             # Check if it's a video and use appropriate send method
-            if is_video_character(character):
+            if await is_video_character(character, character.get('id')):
                 try:
                     await message.reply_video(
                         video=processed_url,
@@ -924,10 +925,11 @@ async def fav_ptb(update: Update, context: CallbackContext):
     try:
         if 'img_url' in character:
             from shivu import process_image_url, LOGGER
-            processed_url = await process_image_url(character['img_url'])
+            display_url = await get_character_display_url(character, character.get('id'))
+            processed_url = await process_image_url(display_url)
             
             # Check if it's a video
-            if is_video_character(character):
+            if await is_video_character(character, character.get('id')):
                 try:
                     await update.message.reply_video(
                         video=processed_url,
