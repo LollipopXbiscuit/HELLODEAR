@@ -8,7 +8,8 @@ from telegram import Update, InlineQueryResultPhoto, InlineQueryResultVideo
 from telegram.ext import InlineQueryHandler, CallbackContext, CommandHandler 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from shivu import user_collection, collection, application, db, LOGGER
+from shivu import user_collection, collection, application, db, LOGGER, process_image_url
+from shivu.modules.harem import get_character_display_url
 
 def is_video_url(url):
     """Check if a URL points to a video file"""
@@ -16,13 +17,13 @@ def is_video_url(url):
         return False
     return any(ext in url.lower() for ext in ['.mp4', '.mov', '.avi', '.mkv', '.webm', '.flv'])
 
-def is_video_character(character):
+async def is_video_character(character, char_id=None):
     """Check if a character is a video by URL extension or name marker"""
     if not character:
         return False
     
-    # Check URL extension
-    url = character.get('img_url', '')
+    # Get the correct display URL (respecting active_slot for custom characters)
+    url = await get_character_display_url(character, char_id)
     if is_video_url(url):
         return True
     
@@ -161,22 +162,22 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                 f"({rarity_emoji}𝙍𝘼𝙍𝙄𝙏𝙔:  {character.get('rarity', 'Unknown').lower()})"
             )
             
-            # Process image URL for compatibility (handles JFIF and other formats)
-            from shivu import process_image_url
-            processed_url = await process_image_url(character['img_url'])
+            # Get the correct display URL (respecting active_slot for custom characters)
+            display_url = await get_character_display_url(character, character.get('id'))
+            processed_url = await process_image_url(display_url)
             
             # Check if it's a video and use appropriate result type
-            if is_video_character(character):
+            if await is_video_character(character, character.get('id')):
                 # Determine mime type based on file extension
-                if '.webm' in character['img_url'].lower():
+                if '.webm' in processed_url.lower():
                     mime_type = 'video/webm'
-                elif '.mov' in character['img_url'].lower():
+                elif '.mov' in processed_url.lower():
                     mime_type = 'video/quicktime'
-                elif '.avi' in character['img_url'].lower():
+                elif '.avi' in processed_url.lower():
                     mime_type = 'video/x-msvideo'
-                elif '.mkv' in character['img_url'].lower():
+                elif '.mkv' in processed_url.lower():
                     mime_type = 'video/x-matroska'
-                elif '.flv' in character['img_url'].lower():
+                elif '.flv' in processed_url.lower():
                     mime_type = 'video/x-flv'
                 else:
                     mime_type = 'video/mp4'
