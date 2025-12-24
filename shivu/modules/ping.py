@@ -6,8 +6,9 @@ from telegram.ext import CommandHandler, CallbackContext
 from shivu import application, sudo_users
 
 async def ping(update: Update, context: CallbackContext) -> None:
-    if str(update.effective_user.id) not in sudo_users:
-        await update.message.reply_text("Nouu.. its Sudo user's Command..")
+    user_id = str(update.effective_user.id)
+    if user_id not in sudo_users:
+        await update.message.reply_text(f"Nouu.. its Sudo user's Command..\nYour ID: {user_id}")
         return
     start_time = time.time()
     message = await update.message.reply_text('Pong!')
