@@ -1345,25 +1345,33 @@ async def migrate_slots(update: Update, context: CallbackContext) -> None:
         migrated_count = 0
         
         for char in old_format_chars:
-            char_id = str(char.get('id'))
+            char_id = char.get('id')
+            char_id_str = str(char_id)
+            char_id_int = int(char_id) if isinstance(char_id, str) and char_id.isdigit() else char_id
+            
             old_slots = char.get('slots', {})
             
-            # Find owners of this character
+            # Find owners of this character - try both string and int formats
             owners = []
-            users_with_char = await user_collection.find({'characters.id': char_id}).to_list(None)
+            try:
+                users_with_char_str = await user_collection.find({'characters.id': char_id_str}).to_list(None)
+                users_with_char_int = await user_collection.find({'characters.id': char_id_int}).to_list(None)
+                users_with_char = users_with_char_str if users_with_char_str else users_with_char_int
+            except:
+                users_with_char = []
             
             for user in users_with_char:
                 owner_id = str(user.get('id'))
                 if owner_id not in owners:
                     owners.append(owner_id)
             
-            # If no owners found, assign to all users who have it
+            # If owners found, migrate their slots
             if len(owners) > 0:
                 # Create owner_slots from old slots
                 owner_slots = {}
                 
-                # Distribute slots to owners
-                for idx, owner_id in enumerate(owners[:2]):  # Limit to 2 owners
+                # Give each owner the full set of slots
+                for owner_id in owners[:2]:  # Limit to 2 owners
                     owner_slots[owner_id] = {
                         '1': old_slots.get('1'),
                         '2': old_slots.get('2'),
@@ -1382,11 +1390,18 @@ async def migrate_slots(update: Update, context: CallbackContext) -> None:
                 
                 migrated_count += 1
         
-        await update.message.reply_text(
-            f'✅ Migration Complete!\n\n'
-            f'Migrated {migrated_count} custom character(s) to owner-specific slots.\n\n'
-            f'Each owner now has independent slots for their custom characters.'
-        )
+        if migrated_count == 0:
+            await update.message.reply_text(
+                '⚠️ Found old slot format but no owners detected.\n\n'
+                'Please check if custom characters are in user harems.\n'
+                'Owners must have the character in their harem first.'
+            )
+        else:
+            await update.message.reply_text(
+                f'✅ Migration Complete!\n\n'
+                f'Migrated {migrated_count} custom character(s) to owner-specific slots.\n\n'
+                f'Each owner now has independent slots for their custom characters.'
+            )
         
     except Exception as e:
         await update.message.reply_text(f'❌ Migration error: {str(e)}')
