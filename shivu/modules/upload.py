@@ -1252,7 +1252,16 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         
         # Initialize this owner's slots if not present
         if user_id not in custom_char['owner_slots']:
-            custom_char['owner_slots'][user_id] = {'1': None, '2': None, '3': None}
+            # Check if old 'slots' format still exists - if so, use it for this owner
+            if 'slots' in custom_char:
+                custom_char['owner_slots'][user_id] = {
+                    '1': custom_char['slots'].get('1'),
+                    '2': custom_char['slots'].get('2'),
+                    '3': custom_char['slots'].get('3'),
+                    '_active': 1
+                }
+            else:
+                custom_char['owner_slots'][user_id] = {'1': None, '2': None, '3': None}
         
         owner_slots = custom_char['owner_slots'][user_id]
         
