@@ -8,6 +8,7 @@ from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext
 
 from shivu import application, sudo_users, uploading_users, collection, db, CHARA_CHANNEL_ID, SUPPORT_CHAT, user_collection
+from shivu.modules.harem import get_character_display_url
 
 # Rarity styles for display purposes
 rarity_styles = {
