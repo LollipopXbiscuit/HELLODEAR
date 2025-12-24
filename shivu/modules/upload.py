@@ -1329,10 +1329,6 @@ async def debug_card(update: Update, context: CallbackContext) -> None:
     if not update.effective_user or not update.message:
         return
     
-    if update.effective_user.id not in sudo_users:
-        await update.message.reply_text('❌ Admin only command.')
-        return
-    
     try:
         args = context.args
         if not args or len(args) < 1:
