@@ -1324,6 +1324,74 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text(f'❌ Error: {str(e)}')
 
 
+async def migrate_slots(update: Update, context: CallbackContext) -> None:
+    """Auto-migrate old slots format to owner-specific slots by detecting owners from user harem"""
+    if not update.effective_user or not update.message:
+        return
+    
+    # Check if user is admin/sudo
+    if update.effective_user.id not in sudo_users:
+        await update.message.reply_text('❌ Admin only command.')
+        return
+    
+    try:
+        # Find all custom characters with old 'slots' format
+        old_format_chars = await collection.find({'rarity': 'Custom', 'slots': {'$exists': True}}).to_list(None)
+        
+        if not old_format_chars:
+            await update.message.reply_text('✅ No custom characters need migration.')
+            return
+        
+        migrated_count = 0
+        
+        for char in old_format_chars:
+            char_id = str(char.get('id'))
+            old_slots = char.get('slots', {})
+            
+            # Find owners of this character
+            owners = []
+            users_with_char = await user_collection.find({'characters.id': char_id}).to_list(None)
+            
+            for user in users_with_char:
+                owner_id = str(user.get('id'))
+                if owner_id not in owners:
+                    owners.append(owner_id)
+            
+            # If no owners found, assign to all users who have it
+            if len(owners) > 0:
+                # Create owner_slots from old slots
+                owner_slots = {}
+                
+                # Distribute slots to owners
+                for idx, owner_id in enumerate(owners[:2]):  # Limit to 2 owners
+                    owner_slots[owner_id] = {
+                        '1': old_slots.get('1'),
+                        '2': old_slots.get('2'),
+                        '3': old_slots.get('3'),
+                        '_active': 1
+                    }
+                
+                # Update character to new format
+                await collection.update_one(
+                    {'_id': char['_id']},
+                    {
+                        '$set': {'owner_slots': owner_slots},
+                        '$unset': {'slots': '', 'active_slot': ''}
+                    }
+                )
+                
+                migrated_count += 1
+        
+        await update.message.reply_text(
+            f'✅ Migration Complete!\n\n'
+            f'Migrated {migrated_count} custom character(s) to owner-specific slots.\n\n'
+            f'Each owner now has independent slots for their custom characters.'
+        )
+        
+    except Exception as e:
+        await update.message.reply_text(f'❌ Migration error: {str(e)}')
+
+
 UPLOAD_HANDLER = CommandHandler('upload', upload, block=False)
 application.add_handler(UPLOAD_HANDLER)
 DELETE_HANDLER = CommandHandler('delete', delete, block=False)
@@ -1350,3 +1418,5 @@ CUSTOMUPLOAD_HANDLER = CommandHandler('customupload', customupload, block=False)
 application.add_handler(CUSTOMUPLOAD_HANDLER)
 CUSTOMCHANGE_HANDLER = CommandHandler('customchange', customchange, block=False)
 application.add_handler(CUSTOMCHANGE_HANDLER)
+MIGRATE_SLOTS_HANDLER = CommandHandler('migrateslots', migrate_slots, block=False)
+application.add_handler(MIGRATE_SLOTS_HANDLER)
