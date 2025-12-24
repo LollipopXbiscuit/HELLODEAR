@@ -14,20 +14,32 @@ from pyrogram.errors import UserNotParticipant, ChatAdminRequired, PeerIdInvalid
 from shivu import collection, user_collection, application, SUPPORT_CHAT, CHARA_CHANNEL_ID, shivuu, sudo_users
 from shivu.config import Config
 
-async def get_character_display_url(character, char_id=None):
-    """Get the correct URL to display for a character, respecting custom slots"""
+async def get_character_display_url(character, char_id=None, user_id=None):
+    """Get the correct URL to display for a character, respecting custom slots per owner"""
     # Always fetch fresh data if char_id is provided to check for custom slots
     if char_id:
         fresh_char = await collection.find_one({'id': char_id})
         if fresh_char and fresh_char.get('rarity') == 'Custom' and 'slots' in fresh_char:
-            active_slot = fresh_char.get('active_slot', 1)
+            # Get owner-specific active slot
+            user_id_str = str(user_id) if user_id else None
+            if user_id_str and 'owner_slots' in fresh_char:
+                active_slot = fresh_char['owner_slots'].get(user_id_str, 1)
+            else:
+                active_slot = fresh_char.get('active_slot', 1)
+            
             slot_data = fresh_char['slots'].get(str(active_slot))
             if slot_data and 'url' in slot_data:
                 return slot_data['url']
     
     # Fallback to character object's data
     if 'slots' in character and character.get('rarity') == 'Custom':
-        active_slot = character.get('active_slot', 1)
+        # Get owner-specific active slot
+        user_id_str = str(user_id) if user_id else None
+        if user_id_str and 'owner_slots' in character:
+            active_slot = character['owner_slots'].get(user_id_str, 1)
+        else:
+            active_slot = character.get('active_slot', 1)
+        
         slot_data = character['slots'].get(str(active_slot))
         if slot_data and 'url' in slot_data:
             return slot_data['url']
@@ -392,7 +404,8 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
             if update.message:
                 try:
                     from shivu import process_image_url, LOGGER
-                    processed_url = await process_image_url(await get_character_display_url(fav_character, fav_character_id))
+                    user_id = update.effective_user.id if update.effective_user else None
+                    processed_url = await process_image_url(await get_character_display_url(fav_character, fav_character_id, user_id))
                     
                     # Check if it's a video and use appropriate send method
                     if await is_video_character(fav_character, fav_character_id):
@@ -417,7 +430,8 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                 try:
                     from shivu import process_image_url, LOGGER
                     from telegram import InputMediaPhoto, InputMediaVideo
-                    processed_url = await process_image_url(await get_character_display_url(fav_character, fav_character_id))
+                    user_id = update.effective_user.id if update.effective_user else None
+                    processed_url = await process_image_url(await get_character_display_url(fav_character, fav_character_id, user_id))
                     
                     # Check if it's a video and use appropriate media type
                     if await is_video_character(fav_character, fav_character_id):
@@ -465,7 +479,8 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                     if update.message:
                         try:
                             from shivu import process_image_url, LOGGER
-                            processed_url = await process_image_url(await get_character_display_url(random_character, random_character.get("id")))
+                            user_id = update.effective_user.id if update.effective_user else None
+                            processed_url = await process_image_url(await get_character_display_url(random_character, random_character.get("id"), user_id))
                             
                             if await is_video_character(random_character, random_character.get("id")):
                                 try:
@@ -483,7 +498,8 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                         try:
                             from shivu import process_image_url, LOGGER
                             from telegram import InputMediaPhoto, InputMediaVideo
-                            processed_url = await process_image_url(await get_character_display_url(random_character, random_character.get("id")))
+                            user_id = update.effective_user.id if update.effective_user else None
+                            processed_url = await process_image_url(await get_character_display_url(random_character, random_character.get("id"), user_id))
                             
                             if await is_video_character(random_character, random_character.get("id")):
                                 try:
@@ -708,7 +724,8 @@ async def fav(client, message):
     try:
         if 'img_url' in character:
             from shivu import process_image_url, LOGGER
-            display_url = await get_character_display_url(character, character.get('id'))
+            user_id_pyrogram = message.from_user.id if message.from_user else None
+            display_url = await get_character_display_url(character, character.get('id'), user_id_pyrogram)
             processed_url = await process_image_url(display_url)
             
             # Check if it's a video and use appropriate send method
@@ -925,7 +942,8 @@ async def fav_ptb(update: Update, context: CallbackContext):
     try:
         if 'img_url' in character:
             from shivu import process_image_url, LOGGER
-            display_url = await get_character_display_url(character, character.get('id'))
+            user_id_ptb = update.effective_user.id if update.effective_user else None
+            display_url = await get_character_display_url(character, character.get('id'), user_id_ptb)
             processed_url = await process_image_url(display_url)
             
             # Check if it's a video

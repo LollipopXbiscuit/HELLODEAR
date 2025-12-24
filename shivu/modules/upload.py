@@ -160,27 +160,6 @@ def is_discord_cdn_url(url):
         return False
 
 
-async def get_character_display_url(character, char_id=None):
-    """Get the correct URL to display for a character, respecting custom slots"""
-    # Always fetch fresh data if char_id is provided to check for custom slots
-    if char_id:
-        fresh_char = await collection.find_one({'id': char_id})
-        if fresh_char and fresh_char.get('rarity') == 'Custom' and 'slots' in fresh_char:
-            active_slot = fresh_char.get('active_slot', 1)
-            slot_data = fresh_char['slots'].get(str(active_slot))
-            if slot_data and 'url' in slot_data:
-                return slot_data['url']
-    
-    # Fallback to character object's data
-    if 'slots' in character and character.get('rarity') == 'Custom':
-        active_slot = character.get('active_slot', 1)
-        slot_data = character['slots'].get(str(active_slot))
-        if slot_data and 'url' in slot_data:
-            return slot_data['url']
-    
-    return character.get('img_url', '')
-
-
 def is_video_url(url):
     """Check if a URL points to a video file"""
     if not url:
@@ -804,7 +783,9 @@ async def find(update: Update, context: CallbackContext) -> None:
         
         # Process the image URL for compatibility
         from shivu import process_image_url, LOGGER
-        display_url = await get_character_display_url(character, character_id)
+        from shivu.modules.harem import get_character_display_url
+        user_id = update.effective_user.id if update.effective_user else None
+        display_url = await get_character_display_url(character, character_id, user_id)
         processed_url = await process_image_url(display_url)
         
         # Check if it's a video and use appropriate send method
@@ -1235,6 +1216,8 @@ async def customchange(update: Update, context: CallbackContext) -> None:
     if not update.effective_user or not update.message:
         return
     
+    user_id = str(update.effective_user.id)
+    
     try:
         args = context.args
         if not args or len(args) == 0:
@@ -1263,10 +1246,11 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         if 'slots' not in custom_char:
             custom_char['slots'] = {1: None, 2: None, 3: None}
         
-        if 'active_slot' not in custom_char:
-            custom_char['active_slot'] = 1
+        # Initialize owner_slots if not present
+        if 'owner_slots' not in custom_char:
+            custom_char['owner_slots'] = {}
         
-        # If slot number is provided, change active slot
+        # If slot number is provided, change active slot for this owner
         if len(args) > 1:
             try:
                 new_slot = int(args[1])
@@ -1279,13 +1263,13 @@ async def customchange(update: Update, context: CallbackContext) -> None:
                     await update.message.reply_text(f'❌ Slot {new_slot} is empty.')
                     return
                 
-                # Update active slot
+                # Update owner's slot preference
                 await collection.update_one(
                     {'_id': custom_char['_id']},
-                    {'$set': {'active_slot': new_slot}}
+                    {'$set': {f'owner_slots.{user_id}': new_slot}}
                 )
                 
-                await update.message.reply_text(f'✅ Active slot changed to slot {new_slot} for {custom_char["name"]}!')
+                await update.message.reply_text(f'✅ Your active slot changed to slot {new_slot} for {custom_char["name"]}!')
                 
             except ValueError:
                 await update.message.reply_text('❌ Slot must be a number (1, 2, or 3).')
@@ -1294,7 +1278,7 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         # Show all slots
         char_name = custom_char.get('name', 'Unknown')
         anime = custom_char.get('anime', 'Unknown')
-        active = custom_char.get('active_slot', 1)
+        active = custom_char['owner_slots'].get(user_id, 1)
         
         slots_display = "🎐 𝘠𝘰𝘶𝘳 𝘤𝘶𝘴𝘵𝘰𝘮 𝘈𝘳𝘵𝘴 : \n\n"
         
