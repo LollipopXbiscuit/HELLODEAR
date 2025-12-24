@@ -1133,8 +1133,8 @@ async def customupload(update: Update, context: CallbackContext) -> None:
                 'Example: /customupload https://example.com/image.jpg 1617 1\n\n'
                 '📌 Slots:\n'
                 '• Slot 1: Image URL (Mystical)\n'
-                '• Slot 2: Image URL (Edit)\n'
-                '• Slot 3: Video URL (Custom Nude)\n\n'
+                '• Slot 2: Video URL (Edit)\n'
+                '• Slot 3: Image URL (Custom Nude)\n\n'
                 '✅ Supported: Direct image/video URLs (MP4), Discord CDN links, etc.'
             )
             return
@@ -1162,12 +1162,12 @@ async def customupload(update: Update, context: CallbackContext) -> None:
         # Determine URL type (image or video)
         is_video = 'video' in validation_message.lower() or any(ext in url.lower() for ext in ['.mp4', '.mov', '.avi', '.mkv'])
         
-        # Check if slot 3 must be video, slots 1-2 must be images
-        if slot == 3 and not is_video:
-            await update.message.reply_text('❌ Slot 3 must be a video URL (MP4, MOV, AVI, MKV).')
+        # Check if slot 2 must be video, slots 1 and 3 must be images
+        if slot == 2 and not is_video:
+            await update.message.reply_text('❌ Slot 2 must be a video URL (MP4, MOV, AVI, MKV).')
             return
-        if slot in [1, 2] and is_video:
-            await update.message.reply_text('❌ Slots 1 and 2 must be image URLs, not videos.')
+        if slot in [1, 3] and is_video:
+            await update.message.reply_text('❌ Slots 1 and 3 must be image URLs, not videos.')
             return
         
         # Find custom character by ID
