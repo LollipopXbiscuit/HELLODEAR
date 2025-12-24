@@ -21,40 +21,54 @@ async def get_character_display_url(character, char_id=None, user_id=None):
     # Always fetch fresh data if char_id is provided to check for custom slots
     if char_id:
         fresh_char = await collection.find_one({'id': char_id})
-        if fresh_char and fresh_char.get('rarity') == 'Custom':
-            # Try owner_slots first
-            if 'owner_slots' in fresh_char:
-                if user_id_str and user_id_str in fresh_char['owner_slots']:
-                    owner_slot_data = fresh_char['owner_slots'][user_id_str]
-                    if isinstance(owner_slot_data, dict):
-                        active_slot = owner_slot_data.get('_active', 1)
-                        slot_data = owner_slot_data.get(str(active_slot))
-                        if slot_data and isinstance(slot_data, dict) and 'url' in slot_data:
+        if fresh_char:
+            # Try owner_slots first (for Custom characters)
+            if 'owner_slots' in fresh_char and user_id_str and user_id_str in fresh_char['owner_slots']:
+                owner_slot_data = fresh_char['owner_slots'][user_id_str]
+                if isinstance(owner_slot_data, dict):
+                    active_slot = owner_slot_data.get('_active', 1)
+                    slot_data = owner_slot_data.get(str(active_slot))
+                    if slot_data:
+                        # Handle dict format with 'url' key
+                        if isinstance(slot_data, dict) and 'url' in slot_data:
                             return slot_data['url']
-            # Fallback to old 'slots' format if owner_slots doesn't have data
-            elif 'slots' in fresh_char:
+                        # Handle old string format
+                        elif isinstance(slot_data, str):
+                            return slot_data
+            # Fallback to old 'slots' format if available
+            if 'slots' in fresh_char:
                 active_slot = fresh_char.get('active_slot', 1)
                 slot_data = fresh_char['slots'].get(str(active_slot))
-                if slot_data and isinstance(slot_data, dict) and 'url' in slot_data:
-                    return slot_data['url']
+                if slot_data:
+                    if isinstance(slot_data, dict) and 'url' in slot_data:
+                        return slot_data['url']
+                    elif isinstance(slot_data, str):
+                        return slot_data
+            # Return fresh_char's img_url if custom slots not found
+            return fresh_char.get('img_url', '')
     
     # Fallback to character object's data
     if character.get('rarity') == 'Custom':
         # Try owner_slots first
-        if 'owner_slots' in character:
-            if user_id_str and user_id_str in character['owner_slots']:
-                owner_slot_data = character['owner_slots'][user_id_str]
-                if isinstance(owner_slot_data, dict):
-                    active_slot = owner_slot_data.get('_active', 1)
-                    slot_data = owner_slot_data.get(str(active_slot))
-                    if slot_data and isinstance(slot_data, dict) and 'url' in slot_data:
+        if 'owner_slots' in character and user_id_str and user_id_str in character['owner_slots']:
+            owner_slot_data = character['owner_slots'][user_id_str]
+            if isinstance(owner_slot_data, dict):
+                active_slot = owner_slot_data.get('_active', 1)
+                slot_data = owner_slot_data.get(str(active_slot))
+                if slot_data:
+                    if isinstance(slot_data, dict) and 'url' in slot_data:
                         return slot_data['url']
-        # Fallback to old 'slots' format if owner_slots doesn't have data
-        elif 'slots' in character:
+                    elif isinstance(slot_data, str):
+                        return slot_data
+        # Fallback to old 'slots' format if available
+        if 'slots' in character:
             active_slot = character.get('active_slot', 1)
             slot_data = character['slots'].get(str(active_slot))
-            if slot_data and isinstance(slot_data, dict) and 'url' in slot_data:
-                return slot_data['url']
+            if slot_data:
+                if isinstance(slot_data, dict) and 'url' in slot_data:
+                    return slot_data['url']
+                elif isinstance(slot_data, str):
+                    return slot_data
     
     return character.get('img_url', '')
 
@@ -66,9 +80,23 @@ def is_video_url(url):
     return any(ext in url.lower() for ext in ['.mp4', '.mov', '.avi', '.mkv', '.webm', '.flv'])
 
 async def is_video_character(character, char_id=None, user_id=None):
-    """Check if a character is a video by URL extension or name marker"""
+    """Check if a character is a video by URL extension, metadata type, or name marker"""
     if not character:
         return False
+    
+    # For custom characters, also check the 'type' field in slot metadata
+    user_id_str = str(user_id) if user_id else None
+    if char_id and character.get('rarity') == 'Custom':
+        fresh_char = await collection.find_one({'id': char_id})
+        if fresh_char:
+            # Check owner_slots metadata
+            if 'owner_slots' in fresh_char and user_id_str and user_id_str in fresh_char['owner_slots']:
+                owner_slot_data = fresh_char['owner_slots'][user_id_str]
+                if isinstance(owner_slot_data, dict):
+                    active_slot = owner_slot_data.get('_active', 1)
+                    slot_data = owner_slot_data.get(str(active_slot))
+                    if isinstance(slot_data, dict) and slot_data.get('type') == 'video':
+                        return True
     
     # Get the correct display URL (respecting active_slot for custom characters)
     url = await get_character_display_url(character, char_id, user_id)
