@@ -15,34 +15,34 @@ from shivu import collection, user_collection, application, SUPPORT_CHAT, CHARA_
 from shivu.config import Config
 
 async def get_character_display_url(character, char_id=None, user_id=None):
-    """Get the correct URL to display for a character, respecting custom slots per owner"""
+    """Get the correct URL to display for a character, respecting owner-specific slots"""
+    user_id_str = str(user_id) if user_id else None
+    
     # Always fetch fresh data if char_id is provided to check for custom slots
     if char_id:
         fresh_char = await collection.find_one({'id': char_id})
-        if fresh_char and fresh_char.get('rarity') == 'Custom' and 'slots' in fresh_char:
-            # Get owner-specific active slot
-            user_id_str = str(user_id) if user_id else None
-            if user_id_str and 'owner_slots' in fresh_char:
-                active_slot = fresh_char['owner_slots'].get(user_id_str, 1)
-            else:
-                active_slot = fresh_char.get('active_slot', 1)
-            
-            slot_data = fresh_char['slots'].get(str(active_slot))
-            if slot_data and 'url' in slot_data:
-                return slot_data['url']
+        if fresh_char and fresh_char.get('rarity') == 'Custom' and 'owner_slots' in fresh_char:
+            # Get owner-specific slots and active slot
+            if user_id_str and user_id_str in fresh_char['owner_slots']:
+                owner_slot_data = fresh_char['owner_slots'][user_id_str]
+                if isinstance(owner_slot_data, dict):
+                    # Get active slot for this owner
+                    active_slot = owner_slot_data.get('_active', 1)
+                    slot_data = owner_slot_data.get(str(active_slot))
+                    if slot_data and isinstance(slot_data, dict) and 'url' in slot_data:
+                        return slot_data['url']
     
     # Fallback to character object's data
-    if 'slots' in character and character.get('rarity') == 'Custom':
-        # Get owner-specific active slot
-        user_id_str = str(user_id) if user_id else None
-        if user_id_str and 'owner_slots' in character:
-            active_slot = character['owner_slots'].get(user_id_str, 1)
-        else:
-            active_slot = character.get('active_slot', 1)
-        
-        slot_data = character['slots'].get(str(active_slot))
-        if slot_data and 'url' in slot_data:
-            return slot_data['url']
+    if 'owner_slots' in character and character.get('rarity') == 'Custom':
+        # Get owner-specific slots
+        if user_id_str and user_id_str in character['owner_slots']:
+            owner_slot_data = character['owner_slots'][user_id_str]
+            if isinstance(owner_slot_data, dict):
+                # Get active slot for this owner
+                active_slot = owner_slot_data.get('_active', 1)
+                slot_data = owner_slot_data.get(str(active_slot))
+                if slot_data and isinstance(slot_data, dict) and 'url' in slot_data:
+                    return slot_data['url']
     
     return character.get('img_url', '')
 

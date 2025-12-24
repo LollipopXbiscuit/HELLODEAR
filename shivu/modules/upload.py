@@ -1118,7 +1118,7 @@ async def removeuploader(update: Update, context: CallbackContext) -> None:
 
 
 async def customupload(update: Update, context: CallbackContext) -> None:
-    """Upload custom character URLs for level 3 artists only - /customupload img_url id slot-number"""
+    """Upload custom character URLs for level 3 artists only - /customupload img_url id slot-number owner_id"""
     if not update.effective_user or not update.message:
         return
     
@@ -1129,22 +1129,24 @@ async def customupload(update: Update, context: CallbackContext) -> None:
     
     try:
         args = context.args
-        if not args or len(args) != 3:
+        if not args or len(args) != 4:
             await update.message.reply_text(
                 '❌ Wrong format!\n\n'
-                'Usage: /customupload img_url id slot-number\n\n'
-                'Example: /customupload https://example.com/image.jpg 1617 1\n\n'
+                'Usage: /customupload img_url id slot-number owner_id\n\n'
+                'Example: /customupload https://example.com/image.jpg 1617 1 123456789\n\n'
                 '📌 Slots:\n'
                 '• Slot 1: Image URL (Mystical)\n'
                 '• Slot 2: Video URL (Edit)\n'
                 '• Slot 3: Image URL (Custom Nude)\n\n'
-                '✅ Supported: Direct image/video URLs (MP4), Discord CDN links, etc.'
+                '✅ Supported: Direct image/video URLs (MP4), Discord CDN links, etc.\n\n'
+                '👤 owner_id: The Telegram user ID of the character owner'
             )
             return
         
         url = args[0]
         char_id = args[1]
         slot_num = args[2]
+        owner_id = args[3]
         
         # Validate slot number
         try:
@@ -1180,21 +1182,22 @@ async def customupload(update: Update, context: CallbackContext) -> None:
             await update.message.reply_text(f'❌ Custom character with ID {char_id} not found.')
             return
         
-        # Initialize slots if not present
-        if 'slots' not in custom_char:
-            custom_char['slots'] = {1: None, 2: None, 3: None}
+        # Initialize owner_slots if not present
+        if 'owner_slots' not in custom_char:
+            custom_char['owner_slots'] = {}
         
-        # Update the specific slot
-        custom_char['slots'][str(slot)] = {'url': url, 'type': 'video' if is_video else 'image'}
+        # Initialize this owner's slots if not present
+        owner_id_str = str(owner_id)
+        if owner_id_str not in custom_char['owner_slots']:
+            custom_char['owner_slots'][owner_id_str] = {'1': None, '2': None, '3': None}
         
-        # Initialize active_slot if not present
-        if 'active_slot' not in custom_char:
-            custom_char['active_slot'] = 1
+        # Update the specific slot for this owner
+        custom_char['owner_slots'][owner_id_str][str(slot)] = {'url': url, 'type': 'video' if is_video else 'image'}
         
         # Update database
         await collection.update_one(
             {'_id': custom_char['_id']},
-            {'$set': {'slots': custom_char['slots']}}
+            {'$set': {'owner_slots': custom_char['owner_slots']}}
         )
         
         slot_type = '🎬 Video' if is_video else '🖼️ Image'
@@ -1204,6 +1207,7 @@ async def customupload(update: Update, context: CallbackContext) -> None:
             f'👾 Character: {custom_char["name"]}\n'
             f'🎌 Anime: {custom_char["anime"]}\n'
             f'📍 Slot {slot} ({slot_label}): {slot_type}\n'
+            f'👤 Owner ID: {owner_id}\n'
             f'🔗 URL added successfully!'
         )
         
@@ -1242,13 +1246,15 @@ async def customchange(update: Update, context: CallbackContext) -> None:
             await update.message.reply_text(f'❌ This character is not a Custom character.')
             return
         
-        # Initialize slots if not present
-        if 'slots' not in custom_char:
-            custom_char['slots'] = {1: None, 2: None, 3: None}
-        
         # Initialize owner_slots if not present
         if 'owner_slots' not in custom_char:
             custom_char['owner_slots'] = {}
+        
+        # Initialize this owner's slots if not present
+        if user_id not in custom_char['owner_slots']:
+            custom_char['owner_slots'][user_id] = {'1': None, '2': None, '3': None}
+        
+        owner_slots = custom_char['owner_slots'][user_id]
         
         # If slot number is provided, change active slot for this owner
         if len(args) > 1:
@@ -1258,15 +1264,15 @@ async def customchange(update: Update, context: CallbackContext) -> None:
                     await update.message.reply_text('❌ Slot must be 1, 2, or 3.')
                     return
                 
-                # Check if slot is populated
-                if custom_char['slots'].get(str(new_slot)) is None:
+                # Check if slot is populated for this owner
+                if owner_slots.get(str(new_slot)) is None:
                     await update.message.reply_text(f'❌ Slot {new_slot} is empty.')
                     return
                 
-                # Update owner's slot preference
+                # Update owner's active slot preference
                 await collection.update_one(
                     {'_id': custom_char['_id']},
-                    {'$set': {f'owner_slots.{user_id}': new_slot}}
+                    {'$set': {f'owner_slots.{user_id}._active': new_slot}}
                 )
                 
                 await update.message.reply_text(f'✅ Your active slot changed to slot {new_slot} for {custom_char["name"]}!')
@@ -1275,16 +1281,16 @@ async def customchange(update: Update, context: CallbackContext) -> None:
                 await update.message.reply_text('❌ Slot must be a number (1, 2, or 3).')
                 return
         
-        # Show all slots
+        # Show all slots for this owner
         char_name = custom_char.get('name', 'Unknown')
         anime = custom_char.get('anime', 'Unknown')
-        active = custom_char['owner_slots'].get(user_id, 1)
+        active = owner_slots.get('_active', 1)
         
         slots_display = "🎐 𝘠𝘰𝘶𝘳 𝘤𝘶𝘴𝘵𝘰𝘮 𝘈𝘳𝘵𝘴 : \n\n"
         
         # Slot 1
         slots_display += "𝘚𝘭𝘰𝘵 1 :\n"
-        slot1_data = custom_char['slots'].get('1')
+        slot1_data = owner_slots.get('1')
         if slot1_data:
             slots_display += f"{char_name}\n\n{anime}\n\n𝘔𝘺𝘴𝘵𝘪𝘤𝘢𝘭 💎"
         else:
@@ -1294,7 +1300,7 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         
         # Slot 2
         slots_display += "𝘚𝘭𝘰𝘵 2 :\n"
-        slot2_data = custom_char['slots'].get('2')
+        slot2_data = owner_slots.get('2')
         if slot2_data:
             slots_display += f"{char_name}\n\n{anime}\n\n𝘌𝘥𝘪𝘵 💎"
         else:
@@ -1304,7 +1310,7 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         
         # Slot 3
         slots_display += "𝘚𝘭𝘰𝘵 3 :\n"
-        slot3_data = custom_char['slots'].get('3')
+        slot3_data = owner_slots.get('3')
         if slot3_data:
             slots_display += f"{char_name}\n\n{anime}\n\n𝘊𝘶𝘴𝘵𝘰𝘮 𝘯𝘶𝘥𝘦 💎"
         else:
