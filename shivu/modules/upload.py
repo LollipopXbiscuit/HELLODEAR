@@ -160,13 +160,22 @@ def is_discord_cdn_url(url):
         return False
 
 
-def get_character_display_url(character):
+async def get_character_display_url(character, char_id=None):
     """Get the correct URL to display for a character, respecting custom slots"""
-    if character.get('rarity') == 'Custom' and 'slots' in character:
-        active_slot = character.get('active_slot', 1)
-        slot_data = character['slots'].get(str(active_slot))
-        if slot_data and 'url' in slot_data:
-            return slot_data['url']
+    # For custom characters, fetch fresh data from main collection to get updated slots
+    if character.get('rarity') == 'Custom':
+        if char_id:
+            fresh_char = await collection.find_one({'id': char_id})
+            if fresh_char and 'slots' in fresh_char:
+                active_slot = fresh_char.get('active_slot', 1)
+                slot_data = fresh_char['slots'].get(str(active_slot))
+                if slot_data and 'url' in slot_data:
+                    return slot_data['url']
+        elif 'slots' in character:
+            active_slot = character.get('active_slot', 1)
+            slot_data = character['slots'].get(str(active_slot))
+            if slot_data and 'url' in slot_data:
+                return slot_data['url']
     return character.get('img_url', '')
 
 
@@ -793,7 +802,7 @@ async def find(update: Update, context: CallbackContext) -> None:
         
         # Process the image URL for compatibility
         from shivu import process_image_url, LOGGER
-        display_url = get_character_display_url(character)
+        display_url = await get_character_display_url(character, character_id)
         processed_url = await process_image_url(display_url)
         
         # Check if it's a video and use appropriate send method
