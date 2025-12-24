@@ -1284,8 +1284,13 @@ async def customchange(update: Update, context: CallbackContext) -> None:
                     return
                 
                 # Check if slot is populated for this owner
-                if owner_slots.get(str(new_slot)) is None:
-                    await update.message.reply_text(f'❌ Slot {new_slot} is empty.')
+                slot_data = owner_slots.get(str(new_slot))
+                if not slot_data or (isinstance(slot_data, dict) and not slot_data.get('url')):
+                    slot_names = {1: 'Mystical', 2: 'Edit', 3: 'Custom Nude'}
+                    await update.message.reply_text(
+                        f'❌ Slot {new_slot} ({slot_names.get(new_slot, "Unknown")}) is empty.\n\n'
+                        f'Use /customupload to add a URL to this slot first.'
+                    )
                     return
                 
                 # Update owner's active slot preference
@@ -1308,32 +1313,32 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         slots_display = "🎐 𝘠𝘰𝘶𝘳 𝘤𝘶𝘴𝘵𝘰𝘮 𝘈𝘳𝘵𝘴 : \n\n"
         
         # Slot 1
-        slots_display += "𝘚𝘭𝘰𝘵 1 :\n"
+        slots_display += "𝘚𝘭𝘰𝘵 1 (Mystical) 💎:\n"
         slot1_data = owner_slots.get('1')
-        if slot1_data:
-            slots_display += f"{char_name}\n\n{anime}\n\n𝘔𝘺𝘴𝘵𝘪𝘤𝘢𝘭 💎"
+        if slot1_data and isinstance(slot1_data, dict) and slot1_data.get('url'):
+            slots_display += f"✅ {slot1_data.get('type', 'Image').upper()}"
         else:
-            slots_display += "empty"
+            slots_display += "❌ empty (use /customupload)"
         
         slots_display += "\n\n-------------------\n"
         
         # Slot 2
-        slots_display += "𝘚𝘭𝘰𝘵 2 :\n"
+        slots_display += "𝘚𝘭𝘰𝘵 2 (Edit) 🎬:\n"
         slot2_data = owner_slots.get('2')
-        if slot2_data:
-            slots_display += f"{char_name}\n\n{anime}\n\n𝘌𝘥𝘪𝘵 💎"
+        if slot2_data and isinstance(slot2_data, dict) and slot2_data.get('url'):
+            slots_display += f"✅ {slot2_data.get('type', 'Video').upper()}"
         else:
-            slots_display += "empty"
+            slots_display += "❌ empty (use /customupload)"
         
         slots_display += "\n\n-------------------\n"
         
         # Slot 3
-        slots_display += "𝘚𝘭𝘰𝘵 3 :\n"
+        slots_display += "𝘚𝘭𝘰𝘵 3 (Custom Nude) 💎:\n"
         slot3_data = owner_slots.get('3')
-        if slot3_data:
-            slots_display += f"{char_name}\n\n{anime}\n\n𝘊𝘶𝘴𝘵𝘰𝘮 𝘯𝘶𝘥𝘦 💎"
+        if slot3_data and isinstance(slot3_data, dict) and slot3_data.get('url'):
+            slots_display += f"✅ {slot3_data.get('type', 'Image').upper()}"
         else:
-            slots_display += "empty"
+            slots_display += "❌ empty (use /customupload)"
         
         slots_display += f"\n\n💡 Use `/customchange {char_id} [1/2/3]` to switch slots"
         
