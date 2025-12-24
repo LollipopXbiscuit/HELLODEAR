@@ -14,6 +14,16 @@ from pyrogram.errors import UserNotParticipant, ChatAdminRequired, PeerIdInvalid
 from shivu import collection, user_collection, application, SUPPORT_CHAT, CHARA_CHANNEL_ID, shivuu, sudo_users
 from shivu.config import Config
 
+def get_character_display_url(character):
+    """Get the correct URL to display for a character, respecting custom slots"""
+    if character.get('rarity') == 'Custom' and 'slots' in character:
+        active_slot = character.get('active_slot', 1)
+        slot_data = character['slots'].get(str(active_slot))
+        if slot_data and 'url' in slot_data:
+            return slot_data['url']
+    return character.get('img_url', '')
+
+
 def is_video_url(url):
     """Check if a URL points to a video file"""
     if not url:
@@ -25,8 +35,8 @@ def is_video_character(character):
     if not character:
         return False
     
-    # Check URL extension
-    url = character.get('img_url', '')
+    # Get the correct display URL (respecting active_slot for custom characters)
+    url = get_character_display_url(character)
     if is_video_url(url):
         return True
     
@@ -371,7 +381,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
             if update.message:
                 try:
                     from shivu import process_image_url, LOGGER
-                    processed_url = await process_image_url(fav_character['img_url'])
+                    processed_url = await process_image_url(get_character_display_url(fav_character))
                     
                     # Check if it's a video and use appropriate send method
                     if is_video_character(fav_character):
@@ -396,7 +406,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                 try:
                     from shivu import process_image_url, LOGGER
                     from telegram import InputMediaPhoto, InputMediaVideo
-                    processed_url = await process_image_url(fav_character['img_url'])
+                    processed_url = await process_image_url(get_character_display_url(fav_character))
                     
                     # Check if it's a video and use appropriate media type
                     if is_video_character(fav_character):
@@ -444,7 +454,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                     if update.message:
                         try:
                             from shivu import process_image_url, LOGGER
-                            processed_url = await process_image_url(random_character['img_url'])
+                            processed_url = await process_image_url(get_character_display_url(random_character))
                             
                             if is_video_character(random_character):
                                 try:
@@ -462,7 +472,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                         try:
                             from shivu import process_image_url, LOGGER
                             from telegram import InputMediaPhoto, InputMediaVideo
-                            processed_url = await process_image_url(random_character['img_url'])
+                            processed_url = await process_image_url(get_character_display_url(random_character))
                             
                             if is_video_character(random_character):
                                 try:
@@ -509,7 +519,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                 if update.message:
                     try:
                         from shivu import process_image_url, LOGGER
-                        processed_url = await process_image_url(random_character['img_url'])
+                        processed_url = await process_image_url(get_character_display_url(random_character))
                         
                         # Check if it's a video and use appropriate send method
                         if is_video_character(random_character):
@@ -534,7 +544,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                     try:
                         from shivu import process_image_url, LOGGER
                         from telegram import InputMediaPhoto, InputMediaVideo
-                        processed_url = await process_image_url(random_character['img_url'])
+                        processed_url = await process_image_url(get_character_display_url(random_character))
                         
                         # Check if it's a video and use appropriate media type
                         if is_video_character(random_character):

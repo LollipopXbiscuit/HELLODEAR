@@ -160,6 +160,16 @@ def is_discord_cdn_url(url):
         return False
 
 
+def get_character_display_url(character):
+    """Get the correct URL to display for a character, respecting custom slots"""
+    if character.get('rarity') == 'Custom' and 'slots' in character:
+        active_slot = character.get('active_slot', 1)
+        slot_data = character['slots'].get(str(active_slot))
+        if slot_data and 'url' in slot_data:
+            return slot_data['url']
+    return character.get('img_url', '')
+
+
 def is_video_url(url):
     """Check if a URL points to a video file"""
     if not url:
@@ -783,7 +793,8 @@ async def find(update: Update, context: CallbackContext) -> None:
         
         # Process the image URL for compatibility
         from shivu import process_image_url, LOGGER
-        processed_url = await process_image_url(character['img_url'])
+        display_url = get_character_display_url(character)
+        processed_url = await process_image_url(display_url)
         
         # Check if it's a video and use appropriate send method
         if is_video_character(character):
