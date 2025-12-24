@@ -1114,6 +1114,212 @@ async def removeuploader(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text(f'❌ Error removing uploader: {str(e)}')
 
 
+async def customupload(update: Update, context: CallbackContext) -> None:
+    """Upload custom character URLs for level 3 artists only - /customupload img_url character-name anime slot-number"""
+    if not update.effective_user or not update.message:
+        return
+    
+    level = await get_uploader_level(update.effective_user.id)
+    if level != 3:
+        await update.message.reply_text('❌ Only level 3 artists (🎐) can use /customupload command.')
+        return
+    
+    try:
+        args = context.args
+        if not args or len(args) != 4:
+            await update.message.reply_text(
+                '❌ Wrong format!\n\n'
+                'Usage: /customupload img_url character-name anime slot-number\n\n'
+                'Example: /customupload https://example.com/image.jpg Rem Re:Zero 1\n\n'
+                '📌 Slots:\n'
+                '• Slot 1: Image URL\n'
+                '• Slot 2: Image URL\n'
+                '• Slot 3: Video URL\n\n'
+                '✅ Supported: Direct image/video URLs (MP4), Discord CDN links, etc.'
+            )
+            return
+        
+        url = args[0]
+        char_name = args[1]
+        anime_name = args[2]
+        slot_num = args[3]
+        
+        # Validate slot number
+        try:
+            slot = int(slot_num)
+            if slot not in [1, 2, 3]:
+                await update.message.reply_text('❌ Slot must be 1, 2, or 3.')
+                return
+        except ValueError:
+            await update.message.reply_text('❌ Slot must be a number (1, 2, or 3).')
+            return
+        
+        # Validate URL
+        is_valid, validation_message = validate_url(url)
+        if not is_valid:
+            await update.message.reply_text(f'❌ Invalid URL: {validation_message}')
+            return
+        
+        # Determine URL type (image or video)
+        is_video = 'video' in validation_message.lower() or any(ext in url.lower() for ext in ['.mp4', '.mov', '.avi', '.mkv'])
+        
+        # Check if slot 3 must be video, slots 1-2 must be images
+        if slot == 3 and not is_video:
+            await update.message.reply_text('❌ Slot 3 must be a video URL (MP4, MOV, AVI, MKV).')
+            return
+        if slot in [1, 2] and is_video:
+            await update.message.reply_text('❌ Slots 1 and 2 must be image URLs, not videos.')
+            return
+        
+        # Clean character name and anime name
+        import unicodedata
+        char_name = char_name.replace('-', ' ').replace('_', ' ')
+        char_name = ''.join(c for c in unicodedata.normalize('NFKD', char_name) if not unicodedata.combining(c))
+        char_name = ' '.join(char_name.split()).title()
+        
+        anime_name = anime_name.replace('-', ' ').replace('_', ' ')
+        anime_name = ''.join(c for c in unicodedata.normalize('NFKD', anime_name) if not unicodedata.combining(c))
+        anime_name = ' '.join(anime_name.split()).title()
+        
+        # Find custom character by name and anime
+        custom_char = await collection.find_one({'name': char_name, 'anime': anime_name, 'rarity': 'Custom'})
+        
+        if not custom_char:
+            await update.message.reply_text(f'❌ Custom character "{char_name}" from "{anime_name}" not found.')
+            return
+        
+        # Initialize slots if not present
+        if 'slots' not in custom_char:
+            custom_char['slots'] = {1: None, 2: None, 3: None}
+        
+        # Update the specific slot
+        custom_char['slots'][str(slot)] = {'url': url, 'type': 'video' if is_video else 'image'}
+        
+        # Initialize active_slot if not present
+        if 'active_slot' not in custom_char:
+            custom_char['active_slot'] = 1
+        
+        # Update database
+        await collection.update_one(
+            {'_id': custom_char['_id']},
+            {'$set': {'slots': custom_char['slots']}}
+        )
+        
+        slot_type = '🎬 Video' if is_video else '🖼️ Image'
+        await update.message.reply_text(
+            f'✅ **Custom Slot Updated!**\n\n'
+            f'👾 Character: {char_name}\n'
+            f'🎌 Anime: {anime_name}\n'
+            f'📍 Slot {slot}: {slot_type}\n'
+            f'🔗 URL: `{url}`'
+        )
+        
+    except Exception as e:
+        await update.message.reply_text(f'❌ Error uploading custom slot: {str(e)}')
+
+
+async def customchange(update: Update, context: CallbackContext) -> None:
+    """Change active custom character slot - /customchange character_id [slot_number]"""
+    if not update.effective_user or not update.message:
+        return
+    
+    try:
+        args = context.args
+        if not args or len(args) == 0:
+            await update.message.reply_text(
+                '❌ Wrong format!\n\n'
+                'Usage: /customchange character_id [slot_number]\n\n'
+                'Example: /customchange 123 1\n\n'
+                'If no slot is specified, shows all available slots.'
+            )
+            return
+        
+        char_id = args[0]
+        
+        # Find the character
+        custom_char = await collection.find_one({'id': char_id})
+        
+        if not custom_char:
+            await update.message.reply_text(f'❌ Character with ID {char_id} not found.')
+            return
+        
+        if custom_char.get('rarity') != 'Custom':
+            await update.message.reply_text(f'❌ This character is not a Custom character.')
+            return
+        
+        # Initialize slots if not present
+        if 'slots' not in custom_char:
+            custom_char['slots'] = {1: None, 2: None, 3: None}
+        
+        if 'active_slot' not in custom_char:
+            custom_char['active_slot'] = 1
+        
+        # If slot number is provided, change active slot
+        if len(args) > 1:
+            try:
+                new_slot = int(args[1])
+                if new_slot not in [1, 2, 3]:
+                    await update.message.reply_text('❌ Slot must be 1, 2, or 3.')
+                    return
+                
+                # Check if slot is populated
+                if custom_char['slots'].get(str(new_slot)) is None:
+                    await update.message.reply_text(f'❌ Slot {new_slot} is empty.')
+                    return
+                
+                # Update active slot
+                await collection.update_one(
+                    {'_id': custom_char['_id']},
+                    {'$set': {'active_slot': new_slot}}
+                )
+                
+                await update.message.reply_text(f'✅ Active slot changed to slot {new_slot} for {custom_char["name"]}!')
+                
+            except ValueError:
+                await update.message.reply_text('❌ Slot must be a number (1, 2, or 3).')
+                return
+        
+        # Show all slots
+        char_name = custom_char.get('name', 'Unknown')
+        anime = custom_char.get('anime', 'Unknown')
+        active = custom_char.get('active_slot', 1)
+        
+        slots_display = f"🎐 **Your Custom Arts:**\n\n"
+        slots_display += f"👾 **{char_name}**\n"
+        slots_display += f"🎌 **{anime}**\n"
+        slots_display += "━━━━━━━━━━━━━━━━\n\n"
+        
+        for slot_num in [1, 2, 3]:
+            slot_key = str(slot_num)
+            slot_data = custom_char['slots'].get(slot_key)
+            active_mark = "✅ " if active == slot_num else ""
+            
+            if slot_num == 1:
+                emoji = "🖼️"
+                slot_label = "Image"
+            elif slot_num == 2:
+                emoji = "🖼️"
+                slot_label = "Image"
+            else:
+                emoji = "🎬"
+                slot_label = "Video"
+            
+            if slot_data:
+                slots_display += f"{active_mark}**Slot {slot_num} ({slot_label}):**\n"
+                slots_display += f"{emoji} `Uploaded`\n"
+            else:
+                slots_display += f"**Slot {slot_num}:** Empty\n"
+            
+            slots_display += "━━━━━━━━━━━━━━━━\n"
+        
+        slots_display += f"\n💡 Use `/customchange {char_id} [1/2/3]` to switch slots"
+        
+        await update.message.reply_text(slots_display, parse_mode='Markdown')
+        
+    except Exception as e:
+        await update.message.reply_text(f'❌ Error: {str(e)}')
+
+
 UPLOAD_HANDLER = CommandHandler('upload', upload, block=False)
 application.add_handler(UPLOAD_HANDLER)
 DELETE_HANDLER = CommandHandler('delete', delete, block=False)
@@ -1136,3 +1342,7 @@ REMOVEUPLOADER_HANDLER = CommandHandler('removeuploader', removeuploader, block=
 application.add_handler(REMOVEUPLOADER_HANDLER)
 PROMOTE_HANDLER = CommandHandler('promote', promote, block=False)
 application.add_handler(PROMOTE_HANDLER)
+CUSTOMUPLOAD_HANDLER = CommandHandler('customupload', customupload, block=False)
+application.add_handler(CUSTOMUPLOAD_HANDLER)
+CUSTOMCHANGE_HANDLER = CommandHandler('customchange', customchange, block=False)
+application.add_handler(CUSTOMCHANGE_HANDLER)
