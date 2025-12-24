@@ -167,13 +167,13 @@ def is_video_url(url):
         return False
     return any(ext in url.lower() for ext in ['.mp4', '.mov', '.avi', '.mkv', '.webm', '.flv'])
 
-async def is_video_character(character, char_id=None):
+async def is_video_character(character, char_id=None, user_id=None):
     """Check if a character is a video by URL extension or name marker"""
     if not character:
         return False
     
     # Get the correct display URL (respecting active_slot for custom characters)
-    url = await get_character_display_url(character, char_id)
+    url = await get_character_display_url(character, char_id, user_id)
     if is_video_url(url):
         return True
     
@@ -799,7 +799,7 @@ async def find(update: Update, context: CallbackContext) -> None:
         processed_url = await process_image_url(display_url)
         
         # Check if it's a video and use appropriate send method
-        if await is_video_character(character, character_id):
+        if await is_video_character(character, character_id, user_id):
             try:
                 await context.bot.send_video(
                     chat_id=update.effective_chat.id,
