@@ -172,14 +172,20 @@ async def is_video_character(character, char_id=None, user_id=None):
     if not character:
         return False
     
-    # Get the correct display URL (respecting active_slot for custom characters)
-    url = await get_character_display_url(character, char_id, user_id)
-    if is_video_url(url):
-        return True
-    
-    # Check for 🎬 emoji marker in name
+    # Check for 🎬 emoji marker first (fastest check)
     name = character.get('name', '')
     if '🎬' in name:
+        return True
+    
+    # Get the correct display URL (respecting active_slot for custom characters)
+    # Only fetch fresh data for custom characters with user_id to avoid expensive lookups
+    if user_id and character.get('rarity') == 'Custom':
+        url = await get_character_display_url(character, char_id, user_id)
+    else:
+        # For non-custom or queries without user_id, use simpler lookup
+        url = character.get('img_url', '')
+    
+    if is_video_url(url):
         return True
     
     return False
