@@ -1284,37 +1284,39 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         anime = custom_char.get('anime', 'Unknown')
         active = custom_char.get('active_slot', 1)
         
-        slots_display = f"🎐 **Your Custom Arts:**\n\n"
-        slots_display += f"👾 **{char_name}**\n"
-        slots_display += f"🎌 **{anime}**\n"
-        slots_display += "━━━━━━━━━━━━━━━━\n\n"
+        slots_display = "🎐 𝘠𝘰𝘶𝘳 𝘤𝘶𝘴𝘵𝘰𝘮 𝘈𝘳𝘵𝘴 : \n\n"
         
-        for slot_num in [1, 2, 3]:
-            slot_key = str(slot_num)
-            slot_data = custom_char['slots'].get(slot_key)
-            active_mark = "✅ " if active == slot_num else ""
-            
-            if slot_num == 1:
-                emoji = "🖼️"
-                slot_label = "Image"
-            elif slot_num == 2:
-                emoji = "🖼️"
-                slot_label = "Image"
-            else:
-                emoji = "🎬"
-                slot_label = "Video"
-            
-            if slot_data:
-                slots_display += f"{active_mark}**Slot {slot_num} ({slot_label}):**\n"
-                slots_display += f"{emoji} `Uploaded`\n"
-            else:
-                slots_display += f"**Slot {slot_num}:** Empty\n"
-            
-            slots_display += "━━━━━━━━━━━━━━━━\n"
+        # Slot 1
+        slots_display += "𝘚𝘭𝘰𝘵 1 :\n"
+        slot1_data = custom_char['slots'].get('1')
+        if slot1_data:
+            slots_display += f"{char_name}\n\n{anime}\n\n𝘔𝘺𝘴𝘵𝘪𝘤𝘢𝘭 💎"
+        else:
+            slots_display += "empty"
         
-        slots_display += f"\n💡 Use `/customchange {char_id} [1/2/3]` to switch slots"
+        slots_display += "\n\n-------------------\n"
         
-        await update.message.reply_text(slots_display, parse_mode='Markdown')
+        # Slot 2
+        slots_display += "𝘚𝘭𝘰𝘵 2 :\n"
+        slot2_data = custom_char['slots'].get('2')
+        if slot2_data:
+            slots_display += f"{char_name}\n\n{anime}\n\n𝘌𝘥𝘪𝘵 💎"
+        else:
+            slots_display += "empty"
+        
+        slots_display += "\n\n-------------------\n"
+        
+        # Slot 3
+        slots_display += "𝘚𝘭𝘰𝘵 3 :\n"
+        slot3_data = custom_char['slots'].get('3')
+        if slot3_data:
+            slots_display += f"{char_name}\n\n{anime}\n\n𝘊𝘶𝘴𝘵𝘰𝘮 𝘯𝘶𝘥𝘦 💎"
+        else:
+            slots_display += "empty"
+        
+        slots_display += f"\n\n💡 Use `/customchange {char_id} [1/2/3]` to switch slots"
+        
+        await update.message.reply_text(slots_display)
         
     except Exception as e:
         await update.message.reply_text(f'❌ Error: {str(e)}')
