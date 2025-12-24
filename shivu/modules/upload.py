@@ -162,20 +162,22 @@ def is_discord_cdn_url(url):
 
 async def get_character_display_url(character, char_id=None):
     """Get the correct URL to display for a character, respecting custom slots"""
-    # For custom characters, fetch fresh data from main collection to get updated slots
-    if character.get('rarity') == 'Custom':
-        if char_id:
-            fresh_char = await collection.find_one({'id': char_id})
-            if fresh_char and 'slots' in fresh_char:
-                active_slot = fresh_char.get('active_slot', 1)
-                slot_data = fresh_char['slots'].get(str(active_slot))
-                if slot_data and 'url' in slot_data:
-                    return slot_data['url']
-        elif 'slots' in character:
-            active_slot = character.get('active_slot', 1)
-            slot_data = character['slots'].get(str(active_slot))
+    # Always fetch fresh data if char_id is provided to check for custom slots
+    if char_id:
+        fresh_char = await collection.find_one({'id': char_id})
+        if fresh_char and fresh_char.get('rarity') == 'Custom' and 'slots' in fresh_char:
+            active_slot = fresh_char.get('active_slot', 1)
+            slot_data = fresh_char['slots'].get(str(active_slot))
             if slot_data and 'url' in slot_data:
                 return slot_data['url']
+    
+    # Fallback to character object's data
+    if 'slots' in character and character.get('rarity') == 'Custom':
+        active_slot = character.get('active_slot', 1)
+        slot_data = character['slots'].get(str(active_slot))
+        if slot_data and 'url' in slot_data:
+            return slot_data['url']
+    
     return character.get('img_url', '')
 
 
