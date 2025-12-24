@@ -1115,7 +1115,7 @@ async def removeuploader(update: Update, context: CallbackContext) -> None:
 
 
 async def customupload(update: Update, context: CallbackContext) -> None:
-    """Upload custom character URLs for level 3 artists only - /customupload img_url character-name anime slot-number"""
+    """Upload custom character URLs for level 3 artists only - /customupload img_url id slot-number"""
     if not update.effective_user or not update.message:
         return
     
@@ -1126,23 +1126,22 @@ async def customupload(update: Update, context: CallbackContext) -> None:
     
     try:
         args = context.args
-        if not args or len(args) != 4:
+        if not args or len(args) != 3:
             await update.message.reply_text(
                 '❌ Wrong format!\n\n'
-                'Usage: /customupload img_url character-name anime slot-number\n\n'
-                'Example: /customupload https://example.com/image.jpg Rem Re:Zero 1\n\n'
+                'Usage: /customupload img_url id slot-number\n\n'
+                'Example: /customupload https://example.com/image.jpg 1617 1\n\n'
                 '📌 Slots:\n'
-                '• Slot 1: Image URL\n'
-                '• Slot 2: Image URL\n'
-                '• Slot 3: Video URL\n\n'
+                '• Slot 1: Image URL (Mystical)\n'
+                '• Slot 2: Image URL (Edit)\n'
+                '• Slot 3: Video URL (Custom Nude)\n\n'
                 '✅ Supported: Direct image/video URLs (MP4), Discord CDN links, etc.'
             )
             return
         
         url = args[0]
-        char_name = args[1]
-        anime_name = args[2]
-        slot_num = args[3]
+        char_id = args[1]
+        slot_num = args[2]
         
         # Validate slot number
         try:
@@ -1171,21 +1170,11 @@ async def customupload(update: Update, context: CallbackContext) -> None:
             await update.message.reply_text('❌ Slots 1 and 2 must be image URLs, not videos.')
             return
         
-        # Clean character name and anime name
-        import unicodedata
-        char_name = char_name.replace('-', ' ').replace('_', ' ')
-        char_name = ''.join(c for c in unicodedata.normalize('NFKD', char_name) if not unicodedata.combining(c))
-        char_name = ' '.join(char_name.split()).title()
-        
-        anime_name = anime_name.replace('-', ' ').replace('_', ' ')
-        anime_name = ''.join(c for c in unicodedata.normalize('NFKD', anime_name) if not unicodedata.combining(c))
-        anime_name = ' '.join(anime_name.split()).title()
-        
-        # Find custom character by name and anime
-        custom_char = await collection.find_one({'name': char_name, 'anime': anime_name, 'rarity': 'Custom'})
+        # Find custom character by ID
+        custom_char = await collection.find_one({'id': char_id, 'rarity': 'Custom'})
         
         if not custom_char:
-            await update.message.reply_text(f'❌ Custom character "{char_name}" from "{anime_name}" not found.')
+            await update.message.reply_text(f'❌ Custom character with ID {char_id} not found.')
             return
         
         # Initialize slots if not present
@@ -1206,12 +1195,13 @@ async def customupload(update: Update, context: CallbackContext) -> None:
         )
         
         slot_type = '🎬 Video' if is_video else '🖼️ Image'
+        slot_label = ['Mystical', 'Edit', 'Custom Nude'][slot - 1]
         await update.message.reply_text(
             f'✅ **Custom Slot Updated!**\n\n'
-            f'👾 Character: {char_name}\n'
-            f'🎌 Anime: {anime_name}\n'
-            f'📍 Slot {slot}: {slot_type}\n'
-            f'🔗 URL: `{url}`'
+            f'👾 Character: {custom_char["name"]}\n'
+            f'🎌 Anime: {custom_char["anime"]}\n'
+            f'📍 Slot {slot} ({slot_label}): {slot_type}\n'
+            f'🔗 URL added successfully!'
         )
         
     except Exception as e:
