@@ -1324,6 +1324,65 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text(f'❌ Error: {str(e)}')
 
 
+async def debug_card(update: Update, context: CallbackContext) -> None:
+    """Debug card owners and slots - /debugcard card_id"""
+    if not update.effective_user or not update.message:
+        return
+    
+    if update.effective_user.id not in sudo_users:
+        await update.message.reply_text('❌ Admin only command.')
+        return
+    
+    try:
+        args = context.args
+        if not args or len(args) < 1:
+            await update.message.reply_text('Usage: /debugcard card_id')
+            return
+        
+        card_id = args[0]
+        
+        # Find the character
+        char = await collection.find_one({'id': card_id})
+        if not char:
+            char = await collection.find_one({'id': int(card_id)})
+        
+        if not char:
+            await update.message.reply_text(f'❌ Card {card_id} not found.')
+            return
+        
+        msg = f"📊 Card Debug Info:\n\n"
+        msg += f"ID: {char.get('id')}\n"
+        msg += f"Name: {char.get('name')}\n"
+        msg += f"Has 'slots': {'Yes' if 'slots' in char else 'No'}\n"
+        msg += f"Has 'owner_slots': {'Yes' if 'owner_slots' in char else 'No'}\n\n"
+        
+        # Find owners
+        char_id_str = str(card_id)
+        char_id_int = int(card_id) if isinstance(card_id, str) and card_id.isdigit() else card_id
+        
+        users_with_char = await user_collection.find({'characters.id': char_id_str}).to_list(None)
+        if not users_with_char:
+            users_with_char = await user_collection.find({'characters.id': char_id_int}).to_list(None)
+        
+        msg += f"👥 Found {len(users_with_char)} owner(s):\n"
+        for user in users_with_char:
+            msg += f"  • User ID: {user.get('id')} ({user.get('first_name', 'Unknown')})\n"
+        
+        if 'slots' in char:
+            msg += f"\n🎰 Old slots data exists:"
+            for slot_num in ['1', '2', '3']:
+                slot_data = char.get('slots', {}).get(slot_num)
+                if slot_data:
+                    msg += f"\n  Slot {slot_num}: ✓ Filled"
+                else:
+                    msg += f"\n  Slot {slot_num}: Empty"
+        
+        await update.message.reply_text(msg)
+        
+    except Exception as e:
+        await update.message.reply_text(f'❌ Debug error: {str(e)}')
+
+
 async def migrate_slots(update: Update, context: CallbackContext) -> None:
     """Auto-migrate old slots format to owner-specific slots by detecting owners from user harem"""
     if not update.effective_user or not update.message:
@@ -1343,6 +1402,7 @@ async def migrate_slots(update: Update, context: CallbackContext) -> None:
             return
         
         migrated_count = 0
+        failed_chars = []
         
         for char in old_format_chars:
             char_id = char.get('id')
@@ -1353,12 +1413,9 @@ async def migrate_slots(update: Update, context: CallbackContext) -> None:
             
             # Find owners of this character - try both string and int formats
             owners = []
-            try:
-                users_with_char_str = await user_collection.find({'characters.id': char_id_str}).to_list(None)
-                users_with_char_int = await user_collection.find({'characters.id': char_id_int}).to_list(None)
-                users_with_char = users_with_char_str if users_with_char_str else users_with_char_int
-            except:
-                users_with_char = []
+            users_with_char_str = await user_collection.find({'characters.id': char_id_str}).to_list(None)
+            users_with_char_int = await user_collection.find({'characters.id': char_id_int}).to_list(None)
+            users_with_char = users_with_char_str if users_with_char_str else users_with_char_int
             
             for user in users_with_char:
                 owner_id = str(user.get('id'))
@@ -1389,19 +1446,16 @@ async def migrate_slots(update: Update, context: CallbackContext) -> None:
                 )
                 
                 migrated_count += 1
+            else:
+                failed_chars.append(char_id_str)
         
-        if migrated_count == 0:
-            await update.message.reply_text(
-                '⚠️ Found old slot format but no owners detected.\n\n'
-                'Please check if custom characters are in user harems.\n'
-                'Owners must have the character in their harem first.'
-            )
-        else:
-            await update.message.reply_text(
-                f'✅ Migration Complete!\n\n'
-                f'Migrated {migrated_count} custom character(s) to owner-specific slots.\n\n'
-                f'Each owner now has independent slots for their custom characters.'
-            )
+        msg = f'✅ Migration Complete!\n\n'
+        msg += f'Migrated: {migrated_count} custom character(s)\n'
+        if failed_chars:
+            msg += f'Failed (no owners): {", ".join(failed_chars)}\n'
+            msg += f'\n💡 Cards with no owners need to be in user harems first.'
+        
+        await update.message.reply_text(msg)
         
     except Exception as e:
         await update.message.reply_text(f'❌ Migration error: {str(e)}')
@@ -1433,5 +1487,7 @@ CUSTOMUPLOAD_HANDLER = CommandHandler('customupload', customupload, block=False)
 application.add_handler(CUSTOMUPLOAD_HANDLER)
 CUSTOMCHANGE_HANDLER = CommandHandler('customchange', customchange, block=False)
 application.add_handler(CUSTOMCHANGE_HANDLER)
+DEBUG_CARD_HANDLER = CommandHandler('debugcard', debug_card, block=False)
+application.add_handler(DEBUG_CARD_HANDLER)
 MIGRATE_SLOTS_HANDLER = CommandHandler('migrateslots', migrate_slots, block=False)
 application.add_handler(MIGRATE_SLOTS_HANDLER)
