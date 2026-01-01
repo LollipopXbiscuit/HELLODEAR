@@ -142,7 +142,7 @@ async def promote(update: Update, context: CallbackContext) -> None:
 
 
 def is_discord_cdn_url(url):
-    """Check if the URL is a Discord CDN link"""
+    """Check if the URL is a Discord CDN link or a local/direct file link"""
     try:
         parsed = urllib.parse.urlparse(url)
         if parsed.scheme not in ['http', 'https']:
@@ -156,7 +156,11 @@ def is_discord_cdn_url(url):
             'media.discord.com'
         ]
         
-        return parsed.netloc in discord_hosts
+        # Also support 0.0.0.0 or other direct IP links mentioned by user
+        if parsed.netloc in discord_hosts or parsed.netloc == '0.0.0.0':
+            return True
+            
+        return False
     except:
         return False
 
@@ -196,17 +200,17 @@ def validate_url(url):
     Validate a URL and return whether it's accessible.
     Handles Discord CDN links with special logic.
     """
-    # For Discord CDN links, bypass full validation and just check structure
+    # For Discord or direct file links (like 0.0.0.0/dl/...), bypass full validation and just check structure
     if is_discord_cdn_url(url):
         try:
             parsed = urllib.parse.urlparse(url)
-            # Basic validation for Discord CDN structure
+            # Basic validation for path structure
             if parsed.path and ('/' in parsed.path[1:]):  # Has meaningful path
-                return True, "Discord CDN link (validation bypassed)"
+                return True, "Media link (validation bypassed)"
             else:
-                return False, "Invalid Discord CDN link structure"
+                return False, "Invalid media link structure"
         except:
-            return False, "Invalid Discord CDN URL format"
+            return False, "Invalid media URL format"
     
     # For non-Discord URLs, perform full validation
     try:
