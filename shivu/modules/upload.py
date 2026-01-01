@@ -302,6 +302,12 @@ async def upload(update: Update, context: CallbackContext) -> None:
 
         # Validate URL with enhanced Discord CDN support
         is_valid, validation_message = validate_url(args[0])
+        # If the error is "URL does not appear to be an image or video", we check for local links
+        if not is_valid and "does not appear to be an image or video" in validation_message:
+             if is_discord_cdn_url(args[0]):
+                 is_valid = True
+                 validation_message = "Media link (validation bypassed)"
+
         if not is_valid:
             await update.message.reply_text(f'Invalid URL: {validation_message}')
             return
