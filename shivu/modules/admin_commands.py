@@ -7,7 +7,7 @@ import asyncio
 
 from shivu import collection, locked_spawns_collection, shivuu, application, user_collection, group_user_totals_collection, banned_users_collection, OWNER_ID
 from shivu.config import Config
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 @shivuu.on_message(filters.command("lockspawn"))
 async def lockspawn(client, message):
@@ -880,7 +880,7 @@ async def bonk(client, message):
     existing_ban = await banned_users_collection.find_one({'user_id': target_id})
     if existing_ban:
         unban_date = existing_ban.get('unban_date')
-        remaining = unban_date - datetime.now()
+        remaining = unban_date - datetime.now(timezone.utc)
         days = remaining.days
         await message.reply_text(
             f"<tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji> User is already bonked!\n"
@@ -889,7 +889,7 @@ async def bonk(client, message):
         )
         return
     
-    ban_date = datetime.now()
+    ban_date = datetime.now(timezone.utc)
     unban_date = ban_date + timedelta(weeks=2)
     
     await banned_users_collection.insert_one({
@@ -1005,7 +1005,7 @@ async def bonk_ptb(update: Update, context: CallbackContext) -> None:
     existing_ban = await banned_users_collection.find_one({'user_id': target_id})
     if existing_ban:
         unban_date = existing_ban.get('unban_date')
-        remaining = unban_date - datetime.now()
+        remaining = unban_date - datetime.now(timezone.utc)
         days = remaining.days
         await update.message.reply_text(
             f"<tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji> User is already bonked!\n"
@@ -1014,7 +1014,7 @@ async def bonk_ptb(update: Update, context: CallbackContext) -> None:
         )
         return
     
-    ban_date = datetime.now()
+    ban_date = datetime.now(timezone.utc)
     unban_date = ban_date + timedelta(weeks=2)
     
     await banned_users_collection.insert_one({
@@ -1094,10 +1094,10 @@ async def check_ban(user_id: int):
     ban = await banned_users_collection.find_one({'user_id': user_id})
     if ban:
         unban_date = ban.get('unban_date')
-        if datetime.now() >= unban_date:
+        if datetime.now(timezone.utc) >= unban_date:
             await banned_users_collection.delete_one({'user_id': user_id})
             return None
-        remaining = unban_date - datetime.now()
+        remaining = unban_date - datetime.now(timezone.utc)
         days = remaining.days
         hours = remaining.seconds // 3600
         return {'banned': True, 'days': days, 'hours': hours}

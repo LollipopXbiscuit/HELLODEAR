@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext
 from shivu import application, sudo_users, event_settings_collection, collection
-from datetime import datetime
+from datetime import datetime, timezone
 
 async def startevent(update: Update, context: CallbackContext) -> None:
     """Start the Christmas event - only <tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji> characters will spawn"""
@@ -41,7 +41,7 @@ async def startevent(update: Update, context: CallbackContext) -> None:
         event_data = {
             'event_type': 'christmas',
             'active': True,
-            'started_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'started_at': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC'),
             'started_by': update.effective_user.id,
             'started_by_name': update.effective_user.first_name,
             'filter_emoji': '🎄'
@@ -91,7 +91,7 @@ async def endevent(update: Update, context: CallbackContext) -> None:
             {'_id': active_event['_id']},
             {'$set': {
                 'active': False,
-                'ended_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'ended_at': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC'),
                 'ended_by': update.effective_user.id,
                 'ended_by_name': update.effective_user.first_name
             }}

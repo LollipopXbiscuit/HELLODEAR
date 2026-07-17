@@ -11,7 +11,7 @@ from html import escape
 
 from shivu import collection, top_global_groups_collection, group_user_totals_collection, user_collection, user_totals_collection, locked_spawns_collection, shivuu, banned_users_collection, event_settings_collection
 from shivu import application, SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER, OWNER_ID, sudo_users
-from datetime import datetime
+from datetime import datetime, timezone
 from shivu.modules import ALL_MODULES
 
 
@@ -515,10 +515,10 @@ async def guess(update: Update, context: CallbackContext) -> None:
     ban = await banned_users_collection.find_one({'user_id': user_id})
     if ban:
         unban_date = ban.get('unban_date')
-        if datetime.now() >= unban_date:
+        if datetime.now(timezone.utc) >= unban_date:
             await banned_users_collection.delete_one({'user_id': user_id})
         else:
-            remaining = unban_date - datetime.now()
+            remaining = unban_date - datetime.now(timezone.utc)
             days = remaining.days
             hours = remaining.seconds // 3600
             time_str = f"{days} days" if days > 0 else f"{hours} hours"
@@ -542,7 +542,6 @@ async def guess(update: Update, context: CallbackContext) -> None:
         return
 
     # Check daily marriage limit (30 per day)
-    from datetime import datetime, timezone
     today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
     
     user_data = await user_collection.find_one({'id': user_id})
