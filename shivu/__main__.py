@@ -21,7 +21,7 @@ sent_characters = {}
 first_correct_guesses = {}
 message_counts = {}
 retro_message_counts = {}  # Track messages for Retro spawns (every 4k messages)
-star_message_counts = {}  # Track messages for Star spawns (every 200 messages)
+star_message_counts = {}  # Track messages for Star spawns (every 350 messages)
 zenith_event_message_counts = {}  # Track messages for Zenith spawns during Christmas event (every 3015 messages)
 manually_summoned = {}  # Track manually summoned characters to allow multiple marriages
 
@@ -150,14 +150,14 @@ async def message_counter(update: Update, context: CallbackContext) -> None:
             
             message_counts[chat_id] = 0
         
-        # Check for Star spawn (every 200 messages in specific chat only)
+        # Check for Star spawn (every 350 messages in specific chat only)
         if chat_id == -1002961536913:
             if chat_id in star_message_counts:
                 star_message_counts[chat_id] += 1
             else:
                 star_message_counts[chat_id] = 1
                 
-            if star_message_counts[chat_id] % 200 == 0:
+            if star_message_counts[chat_id] % 350 == 0:
                 await send_star_character(update, context)
                 star_message_counts[chat_id] = 0
         
