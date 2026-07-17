@@ -11,7 +11,7 @@ class Config(object):
     TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
     mongo_url = os.environ.get("MONGODB_URL")
     PHOTO_URL = ["https://i.ibb.co/5gpmxQ5k/jsorg.jpg"]
-    SUPPORT_CHAT = os.environ.get("SUPPORT_CHAT", "Collect_em_support")
+    SUPPORT_CHAT = os.environ.get("SUPPORT_CHAT", "CollectorOfficialGroup")
     UPDATE_CHAT = os.environ.get("UPDATE_CHAT", "Collect_em_support")
     BOT_USERNAME = os.environ.get("BOT_USERNAME", "waifuscollectorbot")
     CHARA_CHANNEL_ID = os.environ.get("CHARA_CHANNEL_ID", "-1002934487265")
