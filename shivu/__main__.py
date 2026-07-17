@@ -821,12 +821,15 @@ async def run_bot():
     await application.start()
     
     webhook_url = os.environ.get('WEBHOOK_URL')
-    if webhook_url:
+    # On Replit, always use polling — the Replit dev domain is ephemeral and
+    # WEBHOOK_URL may still point to a previous deployment (e.g. Render).
+    on_replit = bool(os.environ.get('REPLIT_DEV_DOMAIN'))
+    if webhook_url and not on_replit:
         await application.bot.set_webhook(url=f"{webhook_url}/webhook")
         LOGGER.info(f"Webhook set to {webhook_url}/webhook")
         await asyncio.Event().wait()
     else:
-        LOGGER.info("Using polling mode (no WEBHOOK_URL set)")
+        LOGGER.info("Using polling mode")
         await application.bot.delete_webhook()
         await application.updater.start_polling(drop_pending_updates=True)
         await asyncio.Event().wait()

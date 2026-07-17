@@ -10,3 +10,14 @@ tgcrypto
 python-dotenv
 cachetools
 apscheduler==3.10.4
+aiohttp
+apscheduler==3.10.4
+cachetools
+motor
+pymongo
+pyrate-limiter==3.1.0
+pyrogram
+python-dotenv
+python-telegram-bot==22.8
+requests
+tgcrypto
