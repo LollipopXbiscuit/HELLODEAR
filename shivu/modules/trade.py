@@ -189,8 +189,8 @@ async def gift(client, message):
     
     keyboard = InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Confirm Gift", callback_data="confirm_gift")],
-            [InlineKeyboardButton("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Cancel Gift", callback_data="cancel_gift")]
+            [InlineKeyboardButton("✅ Confirm Gift", callback_data="confirm_gift")],
+            [InlineKeyboardButton("❌ Cancel Gift", callback_data="cancel_gift")]
         ]
     )
 
@@ -426,8 +426,8 @@ async def gift_ptb(update: Update, context: CallbackContext):
     
     # Create keyboard
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Confirm Gift", callback_data="confirm_gift")],
-        [InlineKeyboardButton("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Cancel Gift", callback_data="cancel_gift")]
+        [InlineKeyboardButton("✅ Confirm Gift", callback_data="confirm_gift")],
+        [InlineKeyboardButton("❌ Cancel Gift", callback_data="cancel_gift")]
     ])
     
     # Rarity emoji mapping
