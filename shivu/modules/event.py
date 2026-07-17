@@ -4,12 +4,12 @@ from shivu import application, sudo_users, event_settings_collection, collection
 from datetime import datetime
 
 async def startevent(update: Update, context: CallbackContext) -> None:
-    """Start the Christmas event - only 🎄 characters will spawn"""
+    """Start the Christmas event - only <tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji> characters will spawn"""
     if not update.effective_user or not update.message:
         return
     
     if str(update.effective_user.id) not in sudo_users:
-        await update.message.reply_text('🚫 You do not have permission to use this command.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> You do not have permission to use this command.')
         return
     
     try:
@@ -17,10 +17,10 @@ async def startevent(update: Update, context: CallbackContext) -> None:
         
         if christmas_count == 0:
             await update.message.reply_text(
-                '❌ <b>Cannot start Christmas event!</b>\n\n'
-                'No characters with 🎄 in their name found in the database.\n\n'
+                '<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> <b>Cannot start Christmas event!</b>\n\n'
+                'No characters with <tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji> in their name found in the database.\n\n'
                 'Please upload some Christmas-themed characters first using:\n'
-                '<code>/upload [url] Character-Name-🎄 Anime-Name [rarity]</code>',
+                '<code>/upload [url] Character-Name-<tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji> Anime-Name [rarity]</code>',
                 parse_mode='HTML'
             )
             return
@@ -28,10 +28,10 @@ async def startevent(update: Update, context: CallbackContext) -> None:
         existing_event = await event_settings_collection.find_one({'active': True})
         if existing_event:
             await update.message.reply_text(
-                f'⚠️ <b>Event already active!</b>\n\n'
-                f'🎄 Event Type: {existing_event.get("event_type", "unknown").title()}\n'
-                f'📅 Started: {existing_event.get("started_at", "Unknown")}\n'
-                f'👤 Started by: {existing_event.get("started_by_name", "Unknown")}\n\n'
+                f'<tg-emoji emoji-id="5102920111178647010">⚠️</tg-emoji> <b>Event already active!</b>\n\n'
+                f'<tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji> Event Type: {existing_event.get("event_type", "unknown").title()}\n'
+                f'<tg-emoji emoji-id="5102862902214265154">📅</tg-emoji> Started: {existing_event.get("started_at", "Unknown")}\n'
+                f'<tg-emoji emoji-id="5102763490901231643">👤</tg-emoji> Started by: {existing_event.get("started_by_name", "Unknown")}\n\n'
                 f'Use /endevent to end the current event first.',
                 parse_mode='HTML'
             )
@@ -49,19 +49,19 @@ async def startevent(update: Update, context: CallbackContext) -> None:
         await event_settings_collection.insert_one(event_data)
         
         await update.message.reply_text(
-            '🎄✨ <b>CHRISTMAS EVENT STARTED!</b> ✨🎄\n\n'
+            '<tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji><tg-emoji emoji-id="5102638339849192814">✨</tg-emoji> <b>CHRISTMAS EVENT STARTED!</b> <tg-emoji emoji-id="5102638339849192814">✨</tg-emoji><tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji>\n\n'
             '━━━━━━━━━━━━━━━━━━━━\n'
-            '🎅 Ho ho ho! The Christmas event is now active!\n\n'
+            '<tg-emoji emoji-id="5102852035947005651">🎅</tg-emoji> Ho ho ho! The Christmas event is now active!\n\n'
             f'🎴 <b>Available Christmas Cards:</b> {christmas_count}\n'
-            '🎁 Only characters with 🎄 in their name will spawn!\n'
+            '<tg-emoji emoji-id="5103071199538186159">🎁</tg-emoji> Only characters with <tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji> in their name will spawn!\n'
             '━━━━━━━━━━━━━━━━━━━━\n\n'
-            f'👤 <b>Started by:</b> {update.effective_user.first_name}\n\n'
-            '❄️ Use /endevent to end the Christmas event.',
+            f'<tg-emoji emoji-id="5102763490901231643">👤</tg-emoji> <b>Started by:</b> {update.effective_user.first_name}\n\n'
+            '<tg-emoji emoji-id="5102736905053669429">❄️</tg-emoji> Use /endevent to end the Christmas event.',
             parse_mode='HTML'
         )
         
     except Exception as e:
-        await update.message.reply_text(f'❌ Error starting event: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Error starting event: {str(e)}')
 
 async def endevent(update: Update, context: CallbackContext) -> None:
     """End the current active event"""
@@ -69,7 +69,7 @@ async def endevent(update: Update, context: CallbackContext) -> None:
         return
     
     if str(update.effective_user.id) not in sudo_users:
-        await update.message.reply_text('🚫 You do not have permission to use this command.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> You do not have permission to use this command.')
         return
     
     try:
@@ -77,7 +77,7 @@ async def endevent(update: Update, context: CallbackContext) -> None:
         
         if not active_event:
             await update.message.reply_text(
-                '❌ <b>No active event!</b>\n\n'
+                '<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> <b>No active event!</b>\n\n'
                 'There is no event currently running.\n'
                 'Use /startevent to start the Christmas event.',
                 parse_mode='HTML'
@@ -98,19 +98,19 @@ async def endevent(update: Update, context: CallbackContext) -> None:
         
         if event_type == 'christmas':
             await update.message.reply_text(
-                '🎄 <b>CHRISTMAS EVENT ENDED!</b> 🎄\n\n'
+                '<tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji> <b>CHRISTMAS EVENT ENDED!</b> <tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji>\n\n'
                 '━━━━━━━━━━━━━━━━━━━━\n'
                 '👋 The Christmas event has ended!\n\n'
-                '🔄 Normal character spawning has resumed.\n'
+                '<tg-emoji emoji-id="5103051253710063171">🔄</tg-emoji> Normal character spawning has resumed.\n'
                 'All characters can now spawn again!\n'
                 '━━━━━━━━━━━━━━━━━━━━\n\n'
-                f'👤 <b>Ended by:</b> {update.effective_user.first_name}\n\n'
-                '🎁 Thanks for participating in the event!',
+                f'<tg-emoji emoji-id="5102763490901231643">👤</tg-emoji> <b>Ended by:</b> {update.effective_user.first_name}\n\n'
+                '<tg-emoji emoji-id="5103071199538186159">🎁</tg-emoji> Thanks for participating in the event!',
                 parse_mode='HTML'
             )
         else:
             await update.message.reply_text(
-                f'✅ <b>Event Ended!</b>\n\n'
+                f'<tg-emoji emoji-id="5103087490349139576">✅</tg-emoji> <b>Event Ended!</b>\n\n'
                 f'Event type: {event_type.title()}\n'
                 f'Ended by: {update.effective_user.first_name}\n\n'
                 'Normal spawning has resumed.',
@@ -118,7 +118,7 @@ async def endevent(update: Update, context: CallbackContext) -> None:
             )
         
     except Exception as e:
-        await update.message.reply_text(f'❌ Error ending event: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Error ending event: {str(e)}')
 
 async def eventstatus(update: Update, context: CallbackContext) -> None:
     """Check current event status"""
@@ -136,19 +136,19 @@ async def eventstatus(update: Update, context: CallbackContext) -> None:
                 christmas_count = await collection.count_documents({'name': {'$regex': '🎄'}})
                 
                 await update.message.reply_text(
-                    '🎄✨ <b>CHRISTMAS EVENT ACTIVE!</b> ✨🎄\n\n'
+                    '<tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji><tg-emoji emoji-id="5102638339849192814">✨</tg-emoji> <b>CHRISTMAS EVENT ACTIVE!</b> <tg-emoji emoji-id="5102638339849192814">✨</tg-emoji><tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji>\n\n'
                     '━━━━━━━━━━━━━━━━━━━━\n'
                     f'🎴 <b>Available Cards:</b> {christmas_count}\n'
-                    f'🎯 <b>Filter:</b> Characters with {filter_emoji}\n'
-                    f'📅 <b>Started:</b> {active_event.get("started_at", "Unknown")}\n'
-                    f'👤 <b>Started by:</b> {active_event.get("started_by_name", "Unknown")}\n'
+                    f'<tg-emoji emoji-id="5350460637182993292">🎯</tg-emoji> <b>Filter:</b> Characters with {filter_emoji}\n'
+                    f'<tg-emoji emoji-id="5102862902214265154">📅</tg-emoji> <b>Started:</b> {active_event.get("started_at", "Unknown")}\n'
+                    f'<tg-emoji emoji-id="5102763490901231643">👤</tg-emoji> <b>Started by:</b> {active_event.get("started_by_name", "Unknown")}\n'
                     '━━━━━━━━━━━━━━━━━━━━\n\n'
-                    '❄️ Only Christmas-themed cards are spawning!',
+                    '<tg-emoji emoji-id="5102736905053669429">❄️</tg-emoji> Only Christmas-themed cards are spawning!',
                     parse_mode='HTML'
                 )
             else:
                 await update.message.reply_text(
-                    f'🎉 <b>Event Active!</b>\n\n'
+                    f'<tg-emoji emoji-id="5102774906924303446">🎉</tg-emoji> <b>Event Active!</b>\n\n'
                     f'Type: {event_type.title()}\n'
                     f'Started: {active_event.get("started_at", "Unknown")}\n'
                     f'By: {active_event.get("started_by_name", "Unknown")}',
@@ -156,15 +156,15 @@ async def eventstatus(update: Update, context: CallbackContext) -> None:
                 )
         else:
             await update.message.reply_text(
-                '📋 <b>No Active Event</b>\n\n'
+                '<tg-emoji emoji-id="5102882435725527517">📋</tg-emoji> <b>No Active Event</b>\n\n'
                 'There is no event currently running.\n'
                 'Normal character spawning is active.\n\n'
-                '🎄 Admins can use /startevent to start the Christmas event!',
+                '<tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji> Admins can use /startevent to start the Christmas event!',
                 parse_mode='HTML'
             )
         
     except Exception as e:
-        await update.message.reply_text(f'❌ Error checking event: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Error checking event: {str(e)}')
 
 STARTEVENT_HANDLER = CommandHandler('startevent', startevent, block=False)
 application.add_handler(STARTEVENT_HANDLER)

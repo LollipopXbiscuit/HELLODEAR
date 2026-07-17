@@ -111,14 +111,14 @@ async def message_counter(update: Update, context: CallbackContext) -> None:
     # Check for spam and block user if necessary (skip for privileged users)
     if not is_privileged and detect_spam(user_id):
         await update.message.reply_text(
-            "⚠️ **Spam Detected!** ⚠️\n\n"
+            "<tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji> <b>Spam Detected!</b> <tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji>\n\n"
             "You've been temporarily blocked for sending too many messages quickly.\n"
-            "🚫 **Block Duration:** 12 minutes\n\n"
+            "<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> <b>Block Duration:</b> 12 minutes\n\n"
             "During this time, you cannot:\n"
             "• Claim characters (/marry)\n"
             "• Contribute to character spawns\n\n"
             "Please slow down your messaging!",
-            parse_mode='Markdown'
+            parse_mode='HTML'
         )
         return
     
@@ -288,19 +288,19 @@ async def send_image(update: Update, context: CallbackContext) -> None:
 
     # Rarity emoji mapping
     rarity_emojis = {
-        "Common": "⚪️",
-        "Uncommon": "🟢", 
-        "Rare": "🔵",
-        "Epic": "🟣",
-        "Legendary": "🟡",
-        "Mythic": "🏵",
-        "Retro": "🍥",
-        "Star": "⭐",
-        "Zenith": "🪩",
-        "Limited Edition": "🍬"
+        "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
+        "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>", 
+        "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
+        "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+        "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
-    rarity_emoji = rarity_emojis.get(character['rarity'], "✨")
+    rarity_emoji = rarity_emojis.get(character['rarity'], "<tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji>")
 
     try:
         from shivu import process_image_url
@@ -314,26 +314,26 @@ async def send_image(update: Update, context: CallbackContext) -> None:
                     chat_id=chat_id,
                     video=processed_url,
                     caption=caption_text,
-                    parse_mode='Markdown')
+                    parse_mode='HTML')
             except Exception as video_error:
                 LOGGER.warning(f"Failed to send as video, trying as photo: {str(video_error)}")
                 await context.bot.send_photo(
                     chat_id=chat_id,
                     photo=processed_url,
-                    caption=f"🎬 {caption_text}",
-                    parse_mode='Markdown')
+                    caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> {caption_text}",
+                    parse_mode='HTML')
         else:
             await context.bot.send_photo(
                 chat_id=chat_id,
                 photo=processed_url,
                 caption=caption_text,
-                parse_mode='Markdown')
+                parse_mode='HTML')
     except Exception as e:
         LOGGER.error(f"Error sending character image: {str(e)}")
         await context.bot.send_message(
             chat_id=chat_id,
-            text=f"{rarity_emoji} A beauty has been summoned! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
-            parse_mode='Markdown')
+            text=f"{rarity_emoji} A beauty has been summoned! Use /marry to add them to your harem!\n\n<tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji> Image could not be loaded",
+            parse_mode='HTML')
 
 
 async def send_star_character(update: Update, context: CallbackContext) -> None:
@@ -394,7 +394,7 @@ async def send_star_character(update: Update, context: CallbackContext) -> None:
         from shivu import process_image_url
         processed_url = await process_image_url(character['img_url'])
         
-        caption_text = f"⭐ A shining STAR beauty has appeared! Use /marry to add them to your harem!"
+        caption_text = f"<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji> A shining STAR beauty has appeared! Use /marry to add them to your harem!"
         
         if is_video_character(character):
             try:
@@ -402,30 +402,30 @@ async def send_star_character(update: Update, context: CallbackContext) -> None:
                     chat_id=chat_id,
                     video=processed_url,
                     caption=caption_text,
-                    parse_mode='Markdown')
+                    parse_mode='HTML')
             except Exception as video_error:
                 LOGGER.warning(f"Failed to send star video, trying as photo: {str(video_error)}")
                 await context.bot.send_photo(
                     chat_id=chat_id,
                     photo=processed_url,
-                    caption=f"🎬 {caption_text}",
-                    parse_mode='Markdown')
+                    caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> {caption_text}",
+                    parse_mode='HTML')
         else:
             await context.bot.send_photo(
                 chat_id=chat_id,
                 photo=processed_url,
                 caption=caption_text,
-                parse_mode='Markdown')
+                parse_mode='HTML')
     except Exception as e:
         LOGGER.error(f"Error sending star character image: {str(e)}")
         await context.bot.send_message(
             chat_id=chat_id,
-            text=f"⭐ A shining STAR beauty has appeared! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
-            parse_mode='Markdown')
+            text=f"<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji> A shining STAR beauty has appeared! Use /marry to add them to your harem!\n\n<tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji> Image could not be loaded",
+            parse_mode='HTML')
 
 
 async def send_zenith_event_character(update: Update, context: CallbackContext) -> None:
-    """Send a Zenith character with 🎄 every 3015 messages during Christmas event"""
+    """Send a Zenith character with <tg-emoji emoji-id="5103065598900831870">🎄</tg-emoji> every 3015 messages during Christmas event"""
     chat_id = update.effective_chat.id
     
     # Get Zenith characters with 🎄 in name for Christmas event
@@ -477,7 +477,7 @@ async def send_zenith_event_character(update: Update, context: CallbackContext) 
         from shivu import process_image_url
         processed_url = await process_image_url(character['img_url'])
         
-        caption_text = f"🪩🎄 A rare ZENITH Christmas beauty has appeared! Use /marry to add them to your harem!"
+        caption_text = f"<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji><tg-emoji emoji-id='5103065598900831870'>🎄</tg-emoji> A rare ZENITH Christmas beauty has appeared! Use /marry to add them to your harem!"
         
         if is_video_character(character):
             try:
@@ -485,26 +485,26 @@ async def send_zenith_event_character(update: Update, context: CallbackContext) 
                     chat_id=chat_id,
                     video=processed_url,
                     caption=caption_text,
-                    parse_mode='Markdown')
+                    parse_mode='HTML')
             except Exception as video_error:
                 LOGGER.warning(f"Failed to send zenith video, trying as photo: {str(video_error)}")
                 await context.bot.send_photo(
                     chat_id=chat_id,
                     photo=processed_url,
-                    caption=f"🎬 {caption_text}",
-                    parse_mode='Markdown')
+                    caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> {caption_text}",
+                    parse_mode='HTML')
         else:
             await context.bot.send_photo(
                 chat_id=chat_id,
                 photo=processed_url,
                 caption=caption_text,
-                parse_mode='Markdown')
+                parse_mode='HTML')
     except Exception as e:
         LOGGER.error(f"Error sending zenith event character image: {str(e)}")
         await context.bot.send_message(
             chat_id=chat_id,
-            text=f"🪩🎄 A rare ZENITH Christmas beauty has appeared! Use /marry to add them to your harem!\n\n⚠️ Image could not be loaded",
-            parse_mode='Markdown')
+            text=f"<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji><tg-emoji emoji-id='5103065598900831870'>🎄</tg-emoji> A rare ZENITH Christmas beauty has appeared! Use /marry to add them to your harem!\n\n<tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji> Image could not be loaded",
+            parse_mode='HTML')
 
 
 async def guess(update: Update, context: CallbackContext) -> None:
@@ -533,11 +533,11 @@ async def guess(update: Update, context: CallbackContext) -> None:
         minutes = remaining_time // 60
         seconds = remaining_time % 60
         await update.message.reply_text(
-            f"🚫 **You are temporarily blocked!**\n\n"
-            f"⏰ **Time remaining:** {minutes}m {seconds}s\n\n"
+            f"<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> <b>You are temporarily blocked!</b>\n\n"
+            f"⏰ <b>Time remaining:</b> {minutes}m {seconds}s\n\n"
             f"You cannot claim characters while blocked for spam.\n"
             f"Please wait for your block to expire.",
-            parse_mode='Markdown'
+            parse_mode='HTML'
         )
         return
 
@@ -552,28 +552,28 @@ async def guess(update: Update, context: CallbackContext) -> None:
         
         if today_count >= 30:
             await update.message.reply_text(
-                f"💒 **Daily Marriage Limit Reached!**\n\n"
-                f"❌ You've already married **{today_count}/30** characters today.\n\n"
-                f"⏰ **Reset time:** Tomorrow at 00:00 UTC\n\n"
+                f"<tg-emoji emoji-id='5102621864354645825'>💒</tg-emoji> <b>Daily Marriage Limit Reached!</b>\n\n"
+                f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You've already married <b>{today_count}/30</b> characters today.\n\n"
+                f"⏰ <b>Reset time:</b> Tomorrow at 00:00 UTC\n\n"
                 f"Come back tomorrow to continue building your harem!",
-                parse_mode='Markdown'
+                parse_mode='HTML'
             )
             return
 
     if chat_id not in last_characters:
-        await update.message.reply_text('🚫 No character has been summoned yet!\n\nCharacters appear automatically every 100 messages, or admins can use /summon to spawn one manually.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> No character has been summoned yet!\n\nCharacters appear automatically every 100 messages, or admins can use /summon to spawn one manually.')
         return
 
     # Only prevent multiple guesses for automatically spawned characters
     # Allow multiple marriages for manually summoned characters
     if chat_id in first_correct_guesses and chat_id not in manually_summoned:
-        await update.message.reply_text(f'❌️ Already Guessed By Someone.. Try Next Time Bruhh ')
+        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji>️ Already Guessed By Someone.. Try Next Time Bruhh ')
         return
 
     guess = ' '.join(context.args).lower() if context.args else ''
     
     if "()" in guess or "&" in guess.lower():
-        await update.message.reply_text("Nahh You Can't use This Types of words in your guess..❌️")
+        await update.message.reply_text("Nahh You Can't use This Types of words in your guess..<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji>️")
         return
 
 
@@ -694,10 +694,10 @@ async def guess(update: Update, context: CallbackContext) -> None:
         keyboard = [[InlineKeyboardButton(f"See Harem", switch_inline_query_current_chat=f"collection.{user_id}")]]
 
 
-        await update.message.reply_text(f'<b><a href="tg://user?id={user_id}">{escape(update.effective_user.first_name)}</a></b> You Guessed a New Character ✅️ \n\n𝗡𝗔𝗠𝗘: <b>{last_characters[chat_id]["name"]}</b> \n𝗔𝗡𝗜𝗠𝗘: <b>{last_characters[chat_id]["anime"]}</b> \n𝗥𝗔𝗥𝗜𝗧𝗬: <b>{last_characters[chat_id]["rarity"]}</b>\n\nThis Character added in Your harem.. use /harem To see your harem', parse_mode='HTML', reply_markup=InlineKeyboardMarkup(keyboard))
+        await update.message.reply_text(f'<b><a href="tg://user?id={user_id}">{escape(update.effective_user.first_name)}</a></b> You Guessed a New Character <tg-emoji emoji-id="5103087490349139576">✅</tg-emoji>️ \n\n𝗡𝗔𝗠𝗘: <b>{last_characters[chat_id]["name"]}</b> \n𝗔𝗡𝗜𝗠𝗘: <b>{last_characters[chat_id]["anime"]}</b> \n𝗥𝗔𝗥𝗜𝗧𝗬: <b>{last_characters[chat_id]["rarity"]}</b>\n\nThis Character added in Your harem.. use /harem To see your harem', parse_mode='HTML', reply_markup=InlineKeyboardMarkup(keyboard))
 
     else:
-        await update.message.reply_text('Please Write Correct Character Name... ❌️')
+        await update.message.reply_text('Please Write Correct Character Name... <tg-emoji emoji-id="5102962128843704400">❌</tg-emoji>️')
    
 
 
@@ -758,7 +758,7 @@ async def unmute(update: Update, context: CallbackContext) -> None:
     sender_id = update.effective_user.id
 
     if str(sender_id) not in [str(u) for u in sudo_users] and str(sender_id) != str(OWNER_ID):
-        await update.message.reply_text("🚫 This command is only available to sudo users.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to sudo users.")
         return
 
     target_id = None
@@ -771,11 +771,11 @@ async def unmute(update: Update, context: CallbackContext) -> None:
         try:
             target_id = int(context.args[0])
         except ValueError:
-            await update.message.reply_text("❌ Please provide a valid user ID or reply to the user's message.")
+            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Please provide a valid user ID or reply to the user's message.")
             return
 
     if target_id is None:
-        await update.message.reply_text("❌ Reply to a user's message or provide their user ID.\n\nUsage: `/unmute <user_id>`", parse_mode='Markdown')
+        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Reply to a user's message or provide their user ID.\n\nUsage: <code>/unmute &lt;user_id&gt;</code>", parse_mode='HTML')
         return
 
     if target_id in blocked_users:
@@ -783,9 +783,9 @@ async def unmute(update: Update, context: CallbackContext) -> None:
         # Also clear their message history so they don't get re-blocked immediately
         if target_id in user_message_times:
             del user_message_times[target_id]
-        await update.message.reply_text(f"✅ User `{target_id}` has been unmuted and can send messages again.", parse_mode='Markdown')
+        await update.message.reply_text(f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> User <code>{target_id}</code> has been unmuted and can send messages again.", parse_mode='HTML')
     else:
-        await update.message.reply_text(f"ℹ️ User `{target_id}` is not currently muted.", parse_mode='Markdown')
+        await update.message.reply_text(f"<tg-emoji emoji-id='5102581715000362771'>ℹ️</tg-emoji> User <code>{target_id}</code> is not currently muted.", parse_mode='HTML')
 
 
 async def run_bot():

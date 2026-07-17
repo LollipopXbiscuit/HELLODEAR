@@ -148,7 +148,7 @@ async def sorts(update: Update, context: CallbackContext) -> None:
             "<b>Examples:</b>\n"
             "• <code>/sorts rarity Legendary</code>\n"
             "• <code>/sorts character Naruto</code>\n\n"
-            "💡 Your preferences will be remembered for future /harem displays!",
+            "<tg-emoji emoji-id='5102684287409325796'>💡</tg-emoji> Your preferences will be remembered for future /harem displays!",
             parse_mode='HTML'
         )
         return
@@ -163,8 +163,8 @@ async def sorts(update: Update, context: CallbackContext) -> None:
             upsert=True
         )
         await update.message.reply_text(
-            "✅ Harem filters and sorting have been reset!\n\n"
-            "Your /harem will now show all characters sorted by anime. 📋",
+            "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Harem filters and sorting have been reset!\n\n"
+            "Your /harem will now show all characters sorted by anime. <tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji>",
             parse_mode='HTML'
         )
         return
@@ -174,7 +174,7 @@ async def sorts(update: Update, context: CallbackContext) -> None:
         if len(args) < 2:
             valid_rarities = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic", "Retro", "Star", "Zenith", "Limited Edition"]
             await update.message.reply_text(
-                "❌ Please specify a rarity!\n\n"
+                "<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Please specify a rarity!\n\n"
                 "<b>Valid rarities:</b>\n" + 
                 "\n".join([f"• <code>{r}</code>" for r in valid_rarities]),
                 parse_mode='HTML'
@@ -186,7 +186,7 @@ async def sorts(update: Update, context: CallbackContext) -> None:
         
         if rarity_filter not in valid_rarities:
             await update.message.reply_text(
-                f"❌ Invalid rarity '{rarity_filter}'!\n\n"
+                f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid rarity '{rarity_filter}'!\n\n"
                 "<b>Valid rarities:</b>\n" + 
                 "\n".join([f"• <code>{r}</code>" for r in valid_rarities]),
                 parse_mode='HTML'
@@ -201,15 +201,15 @@ async def sorts(update: Update, context: CallbackContext) -> None:
         )
         
         await update.message.reply_text(
-            f"✅ Harem filter set to <b>{rarity_filter}</b> rarity only!\n\n"
-            f"Your /harem will now show only {rarity_filter} characters. 📋",
+            f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Harem filter set to <b>{rarity_filter}</b> rarity only!\n\n"
+            f"Your /harem will now show only {rarity_filter} characters. <tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji>",
             parse_mode='HTML'
         )
         
     elif sort_type == 'character':
         if len(args) < 2:
             await update.message.reply_text(
-                "❌ Please specify a character name!\n\n"
+                "<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Please specify a character name!\n\n"
                 "<b>Example:</b> <code>/sorts character Naruto</code>",
                 parse_mode='HTML'
             )
@@ -220,14 +220,14 @@ async def sorts(update: Update, context: CallbackContext) -> None:
         # Check if user has this character
         user = await user_collection.find_one({'id': user_id})
         if not user or not user.get('characters'):
-            await update.message.reply_text("❌ You don't have any characters yet!")
+            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters yet!")
             return
         
         # Check if character exists in user's collection (partial match)
         character_exists = any(character_filter.lower() in char['name'].lower() for char in user['characters'])
         if not character_exists:
             await update.message.reply_text(
-                f"❌ You don't have any characters named '{character_filter}' in your collection!",
+                f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters named '{character_filter}' in your collection!",
                 parse_mode='HTML'
             )
             return
@@ -240,8 +240,8 @@ async def sorts(update: Update, context: CallbackContext) -> None:
         )
         
         await update.message.reply_text(
-            f"✅ Harem filter set to <b>{character_filter}</b> character only!\n\n"
-            f"Your /harem will now show only {character_filter} cards (all rarities). 📋",
+            f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Harem filter set to <b>{character_filter}</b> character only!\n\n"
+            f"Your /harem will now show only {character_filter} cards (all rarities). <tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji>",
             parse_mode='HTML'
         )
         
@@ -254,14 +254,14 @@ async def sorts(update: Update, context: CallbackContext) -> None:
         )
         
         await update.message.reply_text(
-            f"✅ Harem sorting set to <b>{sort_type}</b>!\n\n"
-            f"Your /harem will now be sorted by {sort_type}. 📋",
+            f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Harem sorting set to <b>{sort_type}</b>!\n\n"
+            f"Your /harem will now be sorted by {sort_type}. <tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji>",
             parse_mode='HTML'
         )
         
     else:
         await update.message.reply_text(
-            "❌ Invalid command!\n\n"
+            "<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid command!\n\n"
             "Available options:\n"
             "• <code>/sorts rarity [rarity_name]</code>\n"
             "• <code>/sorts character [character_name]</code>\n"
@@ -290,20 +290,20 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                 is_sudo_viewing_other = True
             except ValueError:
                 if update.message:
-                    await update.message.reply_text("❌ Invalid user ID!")
+                    await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!")
                 return
         else:
             if update.message:
-                await update.message.reply_text("🚫 Only admins can view other people's harems!")
+                await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> Only admins can view other people's harems!")
             return
 
     # Check if user is a member of the main group (only for non-sudo viewing others)
     if not is_sudo_viewing_other:
         if not await check_group_membership(requester_id):
             message_text = (
-                "🚫 <b>Access Restricted</b>\n\n"
+                "<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> <b>Access Restricted</b>\n\n"
                 f"To use the /harem command, you must join our main group:\n"
-                f"👥 {MAIN_GROUP}\n\n"
+                f"<tg-emoji emoji-id='5103039000168367836'>👥</tg-emoji> {MAIN_GROUP}\n\n"
                 f"Once you've joined, you'll be able to access your harem!"
             )
             if update.message:
@@ -395,18 +395,18 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
         for character in characters:
             # Add rarity emoji to make it more beautiful
             rarity_emojis = {
-                "Common": "⚪️",
-                "Uncommon": "🟢",
-                "Rare": "🔵",
-                "Epic": "🟣",
-                "Legendary": "🟡",
-                "Mythic": "🏵",
-                "Retro": "🍥",
-                "Star": "⭐",
-                "Zenith": "🪩",
-                "Limited Edition": "🍬"
+                "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
+                "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
+                "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
+                "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+                "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+                "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+                "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+                "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+                "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+                "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
             }
-            rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+            rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji>")
             count = character_counts[character['id']]
             
             # Stylish character entry format
@@ -420,7 +420,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
     
     keyboard = [
         [InlineKeyboardButton(f"See Collection ({total_count})", switch_inline_query_current_chat=f"collection.{user_id}")],
-        [InlineKeyboardButton(f"📊 Database", url=f"https://t.me/c/{str(CHARA_CHANNEL_ID).replace('-100', '')}")]
+        [InlineKeyboardButton(f"<tg-emoji emoji-id='5102802918701008521'>📊</tg-emoji> Database", url=f"https://t.me/c/{str(CHARA_CHANNEL_ID).replace('-100', '')}")]
     ]
 
 
@@ -428,9 +428,9 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
         
         nav_buttons = []
         if page > 0:
-            nav_buttons.append(InlineKeyboardButton("⬅️", callback_data=f"harem:{page-1}:{user_id}"))
+            nav_buttons.append(InlineKeyboardButton("<tg-emoji emoji-id='5102857782613248388'>⬅️</tg-emoji>", callback_data=f"harem:{page-1}:{user_id}"))
         if page < total_pages - 1:
-            nav_buttons.append(InlineKeyboardButton("➡️", callback_data=f"harem:{page+1}:{user_id}"))
+            nav_buttons.append(InlineKeyboardButton("<tg-emoji emoji-id='5102932600943544398'>➡️</tg-emoji>", callback_data=f"harem:{page+1}:{user_id}"))
         keyboard.append(nav_buttons)
 
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -455,7 +455,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                             # Fallback: try as photo if video fails
                             LOGGER.warning(f"Harem: Favorite video send failed, URL: {processed_url[:100]}, Error: {str(video_error)}. Trying as photo.")
                             try:
-                                await update.message.reply_photo(photo=processed_url, parse_mode='HTML', caption=f"🎬 [Video] {harem_message}", reply_markup=reply_markup)
+                                await update.message.reply_photo(photo=processed_url, parse_mode='HTML', caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {harem_message}", reply_markup=reply_markup)
                             except Exception as photo_error:
                                 # If media fails, send text instead
                                 LOGGER.error(f"Harem: Both favorite video and photo failed, URL: {processed_url[:100]}")
@@ -483,7 +483,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                             # Fallback: try as photo if video fails
                             LOGGER.warning(f"Harem callback: Favorite video edit failed, URL: {processed_url[:100]}, Error: {str(video_error)}. Trying as photo.")
                             try:
-                                media = InputMediaPhoto(media=processed_url, caption=f"🎬 [Video] {harem_message}", parse_mode='HTML')
+                                media = InputMediaPhoto(media=processed_url, caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {harem_message}", parse_mode='HTML')
                                 await update.callback_query.edit_message_media(media=media, reply_markup=reply_markup)
                                 await update.callback_query.answer()
                             except Exception as photo_error:
@@ -597,7 +597,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                                 # Fallback: try as photo if video fails
                                 LOGGER.warning(f"Harem: Random video send failed, URL: {processed_url[:100]}, Error: {str(video_error)}. Trying as photo.")
                                 try:
-                                    await update.message.reply_photo(photo=processed_url, parse_mode='HTML', caption=f"🎬 [Video] {harem_message}", reply_markup=reply_markup)
+                                    await update.message.reply_photo(photo=processed_url, parse_mode='HTML', caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {harem_message}", reply_markup=reply_markup)
                                 except Exception as photo_error:
                                     # If media fails, send text instead
                                     LOGGER.error(f"Harem: Both random video and photo failed, URL: {processed_url[:100]}")
@@ -625,7 +625,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                                 # Fallback: try as photo if video fails
                                 LOGGER.warning(f"Harem callback: Random video edit failed, URL: {processed_url[:100]}, Error: {str(video_error)}. Trying as photo.")
                                 try:
-                                    media = InputMediaPhoto(media=processed_url, caption=f"🎬 [Video] {harem_message}", parse_mode='HTML')
+                                    media = InputMediaPhoto(media=processed_url, caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {harem_message}", parse_mode='HTML')
                                     await update.callback_query.edit_message_media(media=media, reply_markup=reply_markup)
                                     await update.callback_query.answer()
                                 except Exception as photo_error:
@@ -711,7 +711,7 @@ async def fav(client, message):
     
     if len(message.command) != 2:
         await message.reply_text(
-            "💕 <b>Set Favorite Character</b>\n\n"
+            "<tg-emoji emoji-id='5103027133173731788'>💕</tg-emoji> <b>Set Favorite Character</b>\n\n"
             "Usage: <code>/fav [character_id]</code>\n\n"
             "Example: <code>/fav 123</code>",
             parse_mode=enums.ParseMode.HTML
@@ -723,13 +723,13 @@ async def fav(client, message):
     # Get user's collection
     user = await user_collection.find_one({'id': user_id})
     if not user or not user.get('characters'):
-        await message.reply_text("❌ You don't have any characters yet!")
+        await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters yet!")
         return
     
     # Find the character
     character = next((c for c in user['characters'] if c['id'] == character_id), None)
     if not character:
-        await message.reply_text(f"❌ You don't have character ID `{character_id}` in your collection!", parse_mode=enums.ParseMode.MARKDOWN)
+        await message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have character ID <code>{character_id}</code> in your collection!", parse_mode='HTML')
         return
     
     # Store pending favorite
@@ -737,31 +737,31 @@ async def fav(client, message):
     
     # Create confirmation keyboard
     keyboard = PyroInlineKeyboardMarkup([
-        [PyroInlineKeyboardButton("✅ Confirm", callback_data="confirm_fav")],
-        [PyroInlineKeyboardButton("❌ Cancel", callback_data="cancel_fav")]
+        [PyroInlineKeyboardButton("<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Confirm", callback_data="confirm_fav")],
+        [PyroInlineKeyboardButton("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Cancel", callback_data="cancel_fav")]
     ])
     
     # Send character image with confirmation
     rarity_emojis = {
-        "Common": "⚪️",
-        "Uncommon": "🟢",
-        "Rare": "🔵",
-        "Epic": "🟣",
-        "Legendary": "🟡",
-        "Mythic": "🏵",
-        "Retro": "🍥",
-        "Star": "⭐",
-        "Zenith": "🪩",
-        "Limited Edition": "🍬"
+        "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
+        "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
+        "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
+        "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+        "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
-    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji>")
     
-    caption = (f"💕 <b>Do you want to favorite this character?</b>\n\n"
+    caption = (f"<tg-emoji emoji-id='5103027133173731788'>💕</tg-emoji> <b>Do you want to favorite this character?</b>\n\n"
                f"🎴 <b>Name:</b> {escape(character['name'])}\n"
-               f"📺 <b>Anime:</b> {escape(character['anime'])}\n"
-               f"🌟 <b>Rarity:</b> {rarity_emoji} {character['rarity']}\n"
-               f"🆔 <b>ID:</b> <code>{character['id']}</code>")
+               f"<tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>Anime:</b> {escape(character['anime'])}\n"
+               f"<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> <b>Rarity:</b> {rarity_emoji} {character['rarity']}\n"
+               f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> <b>ID:</b> <code>{character['id']}</code>")
     
     try:
         if 'img_url' in character:
@@ -785,14 +785,14 @@ async def fav(client, message):
                     try:
                         await message.reply_photo(
                             photo=processed_url,
-                            caption=f"🎬 [Video] {caption}",
+                            caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {caption}",
                             parse_mode=enums.ParseMode.HTML,
                             reply_markup=keyboard
                         )
                     except Exception as photo_error:
                         # Last resort: send text
                         LOGGER.error(f"/fav: Both video and photo failed for character {character['id']}, URL: {processed_url[:100]}")
-                        await message.reply_text(f"{caption}\n\n⚠️ Media display failed.", parse_mode=enums.ParseMode.HTML, reply_markup=keyboard)
+                        await message.reply_text(f"{caption}\n\n<tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji> Media display failed.", parse_mode=enums.ParseMode.HTML, reply_markup=keyboard)
             else:
                 await message.reply_photo(
                     photo=processed_url,
@@ -811,7 +811,7 @@ async def fav_callback(client, callback_query):
     user_id = callback_query.from_user.id
     
     if user_id not in pending_favorites:
-        await callback_query.answer("❌ No pending favorite found!", show_alert=True)
+        await callback_query.answer("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> No pending favorite found!", show_alert=True)
         return
     
     if callback_query.data == "confirm_fav":
@@ -825,13 +825,13 @@ async def fav_callback(client, callback_query):
         )
         
         await callback_query.edit_message_caption(
-            caption=f"💕 <b>Favorite Set!</b>\n\n🎴 <b>{escape(character['name'])}\n</b>📺 <b>{escape(character['anime'])}\n</b>✨ This character is now your favorite!",
+            caption=f"<tg-emoji emoji-id='5103027133173731788'>💕</tg-emoji> <b>Favorite Set!</b>\n\n🎴 <b>{escape(character['name'])}\n</b><tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>{escape(character['anime'])}\n</b><tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji> This character is now your favorite!",
             parse_mode=enums.ParseMode.HTML
         )
         
     elif callback_query.data == "cancel_fav":
         await callback_query.edit_message_caption(
-            caption="❌ <b>Favorite cancelled.</b>",
+            caption="<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> <b>Favorite cancelled.</b>",
             parse_mode=enums.ParseMode.HTML
         )
     
@@ -851,7 +851,7 @@ async def transfer_harem(update: Update, context: CallbackContext) -> None:
     # Check if user is admin
     from shivu.config import Config
     if str(user_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text('🚫 This command is only available to bot administrators.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> This command is only available to bot administrators.')
         return
     
     args = context.args or []
@@ -869,17 +869,17 @@ async def transfer_harem(update: Update, context: CallbackContext) -> None:
         old_user_id = int(args[0])
         new_user_id = int(args[1])
     except ValueError:
-        await update.message.reply_text("❌ Invalid user IDs! Please provide valid numeric user IDs.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user IDs! Please provide valid numeric user IDs.")
         return
     
     if old_user_id == new_user_id:
-        await update.message.reply_text("❌ Old and new user IDs cannot be the same!")
+        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Old and new user IDs cannot be the same!")
         return
     
     # Find the old user's collection
     old_user = await user_collection.find_one({'id': old_user_id})
     if not old_user or not old_user.get('characters'):
-        await update.message.reply_text(f"❌ User {old_user_id} has no characters to transfer!")
+        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> User {old_user_id} has no characters to transfer!")
         return
     
     # Get character count for confirmation message
@@ -920,9 +920,9 @@ async def transfer_harem(update: Update, context: CallbackContext) -> None:
     new_first_name = new_user_info.get('first_name', 'Unknown') if new_user_info else 'Unknown'
     
     await update.message.reply_text(
-        f"✅ <b>Transfer Completed!</b>\n\n"
-        f"📤 <b>From:</b> {escape(old_first_name)} (@{old_username}) - <code>{old_user_id}</code>\n"
-        f"📥 <b>To:</b> {escape(new_first_name)} (@{new_username}) - <code>{new_user_id}</code>\n\n"
+        f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> <b>Transfer Completed!</b>\n\n"
+        f"<tg-emoji emoji-id='5102733670943295663'>📤</tg-emoji> <b>From:</b> {escape(old_first_name)} (@{old_username}) - <code>{old_user_id}</code>\n"
+        f"<tg-emoji emoji-id='5102699126521334971'>📥</tg-emoji> <b>To:</b> {escape(new_first_name)} (@{new_username}) - <code>{new_user_id}</code>\n\n"
         f"🎴 <b>Characters Transferred:</b> {character_count}\n\n"
         f"All characters (including duplicates) have been successfully transferred!",
         parse_mode='HTML'
@@ -936,7 +936,7 @@ async def fav_ptb(update: Update, context: CallbackContext):
     
     if not context.args or len(context.args) != 1:
         await update.message.reply_text(
-            "💕 <b>Set Favorite Character</b>\n\n"
+            "<tg-emoji emoji-id='5103027133173731788'>💕</tg-emoji> <b>Set Favorite Character</b>\n\n"
             "Usage: <code>/fav [character_id]</code>\n\n"
             "Example: <code>/fav 123</code>",
             parse_mode='HTML'
@@ -948,13 +948,13 @@ async def fav_ptb(update: Update, context: CallbackContext):
     # Get user's collection
     user = await user_collection.find_one({'id': user_id})
     if not user or not user.get('characters'):
-        await update.message.reply_text("❌ You don't have any characters yet!")
+        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters yet!")
         return
     
     # Find the character
     character = next((c for c in user['characters'] if c['id'] == character_id), None)
     if not character:
-        await update.message.reply_text(f"❌ You don't have character ID `{character_id}` in your collection!", parse_mode='Markdown')
+        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have character ID <code>{character_id}</code> in your collection!", parse_mode='HTML')
         return
     
     # Store pending favorite
@@ -962,24 +962,24 @@ async def fav_ptb(update: Update, context: CallbackContext):
     
     # Create confirmation keyboard
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("✅ Confirm", callback_data="confirm_fav")],
-        [InlineKeyboardButton("❌ Cancel", callback_data="cancel_fav")]
+        [InlineKeyboardButton("<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Confirm", callback_data="confirm_fav")],
+        [InlineKeyboardButton("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Cancel", callback_data="cancel_fav")]
     ])
     
     # Send character image with confirmation
     rarity_emojis = {
-        "Common": "⚪️", "Uncommon": "🟢", "Rare": "🔵", "Epic": "🟣",
-        "Legendary": "🟡", "Mythic": "🏵", "Retro": "🍥", "Star": "⭐",
-        "Zenith": "🪩", "Limited Edition": "🍬"
+        "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>", "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>", "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>", "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>", "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>", "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>", "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
-    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji>")
     
-    caption = (f"💕 <b>Do you want to favorite this character?</b>\n\n"
+    caption = (f"<tg-emoji emoji-id='5103027133173731788'>💕</tg-emoji> <b>Do you want to favorite this character?</b>\n\n"
                f"🎴 <b>Name:</b> {escape(character['name'])}\n"
-               f"📺 <b>Anime:</b> {escape(character['anime'])}\n"
-               f"🌟 <b>Rarity:</b> {rarity_emoji} {character['rarity']}\n"
-               f"🆔 <b>ID:</b> <code>{character['id']}</code>")
+               f"<tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>Anime:</b> {escape(character['anime'])}\n"
+               f"<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> <b>Rarity:</b> {rarity_emoji} {character['rarity']}\n"
+               f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> <b>ID:</b> <code>{character['id']}</code>")
     
     try:
         if 'img_url' in character:
@@ -1002,12 +1002,12 @@ async def fav_ptb(update: Update, context: CallbackContext):
                     try:
                         await update.message.reply_photo(
                             photo=processed_url,
-                            caption=f"🎬 [Video] {caption}",
+                            caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {caption}",
                             parse_mode='HTML',
                             reply_markup=keyboard
                         )
                     except:
-                        await update.message.reply_text(f"{caption}\n\n⚠️ Media display failed.", parse_mode='HTML', reply_markup=keyboard)
+                        await update.message.reply_text(f"{caption}\n\n<tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji> Media display failed.", parse_mode='HTML', reply_markup=keyboard)
             else:
                 await update.message.reply_photo(
                     photo=processed_url,
@@ -1027,7 +1027,7 @@ async def fav_callback_ptb(update: Update, context: CallbackContext):
     user_id = query.from_user.id
     
     if user_id not in pending_favorites:
-        await query.answer("❌ No pending favorite found!", show_alert=True)
+        await query.answer("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> No pending favorite found!", show_alert=True)
         return
     
     if query.data == "confirm_fav":
@@ -1042,23 +1042,23 @@ async def fav_callback_ptb(update: Update, context: CallbackContext):
         
         try:
             await query.edit_message_caption(
-                caption=f"💕 <b>Favorite Set!</b>\n\n🎴 <b>{escape(character['name'])}\n</b>📺 <b>{escape(character['anime'])}\n</b>✨ This character is now your favorite!",
+                caption=f"<tg-emoji emoji-id='5103027133173731788'>💕</tg-emoji> <b>Favorite Set!</b>\n\n🎴 <b>{escape(character['name'])}\n</b><tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>{escape(character['anime'])}\n</b><tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji> This character is now your favorite!",
                 parse_mode='HTML'
             )
         except:
             await query.message.edit_text(
-                text=f"💕 <b>Favorite Set!</b>\n\n🎴 <b>{escape(character['name'])}\n</b>📺 <b>{escape(character['anime'])}\n</b>✨ This character is now your favorite!",
+                text=f"<tg-emoji emoji-id='5103027133173731788'>💕</tg-emoji> <b>Favorite Set!</b>\n\n🎴 <b>{escape(character['name'])}\n</b><tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>{escape(character['anime'])}\n</b><tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji> This character is now your favorite!",
                 parse_mode='HTML'
             )
         
     elif query.data == "cancel_fav":
         try:
             await query.edit_message_caption(
-                caption="❌ <b>Favorite cancelled.</b>",
+                caption="<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> <b>Favorite cancelled.</b>",
                 parse_mode='HTML'
             )
         except:
-            await query.message.edit_text("❌ <b>Favorite cancelled.</b>", parse_mode='HTML')
+            await query.message.edit_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> <b>Favorite cancelled.</b>", parse_mode='HTML')
     
     # Clean up pending favorite
     if user_id in pending_favorites:
@@ -1077,7 +1077,7 @@ async def all_rarities(update: Update, context: CallbackContext) -> None:
     user = await user_collection.find_one({'id': user_id})
     if not user:
         await update.message.reply_text(
-            "❌ You haven't started collecting yet!\n\n"
+            "<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You haven't started collecting yet!\n\n"
             "Characters appear every 100 messages. Use /marry to collect them!",
             parse_mode='HTML'
         )
@@ -1086,7 +1086,7 @@ async def all_rarities(update: Update, context: CallbackContext) -> None:
     user_characters = user.get('characters', [])
     if not user_characters:
         await update.message.reply_text(
-            "❌ You don't have any characters yet!\n\n"
+            "<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters yet!\n\n"
             "Characters appear every 100 messages. Use /marry to collect them!",
             parse_mode='HTML'
         )
@@ -1105,20 +1105,20 @@ async def all_rarities(update: Update, context: CallbackContext) -> None:
     # Define rarity order and emojis (Star above Zenith as requested)
     rarity_order = ["Limited Edition", "Star", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]
     rarity_emojis = {
-        "Common": "⚪️",
-        "Uncommon": "🟢",
+        "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
+        "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
         "Rare": "🟠",
-        "Epic": "🟣",
-        "Legendary": "🟡",
-        "Mythic": "🏵",
-        "Retro": "🍥",
-        "Star": "⭐",
-        "Zenith": "🪩",
-        "Limited Edition": "🍬"
+        "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+        "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
     # Build message
-    message_text = f"📊 <b>{escape(update.effective_user.first_name)}'s Collection Progress</b>\n\n"
+    message_text = f"<tg-emoji emoji-id='5102802918701008521'>📊</tg-emoji> <b>{escape(update.effective_user.first_name)}'s Collection Progress</b>\n\n"
     
     for rarity in rarity_order:
         owned = user_rarity_counts.get(rarity, 0)
@@ -1133,12 +1133,12 @@ async def all_rarities(update: Update, context: CallbackContext) -> None:
         filled_blocks = int((owned / total) * 10) if total > 0 else 0
         progress_bar = "▰" * filled_blocks + "▱" * (10 - filled_blocks)
         
-        emoji = rarity_emojis.get(rarity, "✨")
+        emoji = rarity_emojis.get(rarity, "<tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji>")
         
         message_text += f"{emoji} <b>{rarity}:</b> {owned}/{total}\n"
         message_text += f"{progress_bar} {percentage}%\n"
     
-    message_text += f"\n✨ <b>Total Unique Characters:</b> {len(unique_user_characters)}/{len(all_characters)}"
+    message_text += f"\n<tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji> <b>Total Unique Characters:</b> {len(unique_user_characters)}/{len(all_characters)}"
     
     await update.message.reply_text(message_text, parse_mode='HTML')
 

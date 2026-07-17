@@ -46,17 +46,17 @@ async def start(update: Update, context: CallbackContext) -> None:
 
     if update.effective_chat.type == "private":
         caption = f"""
-✨ **Welcome to Waifu & Husbando Catcher!** ✨
+<tg-emoji emoji-id="5102638339849192814">✨</tg-emoji> <b>Welcome to Waifu & Husbando Catcher!</b> <tg-emoji emoji-id="5102638339849192814">✨</tg-emoji>
 
-💕 **Your ultimate anime character collection bot!**
+<tg-emoji emoji-id="5103027133173731788">💕</tg-emoji> <b>Your ultimate anime character collection bot!</b>
 
-🎮 **How it works:**
+<tg-emoji emoji-id="5102912496201631597">🎮</tg-emoji> <b>How it works:</b>
 • Add me to your group and I'll send random anime characters every 100 messages
 • Use /marry to catch characters and add them to your collection
 • Build your dream collection and trade with friends!
 • View your collection anytime with /collection
 
-🌟 **Ready to start your anime adventure?** Add me to your group now!
+<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> <b>Ready to start your anime adventure?</b> Add me to your group now!
         """
 
         keyboard = [
@@ -77,7 +77,7 @@ async def start(update: Update, context: CallbackContext) -> None:
             photo=photo_url,
             caption=caption,
             reply_markup=reply_markup,
-            parse_mode="markdown",
+            parse_mode='HTML',
         )
 
     else:
@@ -108,17 +108,17 @@ async def button(update: Update, context: CallbackContext) -> None:
 
     if query.data == "help":
         help_text = """
-    ***Help Section:***
+    *<b>Help Section:</b>*
     
-***/marry: To catch and marry characters (only works in group)***
-***/fav: Add Your fav***
-***/trade : To trade Characters***
-***/gift: Give any Character from Your Collection to another user.. (only works in groups)***
-***/collection: To see Your Collection***
-***/topgroups : See Top Groups.. Ppl Guesses Most in that Groups***
-***/top: Too See Top Users***
-***/ctop : Your ChatTop***
-***/changetime: Change Character appear time (only works in Groups)***
+*<b>/marry: To catch and marry characters (only works in group)</b>*
+*<b>/fav: Add Your fav</b>*
+*<b>/trade : To trade Characters</b>*
+*<b>/gift: Give any Character from Your Collection to another user.. (only works in groups)</b>*
+*<b>/collection: To see Your Collection</b>*
+*<b>/topgroups : See Top Groups.. Ppl Guesses Most in that Groups</b>*
+*<b>/top: Too See Top Users</b>*
+*<b>/ctop : Your ChatTop</b>*
+*<b>/changetime: Change Character appear time (only works in Groups)</b>*
    """
         help_keyboard = [[InlineKeyboardButton("⤾ Bᴀᴄᴋ", callback_data="back")]]
         reply_markup = InlineKeyboardMarkup(help_keyboard)
@@ -128,22 +128,22 @@ async def button(update: Update, context: CallbackContext) -> None:
             message_id=query.message.message_id,
             caption=help_text,
             reply_markup=reply_markup,
-            parse_mode="markdown",
+            parse_mode='HTML',
         )
 
     elif query.data == "back":
         caption = f"""
-✨ **Welcome to Waifu & Husbando Catcher!** ✨
+<tg-emoji emoji-id="5102638339849192814">✨</tg-emoji> <b>Welcome to Waifu & Husbando Catcher!</b> <tg-emoji emoji-id="5102638339849192814">✨</tg-emoji>
 
-💕 **Your ultimate anime character collection bot!**
+<tg-emoji emoji-id="5103027133173731788">💕</tg-emoji> <b>Your ultimate anime character collection bot!</b>
 
-🎮 **How it works:**
+<tg-emoji emoji-id="5102912496201631597">🎮</tg-emoji> <b>How it works:</b>
 • Add me to your group and I'll send random anime characters every 100 messages
 • Use /marry to catch characters and add them to your collection
 • Build your dream collection and trade with friends!
 • View your collection anytime with /collection
 
-🌟 **Ready to start your anime adventure?** Add me to your group now!
+<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> <b>Ready to start your anime adventure?</b> Add me to your group now!
         """
 
         keyboard = [
@@ -161,7 +161,7 @@ async def button(update: Update, context: CallbackContext) -> None:
             message_id=query.message.message_id,
             caption=caption,
             reply_markup=reply_markup,
-            parse_mode="markdown",
+            parse_mode='HTML',
         )
 
 

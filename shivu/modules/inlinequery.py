@@ -42,16 +42,16 @@ async def is_video_character(character, char_id=None, user_id=None):
 
 # Rarity emojis configuration (updated to match latest rarities)
 rarity_emojis = {
-    "Common": "⚪️",
-    "Uncommon": "🟢",
-    "Rare": "🔵",
-    "Epic": "🟣",
-    "Legendary": "🟡",
-    "Mythic": "🏵",
-    "Retro": "🍥",
-    "Star": "⭐",
-    "Zenith": "🪩",
-    "Limited Edition": "🍬"
+    "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
+    "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
+    "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
+    "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+    "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+    "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+    "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+    "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+    "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+    "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
 }
 
 
@@ -158,7 +158,7 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
     for character in characters:
         try:
             # Get rarity emoji for consistent display
-            rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+            rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji>")
             
             # Simple caption without slow database queries
             caption = (
@@ -212,7 +212,7 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                             thumbnail_url=processed_url,
                             id=f"{character['id']}_{time.time()}",
                             photo_url=processed_url,
-                            caption=f"🎬 [Video] {caption}"
+                            caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {caption}"
                         )
                     )
             else:
