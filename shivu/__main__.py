@@ -618,7 +618,6 @@ async def guess(update: Update, context: CallbackContext) -> None:
             first_correct_guesses[chat_id] = user_id
         
         # Update daily marriage counter
-        from datetime import datetime, timezone
         today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
         
         user = await user_collection.find_one({'id': user_id})
