@@ -105,7 +105,7 @@ async def is_video_character(character, char_id=None, user_id=None):
     
     # Check for <tg-emoji emoji-id='5103128992618120782'>🤩</tg-emoji> emoji marker in name
     name = character.get('name', '')
-    if '<tg-emoji emoji-id='5103128992618120782'>🤩</tg-emoji>' in name:
+    if '<tg-emoji emoji-id="5103128992618120782">🤩</tg-emoji>' in name:
         return True
     
     return False
@@ -851,7 +851,7 @@ async def transfer_harem(update: Update, context: CallbackContext) -> None:
     # Check if user is admin
     from shivu.config import Config
     if str(user_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text('<tg-emoji emoji-id='5102581715000362771'>🤩</tg-emoji> This command is only available to bot administrators.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to bot administrators.')
         return
     
     args = context.args or []

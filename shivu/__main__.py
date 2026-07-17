@@ -92,7 +92,7 @@ def is_video_character(character):
         return True
     
     name = character.get('name', '')
-    if '<tg-emoji emoji-id='5103128992618120782'>🤩</tg-emoji>' in name:
+    if '🎬' in name:
         return True
     
     return False
@@ -561,13 +561,13 @@ async def guess(update: Update, context: CallbackContext) -> None:
             return
 
     if chat_id not in last_characters:
-        await update.message.reply_text('<tg-emoji emoji-id='5102581715000362771'>🤩</tg-emoji> No character has been summoned yet!\n\nCharacters appear automatically every 100 messages, or admins can use /summon to spawn one manually.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> No character has been summoned yet!\n\nCharacters appear automatically every 100 messages, or admins can use /summon to spawn one manually.')
         return
 
     # Only prevent multiple guesses for automatically spawned characters
     # Allow multiple marriages for manually summoned characters
     if chat_id in first_correct_guesses and chat_id not in manually_summoned:
-        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji>️ Already Guessed By Someone.. Try Next Time Bruhh ')
+        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji>️ Already Guessed By Someone.. Try Next Time Bruhh ')
         return
 
     guess = ' '.join(context.args).lower() if context.args else ''
@@ -694,10 +694,10 @@ async def guess(update: Update, context: CallbackContext) -> None:
         keyboard = [[InlineKeyboardButton(f"See Harem", switch_inline_query_current_chat=f"collection.{user_id}")]]
 
 
-        await update.message.reply_text(f'<b><a href="tg://user?id={user_id}">{escape(update.effective_user.first_name)}</a></b> You Guessed a New Character <tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji>️ \n\n𝗡𝗔𝗠𝗘: <b>{last_characters[chat_id]["name"]}</b> \n𝗔𝗡𝗜𝗠𝗘: <b>{last_characters[chat_id]["anime"]}</b> \n𝗥𝗔𝗥𝗜𝗧𝗬: <b>{last_characters[chat_id]["rarity"]}</b>\n\nThis Character added in Your harem.. use /harem To see your harem', parse_mode='HTML', reply_markup=InlineKeyboardMarkup(keyboard))
+        await update.message.reply_text(f'<b><a href="tg://user?id={user_id}">{escape(update.effective_user.first_name)}</a></b> You Guessed a New Character <tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji>️ \n\n𝗡𝗔𝗠𝗘: <b>{last_characters[chat_id]["name"]}</b> \n𝗔𝗡𝗜𝗠𝗘: <b>{last_characters[chat_id]["anime"]}</b> \n𝗥𝗔𝗥𝗜𝗧𝗬: <b>{last_characters[chat_id]["rarity"]}</b>\n\nThis Character added in Your harem.. use /harem To see your harem', parse_mode='HTML', reply_markup=InlineKeyboardMarkup(keyboard))
 
     else:
-        await update.message.reply_text('Please Write Correct Character Name... <tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji>️')
+        await update.message.reply_text('Please Write Correct Character Name... <tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji>️')
    
 
 

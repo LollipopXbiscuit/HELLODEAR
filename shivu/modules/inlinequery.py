@@ -24,7 +24,7 @@ async def is_video_character(character, char_id=None, user_id=None):
     
     # Check for <tg-emoji emoji-id='5103128992618120782'>🤩</tg-emoji> emoji marker first (fastest check)
     name = character.get('name', '')
-    if '<tg-emoji emoji-id='5103128992618120782'>🤩</tg-emoji>' in name:
+    if '<tg-emoji emoji-id="5103128992618120782">🤩</tg-emoji>' in name:
         return True
     
     # Get the correct display URL (respecting active_slot for custom characters)
