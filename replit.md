@@ -112,7 +112,7 @@ Preferred communication style: Simple, everyday language.
 # System Architecture
 
 ## Core Bot Framework
-- **Telegram Bot API**: Uses python-telegram-bot v20.6 for main bot functionality and command handling
+- **Telegram Bot API**: Uses python-telegram-bot v22.8 for main bot functionality and command handling
 - **Pyrogram**: Secondary Telegram client library for additional features like admin controls and message handling
 - **Dual Client Pattern**: Implements both python-telegram-bot (application) and Pyrogram (shivuu) clients for different use cases
 

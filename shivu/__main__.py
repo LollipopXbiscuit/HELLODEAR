@@ -508,6 +508,10 @@ async def send_zenith_event_character(update: Update, context: CallbackContext) 
 
 
 async def guess(update: Update, context: CallbackContext) -> None:
+    # Guard: only handle real user messages (not channel posts, polls, etc.)
+    if not update.effective_user or not update.message:
+        return
+
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     
@@ -793,11 +797,24 @@ async def unmute(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text(f"<tg-emoji emoji-id='5102581715000362771'>ℹ️</tg-emoji> User <code>{target_id}</code> is not currently muted.", parse_mode='HTML')
 
 
+async def error_handler(update: object, context: CallbackContext) -> None:
+    """Log errors caused by updates and notify the user if possible."""
+    LOGGER.error("Exception while handling an update:", exc_info=context.error)
+    if isinstance(update, Update) and update.message:
+        try:
+            await update.message.reply_text(
+                "⚠️ An internal error occurred. Please try again later."
+            )
+        except Exception:
+            pass
+
+
 async def run_bot():
     """Run the Telegram bot with webhooks or polling"""
     application.add_handler(CommandHandler(["marry"], guess, block=False))
     application.add_handler(CommandHandler("unmute", unmute, block=False))
     application.add_handler(MessageHandler(filters.ALL, message_counter, block=False))
+    application.add_error_handler(error_handler)
     application.post_init = post_init
     
     await application.initialize()
