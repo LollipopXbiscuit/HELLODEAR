@@ -40,3 +40,4 @@ externalPort = 80
 [userenv]
 
 [userenv.shared]
+SUPPORT_CHAT = "CollectorOfficialGroup"
