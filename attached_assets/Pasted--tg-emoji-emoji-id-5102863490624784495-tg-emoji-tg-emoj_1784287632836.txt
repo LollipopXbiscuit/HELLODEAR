@@ -1,0 +1,67 @@
+<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji>
+<tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji>
+<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji>
+<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji>
+<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji>
+<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji>
+<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji>
+<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji>
+<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>
+<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>
+<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji>
+<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji>
+<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji>
+<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji>
+<tg-emoji emoji-id="5102716405174765315">🤩</tg-emoji>
+<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji>
+<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>
+<tg-emoji emoji-id="5102774906924303446">🤩</tg-emoji>
+<tg-emoji emoji-id="5103027133173731788">🤩</tg-emoji>
+👋
+<tg-emoji emoji-id="5102630299670415053">💎</tg-emoji>
+<tg-emoji emoji-id="5103074519547905689">🏆</tg-emoji>
+<tg-emoji emoji-id="5102802918701008521">📊</tg-emoji>
+📋
+<tg-emoji emoji-id="5102882435725527517">🤩</tg-emoji>
+<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji>
+<tg-emoji emoji-id="5102671625845736781">🤩</tg-emoji>
+<tg-emoji emoji-id="5103061849394382829">🤩</tg-emoji>
+<tg-emoji emoji-id="5103061849394382829">🤩</tg-emoji>
+<tg-emoji emoji-id="5102733670943295663">📤</tg-emoji>
+<tg-emoji emoji-id="5102699126521334971">📥</tg-emoji>
+<tg-emoji emoji-id="5102774108060387396">🤩</tg-emoji>
+<tg-emoji emoji-id="5102990630246680945">🤩</tg-emoji>
+<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji>
+<tg-emoji emoji-id="5102650803844286939">🔎</tg-emoji>
+<tg-emoji emoji-id="5102823006263052084">🔗</tg-emoji>
+<tg-emoji emoji-id="5103032978624219059">🔒</tg-emoji>
+<tg-emoji emoji-id="5103032978624219059">🔒</tg-emoji>
+<tg-emoji emoji-id="5102650473131805044">🤩</tg-emoji>
+🔧
+🔨
+<tg-emoji emoji-id="5103051253710063171">🤩</tg-emoji>
+<tg-emoji emoji-id="5102912496201631597">🎮</tg-emoji>
+<tg-emoji emoji-id="5350460637182993292">🎯</tg-emoji>
+<tg-emoji emoji-id="5102913368079992686">🎰</tg-emoji>
+🎴
+<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji>
+<tg-emoji emoji-id="5103128992618120782">🤩</tg-emoji>
+<tg-emoji emoji-id="5103065598900831870">🤩</tg-emoji>
+<tg-emoji emoji-id="5102852035947005651">🤩</tg-emoji>
+<tg-emoji emoji-id="5103013135875312074">🎌</tg-emoji>
+<tg-emoji emoji-id="5102663817595193122">🎏</tg-emoji>
+<tg-emoji emoji-id="5102722031581923128">🎐</tg-emoji>
+<tg-emoji emoji-id="5102763490901231643">👤</tg-emoji>
+<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji>
+<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji>
+👨‍💼
+<tg-emoji emoji-id="5102621864354645825">🤩</tg-emoji>
+<tg-emoji emoji-id="5102684287409325796">🤩</tg-emoji>
+<tg-emoji emoji-id="5102685219417229681">🤩</tg-emoji>
+<tg-emoji emoji-id="5103046482001397281">🤩</tg-emoji>
+<tg-emoji emoji-id="5102728190565025765">🤩</tg-emoji>
+<tg-emoji emoji-id="5102861579364337661">🤩</tg-emoji>
+<tg-emoji emoji-id="5102843841149405078">🤩</tg-emoji>
+<tg-emoji emoji-id="5102857782613248388">🤩</tg-emoji>
+<tg-emoji emoji-id="5102932600943544398">🤩</tg-emoji>
+<tg-emoji emoji-id="5102736905053669429">❄️</tg-emoji>
