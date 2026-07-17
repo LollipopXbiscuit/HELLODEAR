@@ -61,15 +61,15 @@ async def lockspawn(client, message):
     
     rarity_emojis = {
         "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
-        "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
-        "Rare": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
-        "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-        "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
-        "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
-        "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
-        "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-        "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>",
-        "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>"
+        "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
+        "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
+        "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+        "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
     rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>")
@@ -159,15 +159,15 @@ async def lockedspawns(client, message, page=0):
     
     rarity_emojis = {
         "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
-        "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
-        "Rare": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
-        "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-        "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
-        "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
-        "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
-        "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-        "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>",
-        "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>"
+        "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
+        "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
+        "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+        "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
     message_text = f"<tg-emoji emoji-id='5103032978624219059'>🔒</tg-emoji> **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
@@ -232,15 +232,15 @@ async def lockedspawns_callback(client, callback_query):
         
         rarity_emojis = {
             "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
-            "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
-            "Rare": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
-            "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-            "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
-            "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
-            "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
-            "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-            "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>",
-            "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>"
+            "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
+            "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
+            "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+            "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+            "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+            "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+            "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+            "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+            "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
         }
         
         message_text = f"<tg-emoji emoji-id='5103032978624219059'>🔒</tg-emoji> **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
@@ -281,14 +281,14 @@ async def rarity(client, message):
         "<tg-emoji emoji-id='5102722031581923128'>🎐</tg-emoji> 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳 𝘙𝘢𝘳𝘪𝘵𝘺 𝘚𝘺𝘴𝘵𝘦𝘮 <tg-emoji emoji-id='5102722031581923128'>🎐</tg-emoji>\n\n"
         "<tg-emoji emoji-id='5102763490901231643'>👤</tg-emoji> 𝘙𝘦𝘨𝘶𝘭𝘢𝘳 𝘚𝘱𝘢𝘸𝘯𝘴 (𝘦𝘷𝘦𝘳𝘺 100 𝘮𝘦𝘴𝘴𝘢𝘨𝘦𝘴)\n\n"
         "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji> 𝘊𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> 𝘜𝘯𝘤𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji> 𝘙𝘢𝘳𝘦 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji> 𝘌𝘱𝘪𝘤 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji> 𝘓𝘦𝘨𝘦𝘯𝘥𝘢𝘳𝘺 : 2% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> 𝘔𝘺𝘵𝘩𝘪𝘤 : 0.8% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> 𝘙𝘦𝘵𝘳𝘰 : 0.4% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji> 𝘡𝘦𝘯𝘪𝘵𝘩 : 0.01% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> 𝘓𝘪𝘮𝘪𝘵𝘦𝘥 𝘌𝘥𝘪𝘵𝘪𝘰𝘯 : 0.001% 𝘤𝘩𝘢𝘯𝘤𝘦\n\n"
+        "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji> 𝘜𝘯𝘤𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji> 𝘙𝘢𝘳𝘦 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji> 𝘌𝘱𝘪𝘤 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji> 𝘓𝘦𝘨𝘦𝘯𝘥𝘢𝘳𝘺 : 2% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> 𝘔𝘺𝘵𝘩𝘪𝘤 : 0.8% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> 𝘙𝘦𝘵𝘳𝘰 : 0.4% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> 𝘡𝘦𝘯𝘪𝘵𝘩 : 0.01% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji> 𝘓𝘪𝘮𝘪𝘵𝘦𝘥 𝘌𝘥𝘪𝘵𝘪𝘰𝘯 : 0.001% 𝘤𝘩𝘢𝘯𝘤𝘦\n\n"
         "👨‍💼 𝘊𝘶𝘴𝘵𝘰𝘮 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳𝘴 𝘢𝘳𝘦 𝘰𝘳𝘥𝘦𝘳𝘦𝘥 𝘵𝘰 𝘛𝘩𝘦 𝘖𝘸𝘯𝘦𝘳 𝘢𝘯𝘥 𝘵𝘩𝘦𝘺 𝘤𝘢𝘯 𝘰𝘯𝘭𝘺 𝘩𝘢𝘷𝘦 𝘶𝘱 𝘵𝘰 2 𝘖𝘸𝘯𝘦𝘳𝘴. (𝘛𝘩𝘦𝘺 𝘸𝘪𝘭𝘭 𝘯𝘦𝘷𝘦𝘳 𝘴𝘱𝘢𝘸𝘯)"
     )
   
@@ -342,9 +342,9 @@ async def lockspawn_ptb(update: Update, context: CallbackContext):
     })
     
     rarity_emojis = {
-        "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>", "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>", "Rare": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>", "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-        "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>", "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>", "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>", "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-        "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>"
+        "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>", "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>", "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>", "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>", "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>", "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>", "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
     rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>")
@@ -425,9 +425,9 @@ async def lockedspawns_ptb(update: Update, context: CallbackContext, page=0):
         rarity_groups[rarity].append(char)
     
     rarity_emojis = {
-        "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>", "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>", "Rare": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>", "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-        "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>", "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>", "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>", "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-        "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>"
+        "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>", "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>", "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>", "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>", "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>", "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>", "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
     message_text = f"<tg-emoji emoji-id='5103032978624219059'>🔒</tg-emoji> **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
@@ -487,9 +487,9 @@ async def lockedspawns_callback_ptb(update: Update, context: CallbackContext):
             rarity_groups[rarity].append(char)
         
         rarity_emojis = {
-            "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>", "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>", "Rare": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>", "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-            "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>", "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>", "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>", "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-            "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>"
+            "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>", "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>", "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>", "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+            "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>", "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>", "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>", "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+            "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
         }
         
         message_text = f"<tg-emoji emoji-id='5103032978624219059'>🔒</tg-emoji> **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
@@ -529,14 +529,14 @@ async def rarity_ptb(update: Update, context: CallbackContext):
         "<tg-emoji emoji-id='5102722031581923128'>🎐</tg-emoji> 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳 𝘙𝘢𝘳𝘪𝘵𝘺 𝘚𝘺𝘴𝘵𝘦𝘮 <tg-emoji emoji-id='5102722031581923128'>🎐</tg-emoji>\n\n"
         "<tg-emoji emoji-id='5102763490901231643'>👤</tg-emoji> 𝘙𝘦𝘨𝘶𝘭𝘢𝘳 𝘚𝘱𝘢𝘸𝘯𝘴 (𝘦𝘷𝘦𝘳𝘺 100 𝘮𝘦𝘴𝘴𝘢𝘨𝘦𝘴)\n\n"
         "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji> 𝘊𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> 𝘜𝘯𝘤𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji> 𝘙𝘢𝘳𝘦 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji> 𝘌𝘱𝘪𝘤 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji> 𝘓𝘦𝘨𝘦𝘯𝘥𝘢𝘳𝘺 : 2% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> 𝘔𝘺𝘵𝘩𝘪𝘤 : 0.8% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> 𝘙𝘦𝘵𝘳𝘰 : 0.4% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji> 𝘡𝘦𝘯𝘪𝘵𝘩 : 0.01% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> 𝘓𝘪𝘮𝘪𝘵𝘦𝘥 𝘌𝘥𝘪𝘵𝘪𝘰𝘯 : 0.001% 𝘤𝘩𝘢𝘯𝘤𝘦\n\n"
+        "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji> 𝘜𝘯𝘤𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji> 𝘙𝘢𝘳𝘦 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji> 𝘌𝘱𝘪𝘤 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji> 𝘓𝘦𝘨𝘦𝘯𝘥𝘢𝘳𝘺 : 2% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> 𝘔𝘺𝘵𝘩𝘪𝘤 : 0.8% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> 𝘙𝘦𝘵𝘳𝘰 : 0.4% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> 𝘡𝘦𝘯𝘪𝘵𝘩 : 0.01% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji> 𝘓𝘪𝘮𝘪𝘵𝘦𝘥 𝘌𝘥𝘪𝘵𝘪𝘰𝘯 : 0.001% 𝘤𝘩𝘢𝘯𝘤𝘦\n\n"
         "👨‍💼 𝘊𝘶𝘴𝘵𝘰𝘮 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳𝘴 𝘢𝘳𝘦 𝘰𝘳𝘥𝘦𝘳𝘦𝘥 𝘵𝘰 𝘛𝘩𝘦 𝘖𝘸𝘯𝘦𝘳 𝘢𝘯𝘥 𝘵𝘩𝘦𝘺 𝘤𝘢𝘯 𝘰𝘯𝘭𝘺 𝘩𝘢𝘷𝘦 𝘶𝘱 𝘵𝘰 2 𝘖𝘸𝘯𝘦𝘳𝘴. (𝘛𝘩𝘦𝘺 𝘸𝘪𝘭𝘭 𝘯𝘦𝘷𝘦𝘳 𝘴𝘱𝘢𝘸𝘯)"
     )
   

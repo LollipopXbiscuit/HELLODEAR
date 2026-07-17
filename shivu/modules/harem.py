@@ -396,15 +396,15 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
             # Add rarity emoji to make it more beautiful
             rarity_emojis = {
                 "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
-                "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
-                "Rare": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
-                "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-                "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
-                "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
-                "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
-                "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-                "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>",
-                "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>"
+                "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
+                "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
+                "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+                "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+                "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+                "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+                "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+                "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+                "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
             }
             rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>")
             count = character_counts[character['id']]
@@ -744,15 +744,15 @@ async def fav(client, message):
     # Send character image with confirmation
     rarity_emojis = {
         "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
-        "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
-        "Rare": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
-        "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-        "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
-        "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
-        "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
-        "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-        "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>",
-        "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>"
+        "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
+        "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
+        "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+        "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
     rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>")
@@ -968,9 +968,9 @@ async def fav_ptb(update: Update, context: CallbackContext):
     
     # Send character image with confirmation
     rarity_emojis = {
-        "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>", "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>", "Rare": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>", "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-        "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>", "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>", "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>", "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-        "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>"
+        "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>", "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>", "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>", "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>", "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>", "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>", "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
     rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>")
@@ -1106,15 +1106,15 @@ async def all_rarities(update: Update, context: CallbackContext) -> None:
     rarity_order = ["Limited Edition", "Star", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]
     rarity_emojis = {
         "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
-        "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+        "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
         "Rare": "🟠",
-        "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-        "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
-        "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
-        "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
-        "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-        "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>",
-        "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>"
+        "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+        "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
     }
     
     # Build message

@@ -13,16 +13,16 @@ from shivu.modules.harem import get_character_display_url
 # Rarity styles for display purposes
 rarity_styles = {
     "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
-    "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
-    "Rare": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
-    "Epic": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-    "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
-    "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
-    "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
-    "Star": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-    "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>",
-    "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji>",
-    "Custom": '<tg-emoji emoji-id="5102630299670415053">💎</tg-emoji>'
+    "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
+    "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
+    "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
+    "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
+    "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+    "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+    "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
+    "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+    "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>",
+    "Custom": '<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji>'
 }
 
 def get_format_text(level):
@@ -34,11 +34,11 @@ img_url character-name anime-name rarity-number
 𝘠𝘰𝘶 𝘤𝘢𝘯 𝘶𝘱𝘭𝘰𝘢𝘥 𝘵𝘩𝘦𝘴𝘦 𝘳𝘢𝘳𝘪𝘵𝘪𝘦𝘴 :
 
 1 = <tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji> Common
-2 = <tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> Uncommon  
-3 = <tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji> Rare
-4 = <tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji> Epic
-5 = <tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji> Legendary
-6 = <tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> Mythic
+2 = <tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji> Uncommon  
+3 = <tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji> Rare
+4 = <tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji> Epic
+5 = <tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji> Legendary
+6 = <tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> Mythic
 
 𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 1 🪄 !
 
@@ -51,14 +51,14 @@ img_url character-name anime-name rarity-number
 𝘠𝘰𝘶 𝘤𝘢𝘯 𝘶𝘱𝘭𝘰𝘢𝘥 𝘵𝘩𝘦𝘴𝘦 𝘳𝘢𝘳𝘪𝘵𝘪𝘦𝘴 :
 
 1 = <tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji> Common
-2 = <tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> Uncommon  
-3 = <tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji> Rare
-4 = <tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji> Epic
-5 = <tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji> Legendary
-6 = <tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> Mythic
-7 = <tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> Retro
-8 = <tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji> Star
-9 = <tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji> Zenith
+2 = <tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji> Uncommon  
+3 = <tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji> Rare
+4 = <tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji> Epic
+5 = <tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji> Legendary
+6 = <tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> Mythic
+7 = <tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> Retro
+8 = <tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji> Star
+9 = <tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> Zenith
 
 𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 2 <tg-emoji emoji-id='5102722031581923128'>🎐</tg-emoji> !
 
@@ -71,15 +71,15 @@ img_url character-name anime-name rarity-number
 𝘠𝘰𝘶 𝘤𝘢𝘯 𝘶𝘱𝘭𝘰𝘢𝘥 𝘢𝘭𝘭 𝘳𝘢𝘳𝘪𝘵𝘪𝘦𝘴 :
 
 1 = <tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji> Common
-2 = <tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> Uncommon  
-3 = <tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji> Rare
-4 = <tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji> Epic
-5 = <tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji> Legendary
-6 = <tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> Mythic
-7 = <tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> Retro
-8 = <tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji> Star
-9 = <tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji> Zenith
-10 = <tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Limited Edition
+2 = <tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji> Uncommon  
+3 = <tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji> Rare
+4 = <tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji> Epic
+5 = <tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji> Legendary
+6 = <tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> Mythic
+7 = <tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> Retro
+8 = <tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji> Star
+9 = <tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> Zenith
+10 = <tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji> Limited Edition
 11 = 👨‍💼 Custom 
 
 𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 3 <tg-emoji emoji-id='5102763490901231643'>👤</tg-emoji> !
