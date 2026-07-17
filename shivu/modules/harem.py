@@ -423,7 +423,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
     
     keyboard = [
         [InlineKeyboardButton(f"See Collection ({total_count})", switch_inline_query_current_chat=f"collection.{user_id}")],
-        [InlineKeyboardButton(f"📊 Database", url=f"https://t.me/c/{str(CHARA_CHANNEL_ID).replace('-100', '')}")]
+        [InlineKeyboardButton(f"<tg-emoji emoji-id='5102802918701008521'>📊</tg-emoji> Database", url=f"https://t.me/c/{str(CHARA_CHANNEL_ID).replace('-100', '')}")]
     ]
 
 
@@ -431,9 +431,9 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
         
         nav_buttons = []
         if page > 0:
-            nav_buttons.append(InlineKeyboardButton("⬅️", callback_data=f"harem:{page-1}:{user_id}"))
+            nav_buttons.append(InlineKeyboardButton("<tg-emoji emoji-id='5102857782613248388'>⬅️</tg-emoji>", callback_data=f"harem:{page-1}:{user_id}"))
         if page < total_pages - 1:
-            nav_buttons.append(InlineKeyboardButton("➡️", callback_data=f"harem:{page+1}:{user_id}"))
+            nav_buttons.append(InlineKeyboardButton("<tg-emoji emoji-id='5102932600943544398'>➡️</tg-emoji>", callback_data=f"harem:{page+1}:{user_id}"))
         keyboard.append(nav_buttons)
 
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -741,8 +741,8 @@ async def fav(client, message):
     
     # Create confirmation keyboard
     keyboard = PyroInlineKeyboardMarkup([
-        [PyroInlineKeyboardButton("✅ Confirm", callback_data="confirm_fav")],
-        [PyroInlineKeyboardButton("❌ Cancel", callback_data="cancel_fav")]
+        [PyroInlineKeyboardButton("<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Confirm", callback_data="confirm_fav")],
+        [PyroInlineKeyboardButton("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Cancel", callback_data="cancel_fav")]
     ])
     
     # Send character image with confirmation
@@ -971,8 +971,8 @@ async def fav_ptb(update: Update, context: CallbackContext):
     
     # Create confirmation keyboard
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("✅ Confirm", callback_data="confirm_fav")],
-        [InlineKeyboardButton("❌ Cancel", callback_data="cancel_fav")]
+        [InlineKeyboardButton("<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Confirm", callback_data="confirm_fav")],
+        [InlineKeyboardButton("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Cancel", callback_data="cancel_fav")]
     ])
     
     # Send character image with confirmation
