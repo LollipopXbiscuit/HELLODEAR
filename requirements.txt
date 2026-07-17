@@ -4,8 +4,9 @@ requests
 python-telegram-bot==22.8
 pymongo
 pyrate-limiter==3.1.0
-apscheduler==3.6.3
+apscheduler==3.10.4
 pyrogram
 tgcrypto
 python-dotenv
 cachetools
+apscheduler==3.10.4
