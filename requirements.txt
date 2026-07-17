@@ -1,7 +1,7 @@
 motor
 aiohttp
 requests
-python-telegram-bot==21.11.1
+python-telegram-bot==22.8
 pymongo
 pyrate-limiter==3.1.0
 apscheduler==3.6.3
@@ -9,4 +9,3 @@ pyrogram
 tgcrypto
 python-dotenv
 cachetools
-python-telegram-bot==21.11.1
