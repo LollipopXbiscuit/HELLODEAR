@@ -753,9 +753,45 @@ async def run_web_server():
     await site.start()
     LOGGER.info(f"Web server started on 0.0.0.0:{port}")
 
+async def unmute(update: Update, context: CallbackContext) -> None:
+    """Remove a user from the spam block list (sudo users only)"""
+    sender_id = update.effective_user.id
+
+    if str(sender_id) not in [str(u) for u in sudo_users] and str(sender_id) != str(OWNER_ID):
+        await update.message.reply_text("🚫 This command is only available to sudo users.")
+        return
+
+    target_id = None
+
+    # Try to get user from reply
+    if update.message.reply_to_message:
+        target_id = update.message.reply_to_message.from_user.id
+    # Try to get user from argument
+    elif context.args:
+        try:
+            target_id = int(context.args[0])
+        except ValueError:
+            await update.message.reply_text("❌ Please provide a valid user ID or reply to the user's message.")
+            return
+
+    if target_id is None:
+        await update.message.reply_text("❌ Reply to a user's message or provide their user ID.\n\nUsage: `/unmute <user_id>`", parse_mode='Markdown')
+        return
+
+    if target_id in blocked_users:
+        del blocked_users[target_id]
+        # Also clear their message history so they don't get re-blocked immediately
+        if target_id in user_message_times:
+            del user_message_times[target_id]
+        await update.message.reply_text(f"✅ User `{target_id}` has been unmuted and can send messages again.", parse_mode='Markdown')
+    else:
+        await update.message.reply_text(f"ℹ️ User `{target_id}` is not currently muted.", parse_mode='Markdown')
+
+
 async def run_bot():
     """Run the Telegram bot with webhooks or polling"""
     application.add_handler(CommandHandler(["marry"], guess, block=False))
+    application.add_handler(CommandHandler("unmute", unmute, block=False))
     application.add_handler(MessageHandler(filters.ALL, message_counter, block=False))
     application.post_init = post_init
     

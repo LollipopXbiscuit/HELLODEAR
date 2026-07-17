@@ -1,11 +1,19 @@
 import random
-from html import escape 
+from html import escape
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
 
-from shivu import application, PHOTO_URL, SUPPORT_CHAT, UPDATE_CHAT, BOT_USERNAME, db, GROUP_ID
-from shivu import pm_users as collection 
+from shivu import (
+    application,
+    PHOTO_URL,
+    SUPPORT_CHAT,
+    UPDATE_CHAT,
+    BOT_USERNAME,
+    db,
+    GROUP_ID,
+)
+from shivu import pm_users as collection
 
 
 async def start(update: Update, context: CallbackContext) -> None:
@@ -16,24 +24,27 @@ async def start(update: Update, context: CallbackContext) -> None:
     user_data = await collection.find_one({"_id": user_id})
 
     if user_data is None:
-        
-        await collection.insert_one({"_id": user_id, "first_name": first_name, "username": username, "characters": []})
-        
+        await collection.insert_one(
+            {
+                "_id": user_id,
+                "first_name": first_name,
+                "username": username,
+                "characters": [],
+            }
+        )
+
         # Optional: Send notification to group when new users start (uncomment if you have a group set up)
-        # await context.bot.send_message(chat_id=GROUP_ID, 
-        #                                text=f"New user Started The Bot..\n User: <a href='tg://user?id={user_id}'>{escape(first_name)})</a>", 
+        # await context.bot.send_message(chat_id=GROUP_ID,
+        #                                text=f"New user Started The Bot..\n User: <a href='tg://user?id={user_id}'>{escape(first_name)})</a>",
         #                                parse_mode='HTML')
     else:
-        
-        if user_data['first_name'] != first_name or user_data['username'] != username:
-            
-            await collection.update_one({"_id": user_id}, {"$set": {"first_name": first_name, "username": username}})
+        if user_data["first_name"] != first_name or user_data["username"] != username:
+            await collection.update_one(
+                {"_id": user_id},
+                {"$set": {"first_name": first_name, "username": username}},
+            )
 
-    
-
-    if update.effective_chat.type== "private":
-        
-        
+    if update.effective_chat.type == "private":
         caption = f"""
 ✨ **Welcome to Waifu & Husbando Catcher!** ✨
 
@@ -47,33 +58,55 @@ async def start(update: Update, context: CallbackContext) -> None:
 
 🌟 **Ready to start your anime adventure?** Add me to your group now!
         """
-        
+
         keyboard = [
-            [InlineKeyboardButton("SUPPORT", url=f'http://t.me/CollectorOfficialGroup')],
-            [InlineKeyboardButton("HELP", callback_data='help')]
+            [
+                InlineKeyboardButton(
+                    "SUPPORT", url=f"http://t.me/CollectorOfficialGroup"
+                )
+            ],
+            [InlineKeyboardButton("HELP", callback_data="help")],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         from shivu import process_image_url
+
         photo_url = await process_image_url(random.choice(PHOTO_URL))
 
-        await context.bot.send_photo(chat_id=update.effective_chat.id, photo=photo_url, caption=caption, reply_markup=reply_markup, parse_mode='markdown')
+        await context.bot.send_photo(
+            chat_id=update.effective_chat.id,
+            photo=photo_url,
+            caption=caption,
+            reply_markup=reply_markup,
+            parse_mode="markdown",
+        )
 
     else:
         from shivu import process_image_url
+
         photo_url = await process_image_url(random.choice(PHOTO_URL))
         keyboard = [
-            [InlineKeyboardButton("SUPPORT", url=f'http://t.me/CollectorOfficialGroup')],
-            [InlineKeyboardButton("HELP", callback_data='help')]
+            [
+                InlineKeyboardButton(
+                    "SUPPORT", url=f"http://t.me/CollectorOfficialGroup"
+                )
+            ],
+            [InlineKeyboardButton("HELP", callback_data="help")],
         ]
-        
+
         reply_markup = InlineKeyboardMarkup(keyboard)
-        await context.bot.send_photo(chat_id=update.effective_chat.id, photo=photo_url, caption="🎴Alive!?... \n connect to me in PM For more information ",reply_markup=reply_markup )
+        await context.bot.send_photo(
+            chat_id=update.effective_chat.id,
+            photo=photo_url,
+            caption="🎴Alive!?... \n connect to me in PM For more information ",
+            reply_markup=reply_markup,
+        )
+
 
 async def button(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
     await query.answer()
 
-    if query.data == 'help':
+    if query.data == "help":
         help_text = """
     ***Help Section:***
     
@@ -87,13 +120,18 @@ async def button(update: Update, context: CallbackContext) -> None:
 ***/ctop : Your ChatTop***
 ***/changetime: Change Character appear time (only works in Groups)***
    """
-        help_keyboard = [[InlineKeyboardButton("⤾ Bᴀᴄᴋ", callback_data='back')]]
+        help_keyboard = [[InlineKeyboardButton("⤾ Bᴀᴄᴋ", callback_data="back")]]
         reply_markup = InlineKeyboardMarkup(help_keyboard)
-        
-        await context.bot.edit_message_caption(chat_id=update.effective_chat.id, message_id=query.message.message_id, caption=help_text, reply_markup=reply_markup, parse_mode='markdown')
 
-    elif query.data == 'back':
+        await context.bot.edit_message_caption(
+            chat_id=update.effective_chat.id,
+            message_id=query.message.message_id,
+            caption=help_text,
+            reply_markup=reply_markup,
+            parse_mode="markdown",
+        )
 
+    elif query.data == "back":
         caption = f"""
 ✨ **Welcome to Waifu & Husbando Catcher!** ✨
 
@@ -108,16 +146,27 @@ async def button(update: Update, context: CallbackContext) -> None:
 🌟 **Ready to start your anime adventure?** Add me to your group now!
         """
 
-        
         keyboard = [
-            [InlineKeyboardButton("SUPPORT", url=f'http://t.me/CollectorOfficialGroup')],
-            [InlineKeyboardButton("HELP", callback_data='help')]
+            [
+                InlineKeyboardButton(
+                    "SUPPORT", url=f"http://t.me/CollectorOfficialGroup"
+                )
+            ],
+            [InlineKeyboardButton("HELP", callback_data="help")],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await context.bot.edit_message_caption(chat_id=update.effective_chat.id, message_id=query.message.message_id, caption=caption, reply_markup=reply_markup, parse_mode='markdown')
+        await context.bot.edit_message_caption(
+            chat_id=update.effective_chat.id,
+            message_id=query.message.message_id,
+            caption=caption,
+            reply_markup=reply_markup,
+            parse_mode="markdown",
+        )
 
 
-application.add_handler(CallbackQueryHandler(button, pattern='^help$|^back$', block=False))
-start_handler = CommandHandler('start', start, block=False)
+application.add_handler(
+    CallbackQueryHandler(button, pattern="^help$|^back$", block=False)
+)
+start_handler = CommandHandler("start", start, block=False)
 application.add_handler(start_handler)
