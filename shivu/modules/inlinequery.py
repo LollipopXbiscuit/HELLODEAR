@@ -201,7 +201,8 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                             mime_type=mime_type,
                             thumbnail_url=placeholder_thumbnail,
                             title=f"{character['name']} - {character['anime']}",
-                            caption=caption
+                            caption=caption,
+                            parse_mode='HTML'
                         )
                     )
                 except Exception as video_error:
@@ -213,7 +214,7 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                             id=f"{character['id']}_{time.time()}",
                             photo_url=processed_url,
                             caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {caption}",
-                    parse_mode='HTML'
+                            parse_mode='HTML'
                         )
                     )
             else:
@@ -222,7 +223,8 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                         thumbnail_url=processed_url,
                         id=f"{character['id']}_{time.time()}",
                         photo_url=processed_url,
-                        caption=caption
+                        caption=caption,
+                        parse_mode='HTML'
                     )
                 )
         except Exception as e:

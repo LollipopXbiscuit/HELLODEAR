@@ -815,7 +815,7 @@ async def fav_callback(client, callback_query):
     user_id = callback_query.from_user.id
     
     if user_id not in pending_favorites:
-        await callback_query.answer("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> No pending favorite found!", show_alert=True)
+        await callback_query.answer("❌ No pending favorite found!", show_alert=True)
         return
     
     if callback_query.data == "confirm_fav":
@@ -1036,7 +1036,7 @@ async def fav_callback_ptb(update: Update, context: CallbackContext):
     user_id = query.from_user.id
     
     if user_id not in pending_favorites:
-        await query.answer("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> No pending favorite found!", show_alert=True)
+        await query.answer("❌ No pending favorite found!", show_alert=True)
         return
     
     if query.data == "confirm_fav":
