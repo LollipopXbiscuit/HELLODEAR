@@ -65,6 +65,6 @@ async def broadcast(update: Update, context: CallbackContext) -> None:
             print(f"Failed to send message to {chat_id}: {e}")
             failed_sends += 1
 
-    await update.message.reply_text(f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Broadcast complete!\n\n<tg-emoji emoji-id="5102699126521334971">📥</tg-emoji> Sent to: {success_sends} chats/users\n<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Failed: {failed_sends}")
+    await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Broadcast complete!\n\n<tg-emoji emoji-id='5102699126521334971'>📥</tg-emoji> Sent to: {success_sends} chats/users\n<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Failed: {failed_sends}")
 
 application.add_handler(CommandHandler("broadcast", broadcast, block=False))

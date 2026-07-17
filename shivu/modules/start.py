@@ -46,17 +46,17 @@ async def start(update: Update, context: CallbackContext) -> None:
 
     if update.effective_chat.type == "private":
         caption = f"""
-<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> **Welcome to Waifu & Husbando Catcher!** <tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>
+<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> **Welcome to Waifu & Husbando Catcher!** <tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji>
 
 👋 **Your ultimate anime character collection bot!**
 
-<tg-emoji emoji-id="5350460637182993292">🎯</tg-emoji> **How it works:**
+<tg-emoji emoji-id='5350460637182993292'>🎯</tg-emoji> **How it works:**
 • Add me to your group and I'll send random anime characters every 100 messages
 • Use /marry to catch characters and add them to your collection
 • Build your dream collection and trade with friends!
 • View your collection anytime with /collection
 
-<tg-emoji emoji-id="5102774906924303446">🤩</tg-emoji> **Ready to start your anime adventure?** Add me to your group now!
+<tg-emoji emoji-id='5102774906924303446'>🤩</tg-emoji> **Ready to start your anime adventure?** Add me to your group now!
         """
 
         keyboard = [
@@ -97,7 +97,7 @@ async def start(update: Update, context: CallbackContext) -> None:
         await context.bot.send_photo(
             chat_id=update.effective_chat.id,
             photo=photo_url,
-            caption="<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji>Alive!?... \n connect to me in PM For more information ",
+            caption="<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji>Alive!?... \n connect to me in PM For more information ",
             reply_markup=reply_markup,
         )
 
@@ -133,17 +133,17 @@ async def button(update: Update, context: CallbackContext) -> None:
 
     elif query.data == "back":
         caption = f"""
-<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> **Welcome to Waifu & Husbando Catcher!** <tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>
+<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> **Welcome to Waifu & Husbando Catcher!** <tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji>
 
 👋 **Your ultimate anime character collection bot!**
 
-<tg-emoji emoji-id="5350460637182993292">🎯</tg-emoji> **How it works:**
+<tg-emoji emoji-id='5350460637182993292'>🎯</tg-emoji> **How it works:**
 • Add me to your group and I'll send random anime characters every 100 messages
 • Use /marry to catch characters and add them to your collection
 • Build your dream collection and trade with friends!
 • View your collection anytime with /collection
 
-<tg-emoji emoji-id="5102774906924303446">🤩</tg-emoji> **Ready to start your anime adventure?** Add me to your group now!
+<tg-emoji emoji-id='5102774906924303446'>🤩</tg-emoji> **Ready to start your anime adventure?** Add me to your group now!
         """
 
         keyboard = [

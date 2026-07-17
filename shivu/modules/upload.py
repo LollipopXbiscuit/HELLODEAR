@@ -12,79 +12,79 @@ from shivu.modules.harem import get_character_display_url
 
 # Rarity styles for display purposes
 rarity_styles = {
-    "Common": "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji>",
-    "Uncommon": "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji>",
-    "Rare": "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji>",
-    "Epic": "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji>",
-    "Legendary": "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji>",
-    "Mythic": "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji>",
-    "Retro": "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji>",
-    "Star": "<tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji>",
-    "Zenith": "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>",
-    "Limited Edition": "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>",
-    "Custom": '<tg-emoji emoji-id="5102630299670415053">💎</tg-emoji>'
+    "Common": "<tg-emoji emoji-id='5102863490624784495'>🤩</tg-emoji>",
+    "Uncommon": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
+    "Rare": "<tg-emoji emoji-id='5102906715175651186'>🚨</tg-emoji>",
+    "Epic": "<tg-emoji emoji-id='5102814377673754670'>🚨</tg-emoji>",
+    "Legendary": "<tg-emoji emoji-id='5103060513659554158'>🚨</tg-emoji>",
+    "Mythic": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
+    "Retro": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
+    "Star": "<tg-emoji emoji-id='5102990767685634240'>🚨</tg-emoji>",
+    "Zenith": "<tg-emoji emoji-id='5103127253156367234'>🤩</tg-emoji>",
+    "Limited Edition": "<tg-emoji emoji-id='5103087490349139576'>🤩</tg-emoji>",
+    "Custom": '<tg-emoji emoji-id='5102630299670415053'>💎</tg-emoji>'
 }
 
 def get_format_text(level):
     if level == 1:
-        return """Wrong <tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji>️ format...  eg. /upload Img_url muzan-kibutsuji Demon-slayer 5
+        return """Wrong <tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji>️ format...  eg. /upload Img_url muzan-kibutsuji Demon-slayer 5
 
 img_url character-name anime-name rarity-number
 
 𝘠𝘰𝘶 𝘤𝘢𝘯 𝘶𝘱𝘭𝘰𝘢𝘥 𝘵𝘩𝘦𝘴𝘦 𝘳𝘢𝘳𝘪𝘵𝘪𝘦𝘴 :
 
-1 = <tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji> Common
-2 = <tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji> Uncommon  
-3 = <tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji> Rare
-4 = <tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji> Epic
-5 = <tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji> Legendary
-6 = <tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji> Mythic
+1 = <tg-emoji emoji-id='5102863490624784495'>🤩</tg-emoji> Common
+2 = <tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> Uncommon  
+3 = <tg-emoji emoji-id='5102906715175651186'>🚨</tg-emoji> Rare
+4 = <tg-emoji emoji-id='5102814377673754670'>🚨</tg-emoji> Epic
+5 = <tg-emoji emoji-id='5103060513659554158'>🚨</tg-emoji> Legendary
+6 = <tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> Mythic
 
 𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 1 🪄 !
 
-<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Supported: Discord CDN links, direct image/video URLs (including MP4), and other standard hosting services"""
+<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Supported: Discord CDN links, direct image/video URLs (including MP4), and other standard hosting services"""
     elif level == 2:
-        return """Wrong <tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji>️ format...  eg. /upload Img_url muzan-kibutsuji Demon-slayer 5
+        return """Wrong <tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji>️ format...  eg. /upload Img_url muzan-kibutsuji Demon-slayer 5
 
 img_url character-name anime-name rarity-number
 
 𝘠𝘰𝘶 𝘤𝘢𝘯 𝘶𝘱𝘭𝘰𝘢𝘥 𝘵𝘩𝘦𝘴𝘦 𝘳𝘢𝘳𝘪𝘵𝘪𝘦𝘴 :
 
-1 = <tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji> Common
-2 = <tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji> Uncommon  
-3 = <tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji> Rare
-4 = <tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji> Epic
-5 = <tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji> Legendary
-6 = <tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji> Mythic
-7 = <tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji> Retro
-8 = <tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji> Star
-9 = <tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji> Zenith
+1 = <tg-emoji emoji-id='5102863490624784495'>🤩</tg-emoji> Common
+2 = <tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> Uncommon  
+3 = <tg-emoji emoji-id='5102906715175651186'>🚨</tg-emoji> Rare
+4 = <tg-emoji emoji-id='5102814377673754670'>🚨</tg-emoji> Epic
+5 = <tg-emoji emoji-id='5103060513659554158'>🚨</tg-emoji> Legendary
+6 = <tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> Mythic
+7 = <tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> Retro
+8 = <tg-emoji emoji-id='5102990767685634240'>🚨</tg-emoji> Star
+9 = <tg-emoji emoji-id='5103127253156367234'>🤩</tg-emoji> Zenith
 
-𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 2 <tg-emoji emoji-id="5102722031581923128">🎐</tg-emoji> !
+𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 2 <tg-emoji emoji-id='5102722031581923128'>🎐</tg-emoji> !
 
-<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Supported: Discord CDN links, direct image/video URLs (including MP4), and other standard hosting services"""
+<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Supported: Discord CDN links, direct image/video URLs (including MP4), and other standard hosting services"""
     else:
-        return """Wrong <tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji>️ format...  eg. /upload Img_url muzan-kibutsuji Demon-slayer 5
+        return """Wrong <tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji>️ format...  eg. /upload Img_url muzan-kibutsuji Demon-slayer 5
 
 img_url character-name anime-name rarity-number
 
 𝘠𝘰𝘶 𝘤𝘢𝘯 𝘶𝘱𝘭𝘰𝘢𝘥 𝘢𝘭𝘭 𝘳𝘢𝘳𝘪𝘵𝘪𝘦𝘴 :
 
-1 = <tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji> Common
-2 = <tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji> Uncommon  
-3 = <tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji> Rare
-4 = <tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji> Epic
-5 = <tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji> Legendary
-6 = <tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji> Mythic
-7 = <tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji> Retro
-8 = <tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji> Star
-9 = <tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji> Zenith
-10 = <tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji> Limited Edition
+1 = <tg-emoji emoji-id='5102863490624784495'>🤩</tg-emoji> Common
+2 = <tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji> Uncommon  
+3 = <tg-emoji emoji-id='5102906715175651186'>🚨</tg-emoji> Rare
+4 = <tg-emoji emoji-id='5102814377673754670'>🚨</tg-emoji> Epic
+5 = <tg-emoji emoji-id='5103060513659554158'>🚨</tg-emoji> Legendary
+6 = <tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji> Mythic
+7 = <tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji> Retro
+8 = <tg-emoji emoji-id='5102990767685634240'>🚨</tg-emoji> Star
+9 = <tg-emoji emoji-id='5103127253156367234'>🤩</tg-emoji> Zenith
+10 = <tg-emoji emoji-id='5103087490349139576'>🤩</tg-emoji> Limited Edition
 11 = 👨‍💼 Custom 
 
-𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 3 <tg-emoji emoji-id="5102763490901231643">👤</tg-emoji> !
+𝘠𝘰𝘶𝘳 𝘶𝘱𝘭𝘰𝘢𝘥𝘦𝘳 𝘭𝘦𝘷𝘦𝘭 𝘪𝘴 3 <tg-emoji emoji-id='5102763490901231643'>👤</tg-emoji> !
 
-<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Supported: Discord CDN links, direct image/video URLs (including MP4), and other standard hosting services"""
+<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Supported: Discord CDN links, direct image/video URLs (including MP4), and other standard hosting services"""
 
 
 async def get_uploader_level(user_id):
@@ -136,7 +136,7 @@ async def promote(update: Update, context: CallbackContext) -> None:
             upsert=True
         )
         
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> User {user_id} promoted to level {level}.')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> User {user_id} promoted to level {level}.')
     except Exception as e:
         await update.message.reply_text(f'Error: {str(e)}')
 
@@ -176,9 +176,9 @@ async def is_video_character(character, char_id=None, user_id=None):
     if not character:
         return False
     
-    # Check for <tg-emoji emoji-id="5103128992618120782">🤩</tg-emoji> emoji marker first (fastest check)
+    # Check for <tg-emoji emoji-id='5103128992618120782'>🤩</tg-emoji> emoji marker first (fastest check)
     name = character.get('name', '')
-    if '<tg-emoji emoji-id="5103128992618120782">🤩</tg-emoji>' in name:
+    if '<tg-emoji emoji-id='5103128992618120782'>🤩</tg-emoji>' in name:
         return True
     
     # Get the correct display URL (respecting active_slot for custom characters)
@@ -317,7 +317,7 @@ async def upload(update: Update, context: CallbackContext) -> None:
         
         # If it's a Discord CDN link, inform the user
         if is_discord_cdn_url(args[0]):
-            await update.message.reply_text('<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Discord CDN link detected - processing...', reply_to_message_id=update.message.message_id)
+            await update.message.reply_text('<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Discord CDN link detected - processing...', reply_to_message_id=update.message.message_id)
 
         rarity_map = {
             1: "Common", 
@@ -336,10 +336,10 @@ async def upload(update: Update, context: CallbackContext) -> None:
             rarity_num = int(args[3])
             # Level restrictions
             if level == 1 and rarity_num > 6:
-                await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Level 1 uploaders can only upload up to Mythic rank (1-6).')
+                await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Level 1 uploaders can only upload up to Mythic rank (1-6).')
                 return
             if level == 2 and rarity_num > 9:
-                await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Level 2 uploaders can only upload up to Zenith rank (1-9).')
+                await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Level 2 uploaders can only upload up to Zenith rank (1-9).')
                 return
             
             rarity = rarity_map[rarity_num]
@@ -363,13 +363,13 @@ async def upload(update: Update, context: CallbackContext) -> None:
             processed_url = await process_image_url(args[0])
             # Create neat and pretty caption format
             caption = (
-                f"<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> <b>{character_name}</b> <tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>\n"
-                f"<tg-emoji emoji-id="5102663817595193122">🎏</tg-emoji> <i>{anime}</i>\n"
+                f"<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> <b>{character_name}</b> <tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji>\n"
+                f"<tg-emoji emoji-id='5102663817595193122'>🎏</tg-emoji> <i>{anime}</i>\n"
                 f"━━━━━━━━━━━━━━━━\n"
                 f"{rarity_emoji} <b>{rarity}</b>\n"
-                f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> <b>ID:</b> #{id}\n"
+                f"<tg-emoji emoji-id='5102638339849192814'>🤩</tg-emoji> <b>ID:</b> #{id}\n"
                 f"━━━━━━━━━━━━━━━━\n"
-                f"<tg-emoji emoji-id="5102699126521334971">📥</tg-emoji> Added by <a href='tg://user?id={update.effective_user.id}'>{update.effective_user.first_name}</a>"
+                f"<tg-emoji emoji-id='5102699126521334971'>📥</tg-emoji> Added by <a href='tg://user?id={update.effective_user.id}'>{update.effective_user.first_name}</a>"
             )
             
             if is_video:
@@ -422,7 +422,7 @@ async def update_card(update: Update, context: CallbackContext) -> None:
         # Find the character
         character = await collection.find_one({'id': character_id})
         if not character:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Character with ID #{character_id} not found!')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Character with ID #{character_id} not found!')
             return
 
         # Validate URL
@@ -448,13 +448,13 @@ async def update_card(update: Update, context: CallbackContext) -> None:
         processed_url = await process_image_url(new_img_url)
         
         caption = (
-            f"<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> <b>{character_name}</b> (UPDATED) <tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>\n"
-            f"<tg-emoji emoji-id="5102663817595193122">🎏</tg-emoji> <i>{anime}</i>\n"
+            f"<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> <b>{character_name}</b> (UPDATED) <tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji>\n"
+            f"<tg-emoji emoji-id='5102663817595193122'>🎏</tg-emoji> <i>{anime}</i>\n"
             f"━━━━━━━━━━━━━━━━\n"
             f"{rarity_emoji} <b>{rarity}</b>\n"
-            f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> <b>ID:</b> #{character_id}\n"
+            f"<tg-emoji emoji-id='5102638339849192814'>🤩</tg-emoji> <b>ID:</b> #{character_id}\n"
             f"━━━━━━━━━━━━━━━━\n"
-            f"<tg-emoji emoji-id="5102699126521334971">📥</tg-emoji> Updated by <a href='tg://user?id={update.effective_user.id}'>{update.effective_user.first_name}</a>"
+            f"<tg-emoji emoji-id='5102699126521334971'>📥</tg-emoji> Updated by <a href='tg://user?id={update.effective_user.id}'>{update.effective_user.first_name}</a>"
         )
         
         try:
@@ -491,7 +491,7 @@ async def update_card(update: Update, context: CallbackContext) -> None:
                 except:
                     pass
             
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Character #{character_id} updated successfully!')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Character #{character_id} updated successfully!')
             
         except Exception as e:
             # Fallback update if channel sending fails
@@ -533,7 +533,7 @@ async def delete(update: Update, context: CallbackContext) -> None:
             )
             
             await context.bot.delete_message(chat_id=CHARA_CHANNEL_ID, message_id=character['message_id'])
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Character deleted from database and removed from {user_result.modified_count} user collections.')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Character deleted from database and removed from {user_result.modified_count} user collections.')
         else:
             await update.message.reply_text('Deleted Successfully from db, but character not found In Channel')
     except Exception as e:
@@ -563,7 +563,7 @@ async def summon(update: Update, context: CallbackContext) -> None:
         total_characters = await collection.count_documents(filter_criteria)
         
         if total_characters == 0:
-            await update.message.reply_text('<tg-emoji emoji-id="5102990630246680945">🤩</tg-emoji> No characters in database to summon!\n\nUpload some characters first using /upload')
+            await update.message.reply_text('<tg-emoji emoji-id='5102990630246680945'>🤩</tg-emoji> No characters in database to summon!\n\nUpload some characters first using /upload')
             return
         
         # Get characters grouped by rarity for weighted selection
@@ -589,14 +589,14 @@ async def summon(update: Update, context: CallbackContext) -> None:
         available_rarities = await collection.distinct('rarity', event_filter)
         
         if not available_rarities:
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> No spawnable characters available!\n\nAll characters in the database appear to be Limited Edition or non-spawnable. Please upload some common characters using /upload.')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> No spawnable characters available!\n\nAll characters in the database appear to be Limited Edition or non-spawnable. Please upload some common characters using /upload.')
             return
         
         # Filter weights to only include available rarities
         available_weights = {rarity: rarities_weights.get(rarity, 0) for rarity in available_rarities if rarities_weights.get(rarity, 0) > 0}
         
         if not available_weights:
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> No spawnable characters available!\n\nAll available character rarities have 0 spawn weight. Please upload some common characters using /upload.')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> No spawnable characters available!\n\nAll available character rarities have 0 spawn weight. Please upload some common characters using /upload.')
             return
         
         # Use weighted random selection for rarity
@@ -618,7 +618,7 @@ async def summon(update: Update, context: CallbackContext) -> None:
         ]).to_list(length=1)
         
         if not random_character:
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> No spawnable characters available!\n\nAll characters in the database appear to be Limited Edition or non-spawnable. Please upload some common characters using /upload.')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> No spawnable characters available!\n\nAll characters in the database appear to be Limited Edition or non-spawnable. Please upload some common characters using /upload.')
             return
             
         character = random_character[0]
@@ -656,12 +656,12 @@ async def summon(update: Update, context: CallbackContext) -> None:
             # If image fails to load, send text message instead
             await context.bot.send_message(
                 chat_id=chat_id,
-                text=f"{caption}\n\n<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Image could not be loaded - {character['name']} from {character['anime']}",
+                text=f"{caption}\n\n<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Image could not be loaded - {character['name']} from {character['anime']}",
                 parse_mode='HTML'
             )
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Error summoning character: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Error summoning character: {str(e)}')
 
 
 async def remove_character_from_user(update: Update, context: CallbackContext) -> None:
@@ -676,7 +676,7 @@ async def remove_character_from_user(update: Update, context: CallbackContext) -
     try:
         args = context.args
         if not args or len(args) != 2:
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Incorrect format!\n\nUsage: /remove <character_id> <user_id>\nExample: /remove 123 987654321')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Incorrect format!\n\nUsage: /remove <character_id> <user_id>\nExample: /remove 123 987654321')
             return
 
         character_id = args[0]
@@ -685,26 +685,26 @@ async def remove_character_from_user(update: Update, context: CallbackContext) -
         try:
             user_id = int(user_id_str)
         except ValueError:
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID format!')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Invalid user ID format!')
             return
 
         # Find the character first to show details
         character = await collection.find_one({'id': character_id})
         if not character:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Character with ID #{character_id} not found in database!')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Character with ID #{character_id} not found in database!')
             return
 
         # Find the user
         from shivu import user_collection
         user = await user_collection.find_one({'id': user_id})
         if not user:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> User with ID {user_id} not found!')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> User with ID {user_id} not found!')
             return
 
         # Check if user has this character
         user_character_count = sum(1 for c in user.get('characters', []) if c.get('id') == character_id)
         if user_character_count == 0:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> User does not have character #{character_id} ({character["name"]}) in their harem!')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> User does not have character #{character_id} ({character["name"]}) in their harem!')
             return
 
         # Remove one instance of the character
@@ -724,17 +724,17 @@ async def remove_character_from_user(update: Update, context: CallbackContext) -
             remaining_count = user_character_count - 1
             user_name = user.get('first_name', 'User')
             await update.message.reply_text(
-                f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> <b>Character Removed!</b>\n\n'
-                f'<tg-emoji emoji-id="5102843841149405078">🤩</tg-emoji> Removed: {character["name"]} (#{character_id})\n'
-                f'<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> From: <a href="tg://user?id={user_id}">{user_name}</a>\n'
+                f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> <b>Character Removed!</b>\n\n'
+                f'<tg-emoji emoji-id='5102843841149405078'>🤩</tg-emoji> Removed: {character["name"]} (#{character_id})\n'
+                f'<tg-emoji emoji-id='5103039000168367836'>👥</tg-emoji> From: <a href="tg://user?id={user_id}">{user_name}</a>\n'
                 f'📋 Remaining: {remaining_count} copies',
                 parse_mode='HTML'
             )
         else:
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Failed to remove character from user harem!')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Failed to remove character from user harem!')
             
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Error removing character: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Error removing character: {str(e)}')
 
 
 async def find(update: Update, context: CallbackContext) -> None:
@@ -745,7 +745,7 @@ async def find(update: Update, context: CallbackContext) -> None:
     try:
         args = context.args
         if not args:
-            await update.message.reply_text('<tg-emoji emoji-id="5102823006263052084">🔗</tg-emoji> <b>Find Character</b>\n\nUsage: /find <id>\nExample: /find 1', parse_mode='HTML')
+            await update.message.reply_text('<tg-emoji emoji-id='5102823006263052084'>🔗</tg-emoji> <b>Find Character</b>\n\nUsage: /find <id>\nExample: /find 1', parse_mode='HTML')
             return
         
         character_id = args[0]
@@ -754,11 +754,11 @@ async def find(update: Update, context: CallbackContext) -> None:
         character = await collection.find_one({'id': character_id})
         
         if not character:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> No character found with ID #{character_id}')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> No character found with ID #{character_id}')
             return
         
         # Get rarity emoji
-        rarity_emoji = rarity_styles.get(character.get('rarity', ''), "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>")
+        rarity_emoji = rarity_styles.get(character.get('rarity', ''), "<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji>")
         
         # Find global catchers - users who have this character
         global_catchers = []
@@ -787,7 +787,7 @@ async def find(update: Update, context: CallbackContext) -> None:
         caption += f"{character['id']}: {character['name']}\n"
         caption += f"({rarity_emoji} 𝙍𝘼𝙍𝙄𝙏𝙔: {character.get('rarity', 'Unknown').lower()})\n\n"
         caption += f"⦿ ɢʟᴏʙᴀʟʟʏ ᴄᴀᴜɢʜᴛ : {total_caught} ᴛɪᴍᴇs\n\n"
-        caption += "<tg-emoji emoji-id="5102802918701008521">📊</tg-emoji> ᴛᴏᴘ 10 ɢʟᴏʙᴀʟ ᴄᴀᴛᴄʜᴇʀs\n"
+        caption += "<tg-emoji emoji-id='5102802918701008521'>📊</tg-emoji> ᴛᴏᴘ 10 ɢʟᴏʙᴀʟ ᴄᴀᴛᴄʜᴇʀs\n"
         
         for i in range(10):
             if i < len(top_10):
@@ -806,7 +806,7 @@ async def find(update: Update, context: CallbackContext) -> None:
         
         # Handle custom characters without URLs
         if not display_url or display_url == '':
-            caption += "\n<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> No image available yet."
+            caption += "\n<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> No image available yet."
             if character.get('rarity') == 'Custom':
                 caption += "\nPlease upload slots using /customupload"
             await update.message.reply_text(caption, parse_mode='HTML')
@@ -830,14 +830,14 @@ async def find(update: Update, context: CallbackContext) -> None:
                     await context.bot.send_photo(
                         chat_id=update.effective_chat.id,
                         photo=processed_url,
-                        caption=f"<tg-emoji emoji-id="5103128992618120782">🤩</tg-emoji> [Video] {caption}",
+                        caption=f"<tg-emoji emoji-id='5103128992618120782'>🤩</tg-emoji> [Video] {caption}",
                         parse_mode='HTML'
                     )
                 except Exception as photo_error:
                     # Last resort: send text with link
                     LOGGER.error(f"/find: Both video and photo failed for character {character_id}, URL: {processed_url[:100]}")
                     await update.message.reply_text(
-                        f"{caption}\n\n<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Media display failed. View directly: {processed_url}",
+                        f"{caption}\n\n<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Media display failed. View directly: {processed_url}",
                         parse_mode='HTML'
                     )
         else:
@@ -849,7 +849,7 @@ async def find(update: Update, context: CallbackContext) -> None:
             )
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Error finding character: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Error finding character: {str(e)}')
 
 
 async def update(update: Update, context: CallbackContext) -> None:
@@ -920,13 +920,13 @@ async def update(update: Update, context: CallbackContext) -> None:
                 chat_id=CHARA_CHANNEL_ID,
                 photo=new_value,
                 caption=(
-                    f"<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> <b>{character['name']}</b> <tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>\n"
-                    f"<tg-emoji emoji-id="5102663817595193122">🎏</tg-emoji> <i>{character['anime']}</i>\n"
+                    f"<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> <b>{character['name']}</b> <tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji>\n"
+                    f"<tg-emoji emoji-id='5102663817595193122'>🎏</tg-emoji> <i>{character['anime']}</i>\n"
                     f"━━━━━━━━━━━━━━━━\n"
                     f"{rarity_emoji} <b>{character['rarity']}</b>\n"
-                    f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> <b>ID:</b> #{character['id']}\n"
+                    f"<tg-emoji emoji-id='5102638339849192814'>🤩</tg-emoji> <b>ID:</b> #{character['id']}\n"
                     f"━━━━━━━━━━━━━━━━\n"
-                    f"<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> Updated by <a href='tg://user?id={update.effective_user.id}'>{update.effective_user.first_name}</a>"
+                    f"<tg-emoji emoji-id='5103097476148103373'>📌</tg-emoji> Updated by <a href='tg://user?id={update.effective_user.id}'>{update.effective_user.first_name}</a>"
                 ),
                 parse_mode='HTML'
             )
@@ -940,13 +940,13 @@ async def update(update: Update, context: CallbackContext) -> None:
             
             # Create updated beautiful caption with fresh values
             updated_caption = (
-                f"<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> <b>{character['name']}</b> <tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>\n"
-                f"<tg-emoji emoji-id="5102663817595193122">🎏</tg-emoji> <i>{character['anime']}</i>\n"
+                f"<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> <b>{character['name']}</b> <tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji>\n"
+                f"<tg-emoji emoji-id='5102663817595193122'>🎏</tg-emoji> <i>{character['anime']}</i>\n"
                 f"━━━━━━━━━━━━━━━━\n"
                 f"{rarity_emoji} <b>{character['rarity']}</b>\n"
-                f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> <b>ID:</b> #{character['id']}\n"
+                f"<tg-emoji emoji-id='5102638339849192814'>🤩</tg-emoji> <b>ID:</b> #{character['id']}\n"
                 f"━━━━━━━━━━━━━━━━\n"
-                f"<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> Updated by <a href='tg://user?id={update.effective_user.id}'>{update.effective_user.first_name}</a>"
+                f"<tg-emoji emoji-id='5103097476148103373'>📌</tg-emoji> Updated by <a href='tg://user?id={update.effective_user.id}'>{update.effective_user.first_name}</a>"
             )
             
             await context.bot.edit_message_caption(
@@ -956,7 +956,7 @@ async def update(update: Update, context: CallbackContext) -> None:
                 parse_mode='HTML'
             )
 
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Updated Done in Database!\n\n📋 {users_updated} user collection(s) synced.\n\nNote: Channel caption may take a moment to update.')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Updated Done in Database!\n\n📋 {users_updated} user collection(s) synced.\n\nNote: Channel caption may take a moment to update.')
     except Exception as e:
         await update.message.reply_text(f'I guess did not added bot in channel.. or character uploaded Long time ago.. Or character not exits.. orr Wrong id')
 
@@ -971,7 +971,7 @@ async def migrate_rarities(update: Update, context: CallbackContext) -> None:
         return
 
     try:
-        await update.message.reply_text('<tg-emoji emoji-id="5102912496201631597">🎮</tg-emoji> Starting rarity migration...\n\nUpdating database to change:\n• Celestial → Retro\n• Arcane → Zenith')
+        await update.message.reply_text('<tg-emoji emoji-id='5102912496201631597'>🎮</tg-emoji> Starting rarity migration...\n\nUpdating database to change:\n• Celestial → Retro\n• Arcane → Zenith')
         
         # Update main character collection
         result_celestial = await collection.update_many(
@@ -1006,14 +1006,14 @@ async def migrate_rarities(update: Update, context: CallbackContext) -> None:
         zenith_count = await collection.count_documents({'rarity': 'Zenith'})
         
         success_message = (
-            f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> <b>Migration Completed!</b>\n\n'
+            f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> <b>Migration Completed!</b>\n\n'
             f'📋 <b>Characters updated:</b>\n'
             f'• Celestial → Retro: {result_celestial.modified_count}\n'
             f'• Arcane → Zenith: {result_arcane.modified_count}\n\n'
-            f'<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji> <b>User collections updated:</b>\n'
+            f'<tg-emoji emoji-id='5102587667825035890'>👾</tg-emoji> <b>User collections updated:</b>\n'
             f'• Celestial → Retro: {user_result_celestial.modified_count} users\n'
             f'• Arcane → Zenith: {user_result_arcane.modified_count} users\n\n'
-            f'<tg-emoji emoji-id="5102823006263052084">🔗</tg-emoji> <b>Current counts:</b>\n'
+            f'<tg-emoji emoji-id='5102823006263052084'>🔗</tg-emoji> <b>Current counts:</b>\n'
             f'• Retro: {retro_count}\n'
             f'• Zenith: {zenith_count}\n'
             f'• Old Celestial remaining: {celestial_count}\n'
@@ -1023,7 +1023,7 @@ async def migrate_rarities(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text(success_message, parse_mode='HTML')
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Error during migration: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Error during migration: {str(e)}')
 
 
 async def adduploader(update: Update, context: CallbackContext) -> None:
@@ -1034,12 +1034,12 @@ async def adduploader(update: Update, context: CallbackContext) -> None:
     # Check if user is an owner
     OWNERS = ["8376223999", "6702213812"]
     if str(update.effective_user.id) not in OWNERS:
-        await update.message.reply_text('<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> Only owners can use this command.')
+        await update.message.reply_text('<tg-emoji emoji-id='5102581715000362771'>🤩</tg-emoji> Only owners can use this command.')
         return
     
     if not context.args or len(context.args) != 1:
         await update.message.reply_text(
-            '<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> **Add Uploader Usage:**\n\n'
+            '<tg-emoji emoji-id='5103097476148103373'>📌</tg-emoji> **Add Uploader Usage:**\n\n'
             '`/adduploader [user_id]`\n\n'
             '**Example:** `/adduploader 123456789`\n\n'
             'This will give the user upload permissions.',
@@ -1052,7 +1052,7 @@ async def adduploader(update: Update, context: CallbackContext) -> None:
         
         # Validate user_id is numeric
         if not user_id_to_add.isdigit():
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID! Please provide a numeric user ID.')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Invalid user ID! Please provide a numeric user ID.')
             return
         
         # Check if already an uploader
@@ -1060,12 +1060,12 @@ async def adduploader(update: Update, context: CallbackContext) -> None:
         existing = await dynamic_uploaders_collection.find_one({'user_id': user_id_to_add})
         
         if existing:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> User `{user_id_to_add}` is already an uploader!')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> User `{user_id_to_add}` is already an uploader!')
             return
         
         # Check if already sudo user
         if user_id_to_add in sudo_users:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> User `{user_id_to_add}` is already a sudo user (has all permissions)!')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> User `{user_id_to_add}` is already a sudo user (has all permissions)!')
             return
         
         # Add to uploaders collection
@@ -1078,16 +1078,16 @@ async def adduploader(update: Update, context: CallbackContext) -> None:
         })
         
         await update.message.reply_text(
-            f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> **Uploader Added!**\n\n'
-            f'<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> **User ID:** `{user_id_to_add}`\n'
+            f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> **Uploader Added!**\n\n'
+            f'<tg-emoji emoji-id='5103039000168367836'>👥</tg-emoji> **User ID:** `{user_id_to_add}`\n'
             f'🔧 **Permissions:** Upload characters only\n'
-            f'<tg-emoji emoji-id="5102621864354645825">🤩</tg-emoji> **Added by:** {update.effective_user.first_name}\n\n'
+            f'<tg-emoji emoji-id='5102621864354645825'>🤩</tg-emoji> **Added by:** {update.effective_user.first_name}\n\n'
             f'The user can now use the `/upload` command.',
             parse_mode='HTML'
         )
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Error adding uploader: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Error adding uploader: {str(e)}')
 
 
 async def removeuploader(update: Update, context: CallbackContext) -> None:
@@ -1098,12 +1098,12 @@ async def removeuploader(update: Update, context: CallbackContext) -> None:
     # Check if user is an owner
     OWNERS = ["8376223999", "6702213812"]
     if str(update.effective_user.id) not in OWNERS:
-        await update.message.reply_text('<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> Only owners can use this command.')
+        await update.message.reply_text('<tg-emoji emoji-id='5102581715000362771'>🤩</tg-emoji> Only owners can use this command.')
         return
     
     if not context.args or len(context.args) != 1:
         await update.message.reply_text(
-            '<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> **Remove Uploader Usage:**\n\n'
+            '<tg-emoji emoji-id='5103097476148103373'>📌</tg-emoji> **Remove Uploader Usage:**\n\n'
             '`/removeuploader [user_id]`\n\n'
             '**Example:** `/removeuploader 123456789`\n\n'
             'This will remove the user\'s upload permissions.',
@@ -1116,7 +1116,7 @@ async def removeuploader(update: Update, context: CallbackContext) -> None:
         
         # Validate user_id is numeric
         if not user_id_to_remove.isdigit():
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID! Please provide a numeric user ID.')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Invalid user ID! Please provide a numeric user ID.')
             return
         
         # Check if user is in uploaders collection
@@ -1124,23 +1124,23 @@ async def removeuploader(update: Update, context: CallbackContext) -> None:
         uploader = await dynamic_uploaders_collection.find_one({'user_id': user_id_to_remove})
         
         if not uploader:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> User `{user_id_to_remove}` is not currently an uploader!')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> User `{user_id_to_remove}` is not currently an uploader!')
             return
         
         # Remove from uploaders collection
         await dynamic_uploaders_collection.delete_one({'user_id': user_id_to_remove})
         
         await update.message.reply_text(
-            f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> **Uploader Removed!**\n\n'
-            f'<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> **User ID:** `{user_id_to_remove}`\n'
-            f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> **Permissions:** Upload access revoked\n'
-            f'<tg-emoji emoji-id="5102621864354645825">🤩</tg-emoji> **Removed by:** {update.effective_user.first_name}\n\n'
+            f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> **Uploader Removed!**\n\n'
+            f'<tg-emoji emoji-id='5103039000168367836'>👥</tg-emoji> **User ID:** `{user_id_to_remove}`\n'
+            f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> **Permissions:** Upload access revoked\n'
+            f'<tg-emoji emoji-id='5102621864354645825'>🤩</tg-emoji> **Removed by:** {update.effective_user.first_name}\n\n'
             f'The user can no longer use the `/upload` command.',
             parse_mode='HTML'
         )
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Error removing uploader: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Error removing uploader: {str(e)}')
 
 
 async def customupload(update: Update, context: CallbackContext) -> None:
@@ -1150,22 +1150,22 @@ async def customupload(update: Update, context: CallbackContext) -> None:
     
     level = await get_uploader_level(update.effective_user.id)
     if level != 3:
-        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Only level 3 artists (<tg-emoji emoji-id="5102763490901231643">👤</tg-emoji>) can use /customupload command.')
+        await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Only level 3 artists (<tg-emoji emoji-id='5102763490901231643'>👤</tg-emoji>) can use /customupload command.')
         return
     
     try:
         args = context.args
         if not args or len(args) != 4:
             await update.message.reply_text(
-                '<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Wrong format!\n\n'
+                '<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Wrong format!\n\n'
                 'Usage: /customupload img_url id slot-number owner_id\n\n'
                 'Example: /customupload https://example.com/image.jpg 1617 1 123456789\n\n'
-                '<tg-emoji emoji-id="5102671625845736781">🤩</tg-emoji> Slots:\n'
+                '<tg-emoji emoji-id='5102671625845736781'>🤩</tg-emoji> Slots:\n'
                 '• Slot 1: Image URL (Mystical)\n'
                 '• Slot 2: Video URL (Edit)\n'
                 '• Slot 3: Image URL (Custom Nude)\n\n'
-                '<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Supported: Direct image/video URLs (MP4), Discord CDN links, etc.\n\n'
-                '<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> owner_id: The Telegram user ID of the character owner'
+                '<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Supported: Direct image/video URLs (MP4), Discord CDN links, etc.\n\n'
+                '<tg-emoji emoji-id='5103039000168367836'>👥</tg-emoji> owner_id: The Telegram user ID of the character owner'
             )
             return
         
@@ -1178,16 +1178,16 @@ async def customupload(update: Update, context: CallbackContext) -> None:
         try:
             slot = int(slot_num)
             if slot not in [1, 2, 3]:
-                await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Slot must be 1, 2, or 3.')
+                await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Slot must be 1, 2, or 3.')
                 return
         except ValueError:
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Slot must be a number (1, 2, or 3).')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Slot must be a number (1, 2, or 3).')
             return
         
         # Validate URL
         is_valid, validation_message = validate_url(url)
         if not is_valid:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid URL: {validation_message}')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Invalid URL: {validation_message}')
             return
         
         # Determine URL type (image or video)
@@ -1195,17 +1195,17 @@ async def customupload(update: Update, context: CallbackContext) -> None:
         
         # Check if slot 2 must be video, slots 1 and 3 must be images
         if slot == 2 and not is_video:
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Slot 2 must be a video URL (MP4, MOV, AVI, MKV).')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Slot 2 must be a video URL (MP4, MOV, AVI, MKV).')
             return
         if slot in [1, 3] and is_video:
-            await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Slots 1 and 3 must be image URLs, not videos.')
+            await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Slots 1 and 3 must be image URLs, not videos.')
             return
         
         # Find custom character by ID
         custom_char = await collection.find_one({'id': char_id, 'rarity': 'Custom'})
         
         if not custom_char:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Custom character with ID {char_id} not found.')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Custom character with ID {char_id} not found.')
             return
         
         # Initialize owner_slots if not present
@@ -1226,19 +1226,19 @@ async def customupload(update: Update, context: CallbackContext) -> None:
             {'$set': {'owner_slots': custom_char['owner_slots']}}
         )
         
-        slot_type = '<tg-emoji emoji-id="5103128992618120782">🤩</tg-emoji> Video' if is_video else '<tg-emoji emoji-id="5102861579364337661">🤩</tg-emoji> Image'
+        slot_type = '<tg-emoji emoji-id='5103128992618120782'>🤩</tg-emoji> Video' if is_video else '<tg-emoji emoji-id='5102861579364337661'>🤩</tg-emoji> Image'
         slot_label = ['Mystical', 'Edit', 'Custom Nude'][slot - 1]
         await update.message.reply_text(
-            f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> **Custom Slot Updated!**\n\n'
+            f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> **Custom Slot Updated!**\n\n'
             f'👨‍💼 Character: {custom_char["name"]}\n'
-            f'<tg-emoji emoji-id="5102663817595193122">🎏</tg-emoji> Anime: {custom_char["anime"]}\n'
-            f'<tg-emoji emoji-id="5103061849394382829">🤩</tg-emoji> Slot {slot} ({slot_label}): {slot_type}\n'
-            f'<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> Owner ID: {owner_id}\n'
-            f'<tg-emoji emoji-id="5103032978624219059">🔒</tg-emoji> URL added successfully!'
+            f'<tg-emoji emoji-id='5102663817595193122'>🎏</tg-emoji> Anime: {custom_char["anime"]}\n'
+            f'<tg-emoji emoji-id='5103061849394382829'>🤩</tg-emoji> Slot {slot} ({slot_label}): {slot_type}\n'
+            f'<tg-emoji emoji-id='5103039000168367836'>👥</tg-emoji> Owner ID: {owner_id}\n'
+            f'<tg-emoji emoji-id='5103032978624219059'>🔒</tg-emoji> URL added successfully!'
         )
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Error uploading custom slot: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Error uploading custom slot: {str(e)}')
 
 
 async def customchange(update: Update, context: CallbackContext) -> None:
@@ -1252,7 +1252,7 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         args = context.args
         if not args or len(args) == 0:
             await update.message.reply_text(
-                '<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Wrong format!\n\n'
+                '<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Wrong format!\n\n'
                 'Usage: /customchange character_id [slot_number]\n\n'
                 'Example: /customchange 123 1\n\n'
                 'If no slot is specified, shows all available slots.'
@@ -1265,11 +1265,11 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         custom_char = await collection.find_one({'id': char_id})
         
         if not custom_char:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Character with ID {char_id} not found.')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Character with ID {char_id} not found.')
             return
         
         if custom_char.get('rarity') != 'Custom':
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> This character is not a Custom character.')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> This character is not a Custom character.')
             return
         
         # Initialize owner_slots if not present
@@ -1296,7 +1296,7 @@ async def customchange(update: Update, context: CallbackContext) -> None:
             try:
                 new_slot = int(args[1])
                 if new_slot not in [1, 2, 3]:
-                    await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Slot must be 1, 2, or 3.')
+                    await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Slot must be 1, 2, or 3.')
                     return
                 
                 # Check if slot is populated for this owner
@@ -1304,7 +1304,7 @@ async def customchange(update: Update, context: CallbackContext) -> None:
                 if not slot_data or (isinstance(slot_data, dict) and not slot_data.get('url')):
                     slot_names = {1: 'Mystical', 2: 'Edit', 3: 'Custom Nude'}
                     await update.message.reply_text(
-                        f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Slot {new_slot} ({slot_names.get(new_slot, "Unknown")}) is empty.\n\n'
+                        f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Slot {new_slot} ({slot_names.get(new_slot, "Unknown")}) is empty.\n\n'
                         f'Use /customupload to add a URL to this slot first.'
                     )
                     return
@@ -1315,10 +1315,10 @@ async def customchange(update: Update, context: CallbackContext) -> None:
                     {'$set': {f'owner_slots.{user_id}._active': new_slot}}
                 )
                 
-                await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Your active slot changed to slot {new_slot} for {custom_char["name"]}!')
+                await update.message.reply_text(f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Your active slot changed to slot {new_slot} for {custom_char["name"]}!')
                 
             except ValueError:
-                await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Slot must be a number (1, 2, or 3).')
+                await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Slot must be a number (1, 2, or 3).')
                 return
         
         # Show all slots for this owner
@@ -1326,7 +1326,7 @@ async def customchange(update: Update, context: CallbackContext) -> None:
         anime = custom_char.get('anime', 'Unknown')
         active = owner_slots.get('_active', 1)
         
-        slots_display = f"<tg-emoji emoji-id="5102763490901231643">👤</tg-emoji> 𝘠𝘰𝘶𝘳 𝘤𝘶𝘴𝘵𝘰𝘮 𝘈𝘳𝘵𝘴 ({char_name}): \n\n"
+        slots_display = f"<tg-emoji emoji-id='5102763490901231643'>👤</tg-emoji> 𝘠𝘰𝘶𝘳 𝘤𝘶𝘴𝘵𝘰𝘮 𝘈𝘳𝘵𝘴 ({char_name}): \n\n"
         
         # Helper function to check if slot has data
         def has_url(slot_data):
@@ -1338,50 +1338,50 @@ async def customchange(update: Update, context: CallbackContext) -> None:
             return bool(slot_data) if isinstance(slot_data, str) else False
         
         # Slot 1
-        slots_display += "𝘚𝘭𝘰𝘵 1 (Mystical <tg-emoji emoji-id="5103074519547905689">🏆</tg-emoji>):\n"
+        slots_display += "𝘚𝘭𝘰𝘵 1 (Mystical <tg-emoji emoji-id='5103074519547905689'>🏆</tg-emoji>):\n"
         slot1_data = owner_slots.get('1')
         if has_url(slot1_data):
             slot_type = slot1_data.get('type', 'Image').upper() if isinstance(slot1_data, dict) else 'IMAGE'
-            slots_display += f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> {slot_type}"
+            slots_display += f"<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> {slot_type}"
             if active == 1:
                 slots_display += " (ACTIVE)"
         else:
-            slots_display += "<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> empty"
+            slots_display += "<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> empty"
         
         slots_display += "\n\n-------------------\n"
         
         # Slot 2
-        slots_display += "𝘚𝘭𝘰𝘵 2 (Edit <tg-emoji emoji-id="5103128992618120782">🤩</tg-emoji>):\n"
+        slots_display += "𝘚𝘭𝘰𝘵 2 (Edit <tg-emoji emoji-id='5103128992618120782'>🤩</tg-emoji>):\n"
         slot2_data = owner_slots.get('2')
         if has_url(slot2_data):
             slot_type = slot2_data.get('type', 'Video').upper() if isinstance(slot2_data, dict) else 'VIDEO'
-            slots_display += f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> {slot_type}"
+            slots_display += f"<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> {slot_type}"
             if active == 2:
                 slots_display += " (ACTIVE)"
         else:
-            slots_display += "<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> empty"
+            slots_display += "<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> empty"
         
         slots_display += "\n\n-------------------\n"
         
         # Slot 3
-        slots_display += "𝘚𝘭𝘰𝘵 3 (Custom Nude <tg-emoji emoji-id="5103074519547905689">🏆</tg-emoji>):\n"
+        slots_display += "𝘚𝘭𝘰𝘵 3 (Custom Nude <tg-emoji emoji-id='5103074519547905689'>🏆</tg-emoji>):\n"
         slot3_data = owner_slots.get('3')
         if has_url(slot3_data):
             slot_type = slot3_data.get('type', 'Image').upper() if isinstance(slot3_data, dict) else 'IMAGE'
-            slots_display += f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> {slot_type}"
+            slots_display += f"<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> {slot_type}"
             if active == 3:
                 slots_display += " (ACTIVE)"
         else:
-            slots_display += "<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> empty"
+            slots_display += "<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> empty"
         
-        slots_display += f"\n\n<tg-emoji emoji-id="5102685219417229681">🤩</tg-emoji> Commands:\n"
+        slots_display += f"\n\n<tg-emoji emoji-id='5102685219417229681'>🤩</tg-emoji> Commands:\n"
         slots_display += f"/customupload <url> {char_id} <1/2/3> <your_id>\n"
         slots_display += f"/customchange {char_id} <1/2/3>"
         
         await update.message.reply_text(slots_display)
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Error: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Error: {str(e)}')
 
 
 async def debug_card(update: Update, context: CallbackContext) -> None:
@@ -1403,7 +1403,7 @@ async def debug_card(update: Update, context: CallbackContext) -> None:
             char = await collection.find_one({'id': int(card_id)})
         
         if not char:
-            await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Card {card_id} not found.')
+            await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Card {card_id} not found.')
             return
         
         msg = f"📋 Card Debug Info:\n\n"
@@ -1420,7 +1420,7 @@ async def debug_card(update: Update, context: CallbackContext) -> None:
         if not users_with_char:
             users_with_char = await user_collection.find({'characters.id': char_id_int}).to_list(None)
         
-        msg += f"<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji> Found {len(users_with_char)} owner(s):\n"
+        msg += f"<tg-emoji emoji-id='5102587667825035890'>👾</tg-emoji> Found {len(users_with_char)} owner(s):\n"
         for user in users_with_char:
             msg += f"  • User ID: {user.get('id')} ({user.get('first_name', 'Unknown')})\n"
         
@@ -1436,7 +1436,7 @@ async def debug_card(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text(msg)
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Debug error: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Debug error: {str(e)}')
 
 
 async def migrate_slots(update: Update, context: CallbackContext) -> None:
@@ -1446,7 +1446,7 @@ async def migrate_slots(update: Update, context: CallbackContext) -> None:
     
     # Check if user is admin/sudo
     if update.effective_user.id not in sudo_users:
-        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Admin only command.')
+        await update.message.reply_text('<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Admin only command.')
         return
     
     try:
@@ -1454,7 +1454,7 @@ async def migrate_slots(update: Update, context: CallbackContext) -> None:
         old_format_chars = await collection.find({'rarity': 'Custom', 'slots': {'$exists': True}}).to_list(None)
         
         if not old_format_chars:
-            await update.message.reply_text('<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> No custom characters need migration.')
+            await update.message.reply_text('<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> No custom characters need migration.')
             return
         
         migrated_count = 0
@@ -1505,16 +1505,16 @@ async def migrate_slots(update: Update, context: CallbackContext) -> None:
             else:
                 failed_chars.append(char_id_str)
         
-        msg = f'<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Migration Complete!\n\n'
+        msg = f'<tg-emoji emoji-id='5102962128843704400'>🤩</tg-emoji> Migration Complete!\n\n'
         msg += f'Migrated: {migrated_count} custom character(s)\n'
         if failed_chars:
             msg += f'Failed (no owners): {", ".join(failed_chars)}\n'
-            msg += f'\n<tg-emoji emoji-id="5102685219417229681">🤩</tg-emoji> Cards with no owners need to be in user harems first.'
+            msg += f'\n<tg-emoji emoji-id='5102685219417229681'>🤩</tg-emoji> Cards with no owners need to be in user harems first.'
         
         await update.message.reply_text(msg)
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Migration error: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id='5102920111178647010'>🤩</tg-emoji> Migration error: {str(e)}')
 
 
 UPLOAD_HANDLER = CommandHandler('upload', upload, block=False)
