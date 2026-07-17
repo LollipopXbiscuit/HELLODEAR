@@ -180,7 +180,7 @@ async def lockedspawns(client, message, page=0):
             for char in rarity_groups[rarity]:
                 message_text += f"• `{char['character_id']}` - {char['character_name']} ({char['anime']})\n"
     
-    message_text += f"\n📋 **Total Locked:** {len(locked_characters)} characters"
+    message_text += f"\n<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> **Total Locked:** {len(locked_characters)} characters"
     
     # Add pagination buttons if needed
     keyboard = None
@@ -253,7 +253,7 @@ async def lockedspawns_callback(client, callback_query):
                 for char in rarity_groups[rarity]:
                     message_text += f"• `{char['character_id']}` - {char['character_name']} ({char['anime']})\n"
         
-        message_text += f"\n📋 **Total Locked:** {len(locked_characters)} characters"
+        message_text += f"\n<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> **Total Locked:** {len(locked_characters)} characters"
         
         # Add pagination buttons if needed
         keyboard = None
@@ -440,7 +440,7 @@ async def lockedspawns_ptb(update: Update, context: CallbackContext, page=0):
             for char in rarity_groups[rarity]:
                 message_text += f"• `{char['character_id']}` - {char['character_name']} ({char['anime']})\n"
     
-    message_text += f"\n📋 **Total Locked:** {len(locked_characters)} characters"
+    message_text += f"\n<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> **Total Locked:** {len(locked_characters)} characters"
     
     keyboard = None
     if total_pages > 1:
@@ -502,7 +502,7 @@ async def lockedspawns_callback_ptb(update: Update, context: CallbackContext):
                 for char in rarity_groups[rarity]:
                     message_text += f"• `{char['character_id']}` - {char['character_name']} ({char['anime']})\n"
         
-        message_text += f"\n📋 **Total Locked:** {len(locked_characters)} characters"
+        message_text += f"\n<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> **Total Locked:** {len(locked_characters)} characters"
         
         keyboard = None
         if total_pages > 1:
@@ -674,7 +674,7 @@ async def broadcast(client, message):
         f"<tg-emoji emoji-id='5103046482001397281'>🌐</tg-emoji> **Groups:**\n"
         f"   ✓ Sent: {success_groups}\n"
         f"   ✗ Failed: {failed_groups}\n\n"
-        f"📋 **Total:** {success_users + success_groups} messages sent"
+        f"<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> **Total:** {success_users + success_groups} messages sent"
     )
 
 
@@ -808,7 +808,7 @@ async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
         f"<tg-emoji emoji-id='5103046482001397281'>🌐</tg-emoji> **Groups:**\n"
         f"   ✓ Sent: {success_groups}\n"
         f"   ✗ Failed: {failed_groups}\n\n"
-        f"📋 **Total:** {success_users + success_groups} messages sent",
+        f"<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> **Total:** {success_users + success_groups} messages sent",
         parse_mode='HTML'
     )
 
@@ -1116,7 +1116,7 @@ async def resetm(client, message):
     await message.reply_text(
         f"<tg-emoji emoji-id='5102684287409325796'>💡</tg-emoji> **Marriage Limit Reset!**\n\n"
         f"<tg-emoji emoji-id='5103039000168367836'>👥</tg-emoji> **User:** {target_name} (`{target_id}`)\n"
-        f"📋 **Status:** Set to 0/30\n\n"
+        f"<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> **Status:** Set to 0/30\n\n"
         f"They can now marry up to 30 characters again!",
         parse_mode=enums.ParseMode.HTML
     )
@@ -1168,7 +1168,7 @@ async def resetm_ptb(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text(
         f"<tg-emoji emoji-id='5102684287409325796'>💡</tg-emoji> **Marriage Limit Reset!**\n\n"
         f"<tg-emoji emoji-id='5103039000168367836'>👥</tg-emoji> **User:** {target_name} (`{target_id}`)\n"
-        f"📋 **Status:** Set to 0/30\n\n"
+        f"<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> **Status:** Set to 0/30\n\n"
         f"They can now marry up to 30 characters again!",
         parse_mode='HTML'
     )

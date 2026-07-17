@@ -420,7 +420,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
     
     keyboard = [
         [InlineKeyboardButton(f"See Collection ({total_count})", switch_inline_query_current_chat=f"collection.{user_id}")],
-        [InlineKeyboardButton(f"📋 Database", url=f"https://t.me/c/{str(CHARA_CHANNEL_ID).replace('-100', '')}")]
+        [InlineKeyboardButton(f"<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> Database", url=f"https://t.me/c/{str(CHARA_CHANNEL_ID).replace('-100', '')}")]
     ]
 
 
@@ -1118,7 +1118,7 @@ async def all_rarities(update: Update, context: CallbackContext) -> None:
     }
     
     # Build message
-    message_text = f"📋 <b>{escape(update.effective_user.first_name)}'s Collection Progress</b>\n\n"
+    message_text = f"<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> <b>{escape(update.effective_user.first_name)}'s Collection Progress</b>\n\n"
     
     for rarity in rarity_order:
         owned = user_rarity_counts.get(rarity, 0)
