@@ -561,19 +561,22 @@ async def guess(update: Update, context: CallbackContext) -> None:
             return
 
     if chat_id not in last_characters:
-        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> No character has been summoned yet!\n\nCharacters appear automatically every 100 messages, or admins can use /summon to spawn one manually.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> No character has been summoned yet!\n\nCharacters appear automatically every 100 messages, or admins can use /summon to spawn one manually.',
+                parse_mode='HTML')
         return
 
     # Only prevent multiple guesses for automatically spawned characters
     # Allow multiple marriages for manually summoned characters
     if chat_id in first_correct_guesses and chat_id not in manually_summoned:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji>️ Already Guessed By Someone.. Try Next Time Bruhh ')
+        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji>️ Already Guessed By Someone.. Try Next Time Bruhh ',
+                parse_mode='HTML')
         return
 
     guess = ' '.join(context.args).lower() if context.args else ''
     
     if "()" in guess or "&" in guess.lower():
-        await update.message.reply_text("Nahh You Can't use This Types of words in your guess..<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji>️")
+        await update.message.reply_text("Nahh You Can't use This Types of words in your guess..<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji>️",
+                parse_mode='HTML')
         return
 
 
@@ -697,7 +700,8 @@ async def guess(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text(f'<b><a href="tg://user?id={user_id}">{escape(update.effective_user.first_name)}</a></b> You Guessed a New Character <tg-emoji emoji-id="5103087490349139576">✅</tg-emoji>️ \n\n𝗡𝗔𝗠𝗘: <b>{last_characters[chat_id]["name"]}</b> \n𝗔𝗡𝗜𝗠𝗘: <b>{last_characters[chat_id]["anime"]}</b> \n𝗥𝗔𝗥𝗜𝗧𝗬: <b>{last_characters[chat_id]["rarity"]}</b>\n\nThis Character added in Your harem.. use /harem To see your harem', parse_mode='HTML', reply_markup=InlineKeyboardMarkup(keyboard))
 
     else:
-        await update.message.reply_text('Please Write Correct Character Name... <tg-emoji emoji-id="5102962128843704400">❌</tg-emoji>️')
+        await update.message.reply_text('Please Write Correct Character Name... <tg-emoji emoji-id="5102962128843704400">❌</tg-emoji>️',
+                parse_mode='HTML')
    
 
 
@@ -758,7 +762,8 @@ async def unmute(update: Update, context: CallbackContext) -> None:
     sender_id = update.effective_user.id
 
     if str(sender_id) not in [str(u) for u in sudo_users] and str(sender_id) != str(OWNER_ID):
-        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to sudo users.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to sudo users.",
+                parse_mode='HTML')
         return
 
     target_id = None
@@ -771,7 +776,8 @@ async def unmute(update: Update, context: CallbackContext) -> None:
         try:
             target_id = int(context.args[0])
         except ValueError:
-            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Please provide a valid user ID or reply to the user's message.")
+            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Please provide a valid user ID or reply to the user's message.",
+                parse_mode='HTML')
             return
 
     if target_id is None:

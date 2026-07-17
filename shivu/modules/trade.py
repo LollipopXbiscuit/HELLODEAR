@@ -135,7 +135,8 @@ async def on_trade_callback_query(client, callback_query):
         
         del pending_trades[(sender_id, receiver_id)]
 
-        await callback_query.message.edit_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji>️ Sad Cancelled....")
+        await callback_query.message.edit_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji>️ Sad Cancelled....",
+                parse_mode='HTML')
 
 
 
@@ -298,7 +299,8 @@ async def give(client, message):
     
     # Check if user is admin
     if str(sender_id) not in Config.sudo_users:
-        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.")
+        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.",
+                parse_mode='HTML')
         return
     
     # Command format: /give <character_id> <user_id>
@@ -307,7 +309,8 @@ async def give(client, message):
     if message.reply_to_message:
         # Giving to the user being replied to
         if len(message.command) != 2:
-            await message.reply_text("📝 <b>Give Character</b>\n\nUsage when replying: <code>/give &lt;character_id&gt;</code>\nExample: <code>/give 1</code>")
+            await message.reply_text("📝 <b>Give Character</b>\n\nUsage when replying: <code>/give &lt;character_id&gt;</code>\nExample: <code>/give 1</code>",
+                parse_mode='HTML')
             return
             
         character_id = message.command[1]
@@ -318,14 +321,16 @@ async def give(client, message):
     else:
         # Giving to a specific user ID
         if len(message.command) != 3:
-            await message.reply_text("📝 <b>Give Character</b>\n\nUsage: <code>/give &lt;character_id&gt; &lt;user_id&gt;</code>\nExample: <code>/give 1 123456789</code>\n\nOr reply to a user: <code>/give &lt;character_id&gt;</code>")
+            await message.reply_text("📝 <b>Give Character</b>\n\nUsage: <code>/give &lt;character_id&gt; &lt;user_id&gt;</code>\nExample: <code>/give 1 123456789</code>\n\nOr reply to a user: <code>/give &lt;character_id&gt;</code>",
+                parse_mode='HTML')
             return
             
         character_id = message.command[1]
         try:
             receiver_id = int(message.command[2])
         except ValueError:
-            await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID. Please provide a valid number.")
+            await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID. Please provide a valid number.",
+                parse_mode='HTML')
             return
             
         receiver_username = None
@@ -334,7 +339,8 @@ async def give(client, message):
     # Find the character in the database
     character = await collection.find_one({'id': character_id})
     if not character:
-        await message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> not found in the database.")
+        await message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> not found in the database.",
+                parse_mode='HTML')
         return
     
     # Check if receiver exists in database, if not create entry
@@ -361,7 +367,8 @@ async def give(client, message):
             f"🎴 <b>{character['name']}</b> ({character['rarity']})\n"
             f"<tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> From: <b>{character['anime']}</b>\n"
             f"<tg-emoji emoji-id='5102763490901231643'>👤</tg-emoji> Given to: {message.reply_to_message.from_user.mention}\n"
-            f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> Character ID: <code>{character['id']}</code>"
+            f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> Character ID: <code>{character['id']}</code>",
+                parse_mode='HTML'
         )
     else:
         await message.reply_text(
@@ -369,7 +376,8 @@ async def give(client, message):
             f"🎴 <b>{character['name']}</b> ({character['rarity']})\n"
             f"<tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> From: <b>{character['anime']}</b>\n"
             f"<tg-emoji emoji-id='5102763490901231643'>👤</tg-emoji> Given to: User ID <code>{receiver_id}</code>\n"
-            f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> Character ID: <code>{character['id']}</code>"
+            f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> Character ID: <code>{character['id']}</code>",
+                parse_mode='HTML'
         )
 
 
@@ -643,12 +651,14 @@ async def trade_callback_ptb(update: Update, context: CallbackContext):
 
         del pending_trades[trade_key]
 
-        await query.message.edit_text(f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Trade successful! You have exchanged characters.")
+        await query.message.edit_text(f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> Trade successful! You have exchanged characters.",
+                parse_mode='HTML')
         await query.answer("Trade completed!")
 
     elif query.data == "cancel_trade":
         del pending_trades[trade_key]
-        await query.message.edit_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Trade cancelled.")
+        await query.message.edit_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Trade cancelled.",
+                parse_mode='HTML')
         await query.answer("Trade cancelled")
 
 
@@ -658,7 +668,8 @@ async def give_ptb(update: Update, context: CallbackContext):
     sender_id = update.effective_user.id
     
     if str(sender_id) not in Config.sudo_users:
-        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.",
+                parse_mode='HTML')
         return
     
     if update.message.reply_to_message:
@@ -693,12 +704,14 @@ async def give_ptb(update: Update, context: CallbackContext):
             receiver_username = None
             receiver_first_name = "Unknown"
         except ValueError:
-            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID! Please provide a valid numeric user ID.")
+            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID! Please provide a valid numeric user ID.",
+                parse_mode='HTML')
             return
     
     character = await collection.find_one({'id': character_id})
     if not character:
-        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> not found in the database.")
+        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> not found in the database.",
+                parse_mode='HTML')
         return
     
     receiver = await user_collection.find_one({'id': receiver_id})

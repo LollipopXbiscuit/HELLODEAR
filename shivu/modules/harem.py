@@ -220,7 +220,8 @@ async def sorts(update: Update, context: CallbackContext) -> None:
         # Check if user has this character
         user = await user_collection.find_one({'id': user_id})
         if not user or not user.get('characters'):
-            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters yet!")
+            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters yet!",
+                parse_mode='HTML')
             return
         
         # Check if character exists in user's collection (partial match)
@@ -290,11 +291,13 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                 is_sudo_viewing_other = True
             except ValueError:
                 if update.message:
-                    await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!")
+                    await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!",
+                parse_mode='HTML')
                 return
         else:
             if update.message:
-                await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> Only admins can view other people's harems!")
+                await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> Only admins can view other people's harems!",
+                parse_mode='HTML')
             return
 
     # Check if user is a member of the main group (only for non-sudo viewing others)
@@ -723,7 +726,8 @@ async def fav(client, message):
     # Get user's collection
     user = await user_collection.find_one({'id': user_id})
     if not user or not user.get('characters'):
-        await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters yet!")
+        await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters yet!",
+                parse_mode='HTML')
         return
     
     # Find the character
@@ -851,7 +855,8 @@ async def transfer_harem(update: Update, context: CallbackContext) -> None:
     # Check if user is admin
     from shivu.config import Config
     if str(user_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> This command is only available to bot administrators.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> This command is only available to bot administrators.',
+                parse_mode='HTML')
         return
     
     args = context.args or []
@@ -869,17 +874,20 @@ async def transfer_harem(update: Update, context: CallbackContext) -> None:
         old_user_id = int(args[0])
         new_user_id = int(args[1])
     except ValueError:
-        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user IDs! Please provide valid numeric user IDs.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user IDs! Please provide valid numeric user IDs.",
+                parse_mode='HTML')
         return
     
     if old_user_id == new_user_id:
-        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Old and new user IDs cannot be the same!")
+        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Old and new user IDs cannot be the same!",
+                parse_mode='HTML')
         return
     
     # Find the old user's collection
     old_user = await user_collection.find_one({'id': old_user_id})
     if not old_user or not old_user.get('characters'):
-        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> User {old_user_id} has no characters to transfer!")
+        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> User {old_user_id} has no characters to transfer!",
+                parse_mode='HTML')
         return
     
     # Get character count for confirmation message
@@ -948,7 +956,8 @@ async def fav_ptb(update: Update, context: CallbackContext):
     # Get user's collection
     user = await user_collection.find_one({'id': user_id})
     if not user or not user.get('characters'):
-        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters yet!")
+        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You don't have any characters yet!",
+                parse_mode='HTML')
         return
     
     # Find the character

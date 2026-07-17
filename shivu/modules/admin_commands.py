@@ -16,7 +16,8 @@ async def lockspawn(client, message):
     
     # Check if user is admin
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.")
+        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.",
+                parse_mode='HTML')
         return
     
     if len(message.command) != 2:
@@ -34,7 +35,8 @@ async def lockspawn(client, message):
     # Check if character exists
     character = await collection.find_one({'id': character_id})
     if not character:
-        await message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> not found!")
+        await message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> not found!",
+                parse_mode='HTML')
         return
     
     # Check if already locked
@@ -45,7 +47,8 @@ async def lockspawn(client, message):
             f"🎴 <b>Character:</b> {character['name']}\n"
             f"<tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>Anime:</b> {character['anime']}\n"
             f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> <b>ID:</b> <code>{character_id}</code>\n\n"
-            f"This character is already locked from spawning."
+            f"This character is already locked from spawning.",
+                parse_mode='HTML'
         )
         return
     
@@ -80,7 +83,8 @@ async def lockspawn(client, message):
         f"<tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>Anime:</b> {character['anime']}\n"
         f"<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> <b>Rarity:</b> {rarity_emoji} {character['rarity']}\n"
         f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> <b>ID:</b> <code>{character_id}</code>\n\n"
-        f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> This character will no longer appear in spawns."
+        f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> This character will no longer appear in spawns.",
+                parse_mode='HTML'
     )
 
 @shivuu.on_message(filters.command("unlockspawn"))
@@ -90,7 +94,8 @@ async def unlockspawn(client, message):
     
     # Check if user is admin
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.")
+        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.",
+                parse_mode='HTML')
         return
     
     if len(message.command) != 2:
@@ -108,7 +113,8 @@ async def unlockspawn(client, message):
     # Check if character is locked
     locked_character = await locked_spawns_collection.find_one({'character_id': character_id})
     if not locked_character:
-        await message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> is not currently locked!")
+        await message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> is not currently locked!",
+                parse_mode='HTML')
         return
     
     # Unlock the character
@@ -119,7 +125,8 @@ async def unlockspawn(client, message):
         f"🎴 <b>Character:</b> {locked_character['character_name']}\n"
         f"<tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>Anime:</b> {locked_character['anime']}\n"
         f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> <b>ID:</b> <code>{character_id}</code>\n\n"
-        f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> This character can now appear in spawns again."
+        f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> This character can now appear in spawns again.",
+                parse_mode='HTML'
     )
 
 @shivuu.on_message(filters.command("lockedspawns"))
@@ -301,7 +308,8 @@ async def lockspawn_ptb(update: Update, context: CallbackContext):
     sender_id = update.effective_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.",
+                parse_mode='HTML')
         return
     
     if not context.args or len(context.args) != 1:
@@ -318,7 +326,8 @@ async def lockspawn_ptb(update: Update, context: CallbackContext):
     
     character = await collection.find_one({'id': character_id})
     if not character:
-        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> not found!")
+        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> not found!",
+                parse_mode='HTML')
         return
     
     existing_lock = await locked_spawns_collection.find_one({'character_id': character_id})
@@ -328,7 +337,8 @@ async def lockspawn_ptb(update: Update, context: CallbackContext):
             f"🎴 <b>Character:</b> {character['name']}\n"
             f"<tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>Anime:</b> {character['anime']}\n"
             f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> <b>ID:</b> <code>{character_id}</code>\n\n"
-            f"This character is already locked from spawning."
+            f"This character is already locked from spawning.",
+                parse_mode='HTML'
         )
         return
     
@@ -355,7 +365,8 @@ async def lockspawn_ptb(update: Update, context: CallbackContext):
         f"<tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>Anime:</b> {character['anime']}\n"
         f"<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> <b>Rarity:</b> {rarity_emoji} {character['rarity']}\n"
         f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> <b>ID:</b> <code>{character_id}</code>\n\n"
-        f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> This character will no longer appear in spawns."
+        f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> This character will no longer appear in spawns.",
+                parse_mode='HTML'
     )
 
 
@@ -364,7 +375,8 @@ async def unlockspawn_ptb(update: Update, context: CallbackContext):
     sender_id = update.effective_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.",
+                parse_mode='HTML')
         return
     
     if not context.args or len(context.args) != 1:
@@ -381,7 +393,8 @@ async def unlockspawn_ptb(update: Update, context: CallbackContext):
     
     locked_character = await locked_spawns_collection.find_one({'character_id': character_id})
     if not locked_character:
-        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> is not currently locked!")
+        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Character with ID <code>{character_id}</code> is not currently locked!",
+                parse_mode='HTML')
         return
     
     await locked_spawns_collection.delete_one({'character_id': character_id})
@@ -391,7 +404,8 @@ async def unlockspawn_ptb(update: Update, context: CallbackContext):
         f"🎴 <b>Character:</b> {locked_character['character_name']}\n"
         f"<tg-emoji emoji-id='5102990630246680945'>📺</tg-emoji> <b>Anime:</b> {locked_character['anime']}\n"
         f"<tg-emoji emoji-id='5102716405174765315'>🆔</tg-emoji> <b>ID:</b> <code>{character_id}</code>\n\n"
-        f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> This character can now appear in spawns again."
+        f"<tg-emoji emoji-id='5103087490349139576'>✅</tg-emoji> This character can now appear in spawns again.",
+                parse_mode='HTML'
     )
 
 
@@ -551,7 +565,8 @@ async def broadcast(client, message):
     sender_id = message.from_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.")
+        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.",
+                parse_mode='HTML')
         return
     
     if not message.reply_to_message and len(message.command) < 2:
@@ -586,11 +601,13 @@ async def broadcast(client, message):
     else:
         broadcast_text = " ".join(args)
         if not broadcast_text:
-            await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Please provide a message to broadcast!")
+            await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Please provide a message to broadcast!",
+                parse_mode='HTML')
             return
         is_reply = False
     
-    status_msg = await message.reply_text("<tg-emoji emoji-id='5103061849394382829'>📡</tg-emoji> Starting broadcast...")
+    status_msg = await message.reply_text("<tg-emoji emoji-id='5103061849394382829'>📡</tg-emoji> Starting broadcast...",
+                parse_mode='HTML')
     
     success_users = 0
     failed_users = 0
@@ -618,7 +635,8 @@ async def broadcast(client, message):
                     await status_msg.edit_text(
                         f"<tg-emoji emoji-id='5103061849394382829'>📡</tg-emoji> <b>Broadcasting...</b>\n\n"
                         f"<tg-emoji emoji-id='5103039000168367836'>👥</tg-emoji> Users: {success_users}/{total_users} sent\n"
-                        f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Failed: {failed_users}"
+                        f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Failed: {failed_users}",
+                parse_mode='HTML'
                     )
                     
                 await asyncio.sleep(0.05)
@@ -649,7 +667,8 @@ async def broadcast(client, message):
                         f"<tg-emoji emoji-id='5103061849394382829'>📡</tg-emoji> <b>Broadcasting...</b>\n\n"
                         f"<tg-emoji emoji-id='5103039000168367836'>👥</tg-emoji> Users: {success_users} sent, {failed_users} failed\n"
                         f"<tg-emoji emoji-id='5102685219417229681'>💬</tg-emoji> Groups: {success_groups}/{total_groups} sent\n"
-                        f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Failed: {failed_groups}"
+                        f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Failed: {failed_groups}",
+                parse_mode='HTML'
                     )
                     
                 await asyncio.sleep(0.1)
@@ -674,7 +693,8 @@ async def broadcast(client, message):
         f"<tg-emoji emoji-id='5102685219417229681'>💬</tg-emoji> <b>Groups:</b>\n"
         f"   ✓ Sent: {success_groups}\n"
         f"   ✗ Failed: {failed_groups}\n\n"
-        f"<tg-emoji emoji-id='5102802918701008521'>📊</tg-emoji> <b>Total:</b> {success_users + success_groups} messages sent"
+        f"<tg-emoji emoji-id='5102802918701008521'>📊</tg-emoji> <b>Total:</b> {success_users + success_groups} messages sent",
+                parse_mode='HTML'
     )
 
 
@@ -683,7 +703,8 @@ async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
     sender_id = update.effective_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.",
+                parse_mode='HTML')
         return
     
     args = context.args if context.args else []
@@ -718,11 +739,13 @@ async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
     else:
         broadcast_text = " ".join(args)
         if not broadcast_text:
-            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Please provide a message to broadcast!")
+            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Please provide a message to broadcast!",
+                parse_mode='HTML')
             return
         is_reply = False
     
-    status_msg = await update.message.reply_text("<tg-emoji emoji-id='5103061849394382829'>📡</tg-emoji> Starting broadcast...")
+    status_msg = await update.message.reply_text("<tg-emoji emoji-id='5103061849394382829'>📡</tg-emoji> Starting broadcast...",
+                parse_mode='HTML')
     
     success_users = 0
     failed_users = 0
@@ -821,7 +844,8 @@ async def bonk(client, message):
     sender_id = message.from_user.id
     
     if sender_id != int(OWNER_ID):
-        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to the bot owner.")
+        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to the bot owner.",
+                parse_mode='HTML')
         return
     
     target_user = None
@@ -834,7 +858,8 @@ async def bonk(client, message):
         try:
             target_id = int(message.command[1])
         except ValueError:
-            await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!")
+            await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!",
+                parse_mode='HTML')
             return
     else:
         await message.reply_text(
@@ -848,7 +873,8 @@ async def bonk(client, message):
         return
     
     if target_id == int(OWNER_ID):
-        await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You can't bonk yourself!")
+        await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You can't bonk yourself!",
+                parse_mode='HTML')
         return
     
     existing_ban = await banned_users_collection.find_one({'user_id': target_id})
@@ -858,7 +884,8 @@ async def bonk(client, message):
         days = remaining.days
         await message.reply_text(
             f"<tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji> User is already bonked!\n"
-            f"<tg-emoji emoji-id='5102843841149405078'>🕐</tg-emoji> Remaining: {days} days"
+            f"<tg-emoji emoji-id='5102843841149405078'>🕐</tg-emoji> Remaining: {days} days",
+                parse_mode='HTML'
         )
         return
     
@@ -891,7 +918,8 @@ async def unbonk(client, message):
     sender_id = message.from_user.id
     
     if sender_id != int(OWNER_ID):
-        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to the bot owner.")
+        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to the bot owner.",
+                parse_mode='HTML')
         return
     
     target_user = None
@@ -904,7 +932,8 @@ async def unbonk(client, message):
         try:
             target_id = int(message.command[1])
         except ValueError:
-            await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!")
+            await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!",
+                parse_mode='HTML')
             return
     else:
         await message.reply_text(
@@ -919,7 +948,8 @@ async def unbonk(client, message):
     
     existing_ban = await banned_users_collection.find_one({'user_id': target_id})
     if not existing_ban:
-        await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> This user is not bonked!")
+        await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> This user is not bonked!",
+                parse_mode='HTML')
         return
     
     await banned_users_collection.delete_one({'user_id': target_id})
@@ -939,7 +969,8 @@ async def bonk_ptb(update: Update, context: CallbackContext) -> None:
     sender_id = update.effective_user.id
     
     if sender_id != int(OWNER_ID):
-        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to the bot owner.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to the bot owner.",
+                parse_mode='HTML')
         return
     
     target_user = None
@@ -952,7 +983,8 @@ async def bonk_ptb(update: Update, context: CallbackContext) -> None:
         try:
             target_id = int(context.args[0])
         except ValueError:
-            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!")
+            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!",
+                parse_mode='HTML')
             return
     else:
         await update.message.reply_text(
@@ -966,7 +998,8 @@ async def bonk_ptb(update: Update, context: CallbackContext) -> None:
         return
     
     if target_id == int(OWNER_ID):
-        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You can't bonk yourself!")
+        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> You can't bonk yourself!",
+                parse_mode='HTML')
         return
     
     existing_ban = await banned_users_collection.find_one({'user_id': target_id})
@@ -976,7 +1009,8 @@ async def bonk_ptb(update: Update, context: CallbackContext) -> None:
         days = remaining.days
         await update.message.reply_text(
             f"<tg-emoji emoji-id='5102920111178647010'>⚠️</tg-emoji> User is already bonked!\n"
-            f"<tg-emoji emoji-id='5102843841149405078'>🕐</tg-emoji> Remaining: {days} days"
+            f"<tg-emoji emoji-id='5102843841149405078'>🕐</tg-emoji> Remaining: {days} days",
+                parse_mode='HTML'
         )
         return
     
@@ -1008,7 +1042,8 @@ async def unbonk_ptb(update: Update, context: CallbackContext) -> None:
     sender_id = update.effective_user.id
     
     if sender_id != int(OWNER_ID):
-        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to the bot owner.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to the bot owner.",
+                parse_mode='HTML')
         return
     
     target_user = None
@@ -1021,7 +1056,8 @@ async def unbonk_ptb(update: Update, context: CallbackContext) -> None:
         try:
             target_id = int(context.args[0])
         except ValueError:
-            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!")
+            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!",
+                parse_mode='HTML')
             return
     else:
         await update.message.reply_text(
@@ -1036,7 +1072,8 @@ async def unbonk_ptb(update: Update, context: CallbackContext) -> None:
     
     existing_ban = await banned_users_collection.find_one({'user_id': target_id})
     if not existing_ban:
-        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> This user is not bonked!")
+        await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> This user is not bonked!",
+                parse_mode='HTML')
         return
     
     await banned_users_collection.delete_one({'user_id': target_id})
@@ -1075,7 +1112,8 @@ async def resetm(client, message):
     sender_id = message.from_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.")
+        await message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.",
+                parse_mode='HTML')
         return
     
     target_user = None
@@ -1088,7 +1126,8 @@ async def resetm(client, message):
         try:
             target_id = int(message.command[1])
         except ValueError:
-            await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!")
+            await message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!",
+                parse_mode='HTML')
             return
     else:
         await message.reply_text(
@@ -1103,7 +1142,8 @@ async def resetm(client, message):
     
     user = await user_collection.find_one({'id': target_id})
     if not user:
-        await message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> User ID <code>{target_id}</code> not found in database!")
+        await message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> User ID <code>{target_id}</code> not found in database!",
+                parse_mode='HTML')
         return
     
     await user_collection.update_one(
@@ -1127,7 +1167,8 @@ async def resetm_ptb(update: Update, context: CallbackContext) -> None:
     sender_id = update.effective_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.")
+        await update.message.reply_text("<tg-emoji emoji-id='5102920111178647010'>🚫</tg-emoji> This command is only available to administrators.",
+                parse_mode='HTML')
         return
     
     target_user = None
@@ -1140,7 +1181,8 @@ async def resetm_ptb(update: Update, context: CallbackContext) -> None:
         try:
             target_id = int(context.args[0])
         except ValueError:
-            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!")
+            await update.message.reply_text("<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> Invalid user ID!",
+                parse_mode='HTML')
             return
     else:
         await update.message.reply_text(
@@ -1155,7 +1197,8 @@ async def resetm_ptb(update: Update, context: CallbackContext) -> None:
     
     user = await user_collection.find_one({'id': target_id})
     if not user:
-        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> User ID <code>{target_id}</code> not found in database!")
+        await update.message.reply_text(f"<tg-emoji emoji-id='5102962128843704400'>❌</tg-emoji> User ID <code>{target_id}</code> not found in database!",
+                parse_mode='HTML')
         return
     
     await user_collection.update_one(

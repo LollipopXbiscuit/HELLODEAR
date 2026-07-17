@@ -9,7 +9,8 @@ async def startevent(update: Update, context: CallbackContext) -> None:
         return
     
     if str(update.effective_user.id) not in sudo_users:
-        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> You do not have permission to use this command.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> You do not have permission to use this command.',
+                parse_mode='HTML')
         return
     
     try:
@@ -61,7 +62,8 @@ async def startevent(update: Update, context: CallbackContext) -> None:
         )
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Error starting event: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Error starting event: {str(e)}',
+                parse_mode='HTML')
 
 async def endevent(update: Update, context: CallbackContext) -> None:
     """End the current active event"""
@@ -69,7 +71,8 @@ async def endevent(update: Update, context: CallbackContext) -> None:
         return
     
     if str(update.effective_user.id) not in sudo_users:
-        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> You do not have permission to use this command.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> You do not have permission to use this command.',
+                parse_mode='HTML')
         return
     
     try:
@@ -118,7 +121,8 @@ async def endevent(update: Update, context: CallbackContext) -> None:
             )
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Error ending event: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Error ending event: {str(e)}',
+                parse_mode='HTML')
 
 async def eventstatus(update: Update, context: CallbackContext) -> None:
     """Check current event status"""
@@ -164,7 +168,8 @@ async def eventstatus(update: Update, context: CallbackContext) -> None:
             )
         
     except Exception as e:
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Error checking event: {str(e)}')
+        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Error checking event: {str(e)}',
+                parse_mode='HTML')
 
 STARTEVENT_HANDLER = CommandHandler('startevent', startevent, block=False)
 application.add_handler(STARTEVENT_HANDLER)

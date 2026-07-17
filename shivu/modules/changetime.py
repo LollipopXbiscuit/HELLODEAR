@@ -15,7 +15,8 @@ async def change_time_pyrogram(client: Client, message: Message):
         
     # Check if user is a sudo user (not just group admin)
     if str(user_id) not in sudo_users:
-        await message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> This command is only available to bot administrators.')
+        await message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> This command is only available to bot administrators.',
+                parse_mode='HTML')
         return
 
     try:
@@ -50,7 +51,8 @@ async def change_time(update: Update, context: CallbackContext):
     
     # Check if user is a sudo user
     if str(user_id) not in sudo_users:
-        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> This command is only available to bot administrators.')
+        await update.message.reply_text('<tg-emoji emoji-id="5102920111178647010">🚫</tg-emoji> This command is only available to bot administrators.',
+                parse_mode='HTML')
         return
     
     try:

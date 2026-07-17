@@ -212,7 +212,8 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                             thumbnail_url=processed_url,
                             id=f"{character['id']}_{time.time()}",
                             photo_url=processed_url,
-                            caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {caption}"
+                            caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {caption}",
+                    parse_mode='HTML'
                         )
                     )
             else:
