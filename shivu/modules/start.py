@@ -46,7 +46,7 @@ async def start(update: Update, context: CallbackContext) -> None:
 
     if update.effective_chat.type == "private":
         caption = f"""
-<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> **Welcome to Waifu & Husbando Catcher!** <tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji>
+<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji> **Welcome to Waifu & Husbando Catcher!** <tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>
 
 👋 **Your ultimate anime character collection bot!**
 
@@ -56,7 +56,7 @@ async def start(update: Update, context: CallbackContext) -> None:
 • Build your dream collection and trade with friends!
 • View your collection anytime with /collection
 
-<tg-emoji emoji-id='5102774906924303446'>🤩</tg-emoji> **Ready to start your anime adventure?** Add me to your group now!
+<tg-emoji emoji-id='5102774906924303446'>🎉</tg-emoji> **Ready to start your anime adventure?** Add me to your group now!
         """
 
         keyboard = [
@@ -133,7 +133,7 @@ async def button(update: Update, context: CallbackContext) -> None:
 
     elif query.data == "back":
         caption = f"""
-<tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji> **Welcome to Waifu & Husbando Catcher!** <tg-emoji emoji-id='5102825501639050967'>🌟</tg-emoji>
+<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji> **Welcome to Waifu & Husbando Catcher!** <tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>
 
 👋 **Your ultimate anime character collection bot!**
 
@@ -143,7 +143,7 @@ async def button(update: Update, context: CallbackContext) -> None:
 • Build your dream collection and trade with friends!
 • View your collection anytime with /collection
 
-<tg-emoji emoji-id='5102774906924303446'>🤩</tg-emoji> **Ready to start your anime adventure?** Add me to your group now!
+<tg-emoji emoji-id='5102774906924303446'>🎉</tg-emoji> **Ready to start your anime adventure?** Add me to your group now!
         """
 
         keyboard = [

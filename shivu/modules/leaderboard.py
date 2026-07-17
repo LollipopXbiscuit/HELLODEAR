@@ -21,7 +21,7 @@ async def global_leaderboard(update: Update, context: CallbackContext) -> None:
     ])
     leaderboard_data = await cursor.to_list(length=10)
 
-    leaderboard_message = "<tg-emoji emoji-id='5102728190565025765'>🤩</tg-emoji>  𝗧𝗢𝗣 𝗚𝗿𝗼𝘂𝗽𝘀:\n"
+    leaderboard_message = "<tg-emoji emoji-id='5102728190565025765'>🖼️</tg-emoji>  𝗧𝗢𝗣 𝗚𝗿𝗼𝘂𝗽𝘀:\n"
     leaderboard_message += "┏━┅┅┄┄⟞⟦<tg-emoji emoji-id='5102587667825035890'>👾</tg-emoji>⟧⟝┄┄┉┉━┓\n"
 
     for i, group in enumerate(leaderboard_data, start=1):
@@ -96,8 +96,8 @@ async def leaderboard(update: Update, context: CallbackContext) -> None:
     ])
     leaderboard_data = await cursor.to_list(length=10)
 
-    leaderboard_message = "<tg-emoji emoji-id='5102728190565025765'>🤩</tg-emoji> 𝗚𝗟𝗢𝗕𝗔𝗟 𝗧𝗢𝗣 𝗖𝗼𝗹𝗹𝗲𝗰𝘁𝘀:\n"
-    leaderboard_message += "┏━┅┅┄┄⟞⟦<tg-emoji emoji-id='5102728190565025765'>🤩</tg-emoji>⟧⟝┄┄┉┉━┓\n"
+    leaderboard_message = "<tg-emoji emoji-id='5102728190565025765'>🖼️</tg-emoji> 𝗚𝗟𝗢𝗕𝗔𝗟 𝗧𝗢𝗣 𝗖𝗼𝗹𝗹𝗲𝗰𝘁𝘀:\n"
+    leaderboard_message += "┏━┅┅┄┄⟞⟦<tg-emoji emoji-id='5102728190565025765'>🖼️</tg-emoji>⟧⟝┄┄┉┉━┓\n"
 
     for i, user in enumerate(leaderboard_data, start=1):
         username = user.get('username', 'Unknown')
@@ -110,7 +110,7 @@ async def leaderboard(update: Update, context: CallbackContext) -> None:
         total_count = user['total_characters']
         leaderboard_message += f'┣ {i:02d}.  {first_name} ⇒ {unique_count} (total {total_count})\n'
     
-    leaderboard_message += "┗━┅┅┄┄⟞⟦<tg-emoji emoji-id='5102728190565025765'>🤩</tg-emoji>⟧⟝┄┄┉┉━┛"
+    leaderboard_message += "┗━┅┅┄┄⟞⟦<tg-emoji emoji-id='5102728190565025765'>🖼️</tg-emoji>⟧⟝┄┄┉┉━┛"
     
     photo_url = random.choice(PHOTO_URL)
 
