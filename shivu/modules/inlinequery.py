@@ -40,18 +40,19 @@ async def is_video_character(character, char_id=None, user_id=None):
     
     return False
 
-# Rarity emojis configuration (updated to match latest rarities)
+# Rarity emojis — plain Unicode only (inline query captions do not support tg-emoji HTML)
 rarity_emojis = {
-    "Common": "<tg-emoji emoji-id='5102863490624784495'>⚪️</tg-emoji>",
-    "Uncommon": "<tg-emoji emoji-id='5102906715175651186'>🟢</tg-emoji>",
-    "Rare": "<tg-emoji emoji-id='5102814377673754670'>🔵</tg-emoji>",
-    "Epic": "<tg-emoji emoji-id='5103060513659554158'>🟣</tg-emoji>",
-    "Legendary": "<tg-emoji emoji-id='5102990767685634240'>🟡</tg-emoji>",
-    "Mythic": "<tg-emoji emoji-id='5102655962100008917'>🏵</tg-emoji>",
-    "Retro": "<tg-emoji emoji-id='5102698301887612539'>🍥</tg-emoji>",
-    "Star": "<tg-emoji emoji-id='5102825501639050967'>⭐</tg-emoji>",
-    "Zenith": "<tg-emoji emoji-id='5103065238123578838'>🪩</tg-emoji>",
-    "Limited Edition": "<tg-emoji emoji-id='5103127253156367234'>🍬</tg-emoji>"
+    "Common": "⚪️",
+    "Uncommon": "🟢",
+    "Rare": "🔵",
+    "Epic": "🟣",
+    "Legendary": "🟡",
+    "Mythic": "🏵",
+    "Retro": "🍥",
+    "Star": "⭐",
+    "Zenith": "🪩",
+    "Limited Edition": "🍬",
+    "Custom": "👾",
 }
 
 
@@ -157,15 +158,15 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
     results = []
     for character in characters:
         try:
-            # Get rarity emoji for consistent display
-            rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id='5102638339849192814'>✨</tg-emoji>")
-            
+            # Get rarity emoji for consistent display (plain Unicode — no HTML in inline captions)
+            rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+
             # Simple caption without slow database queries
             caption = (
                 f"OwO! Check out this waifu!\n\n"
                 f"{character['anime']}\n"
                 f"{character['id']}: {character['name']} \n"
-                f"({rarity_emoji}𝙍𝘼𝙍𝙄𝙏𝙔:  {character.get('rarity', 'Unknown').lower()})"
+                f"({rarity_emoji} 𝙍𝘼𝙍𝙄𝙏𝙔: {character.get('rarity', 'Unknown')})"
             )
             
             # Get the correct display URL (respecting active_slot for custom characters)
@@ -202,7 +203,6 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                             thumbnail_url=placeholder_thumbnail,
                             title=f"{character['name']} - {character['anime']}",
                             caption=caption,
-                            parse_mode='HTML'
                         )
                     )
                 except Exception as video_error:
@@ -213,8 +213,7 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                             thumbnail_url=processed_url,
                             id=f"{character['id']}_{time.time()}",
                             photo_url=processed_url,
-                            caption=f"<tg-emoji emoji-id='5103000796434270751'>🎬</tg-emoji> [Video] {caption}",
-                            parse_mode='HTML'
+                            caption=f"🎬 [Video] {caption}",
                         )
                     )
             else:
@@ -224,7 +223,6 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                         id=f"{character['id']}_{time.time()}",
                         photo_url=processed_url,
                         caption=caption,
-                        parse_mode='HTML'
                     )
                 )
         except Exception as e:
