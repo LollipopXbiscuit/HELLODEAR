@@ -135,7 +135,7 @@ async def on_trade_callback_query(client, callback_query):
         
         del pending_trades[(sender_id, receiver_id)]
 
-        await callback_query.message.edit_text("❌️ Sad Cancelled....")
+        await callback_query.message.edit_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji>️ Sad Cancelled....")
 
 
 
@@ -188,32 +188,32 @@ async def gift(client, message):
     
     keyboard = InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("✅ Confirm Gift", callback_data="confirm_gift")],
-            [InlineKeyboardButton("❌ Cancel Gift", callback_data="cancel_gift")]
+            [InlineKeyboardButton("<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Confirm Gift", callback_data="confirm_gift")],
+            [InlineKeyboardButton("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Cancel Gift", callback_data="cancel_gift")]
         ]
     )
 
     # Rarity emoji mapping
     rarity_emojis = {
-        "Common": "⚪️",
-        "Uncommon": "🟢",
-        "Rare": "🔵",
-        "Epic": "🟣",
-        "Legendary": "🟡",
-        "Mythic": "🏵",
-        "Retro": "🍥",
-        "Zenith": "🪩",
-        "Limited Edition": "🍬"
+        "Common": "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji>",
+        "Uncommon": "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji>",
+        "Rare": "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji>",
+        "Epic": "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>"
     }
     
-    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>")
     
-    caption = (f"🎁 <b>Do you want to gift this character?</b>\n\n"
-               f"🎴 <b>Name:</b> {escape(character['name'])}\n"
-               f"📺 <b>Anime:</b> {escape(character['anime'])}\n"
-               f"🌟 <b>Rarity:</b> {rarity_emoji} {character.get('rarity', 'Unknown')}\n"
-               f"🆔 <b>ID:</b> <code>{character['id']}</code>\n\n"
-               f"👤 <b>To:</b> {escape(message.reply_to_message.from_user.first_name)}")
+    caption = (f"<tg-emoji emoji-id="5103065598900831870">🤩</tg-emoji> <b>Do you want to gift this character?</b>\n\n"
+               f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> <b>Name:</b> {escape(character['name'])}\n"
+               f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> <b>Anime:</b> {escape(character['anime'])}\n"
+               f"<tg-emoji emoji-id="5102774906924303446">🤩</tg-emoji> <b>Rarity:</b> {rarity_emoji} {character.get('rarity', 'Unknown')}\n"
+               f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> <b>ID:</b> <code>{character['id']}</code>\n\n"
+               f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> <b>To:</b> {escape(message.reply_to_message.from_user.first_name)}")
 
     try:
         if 'img_url' in character:
@@ -270,7 +270,7 @@ async def on_gift_callback_query(client, callback_query):
         
         del pending_gifts[(sender_id, receiver_id)]
 
-        success_message = f"✅ <b>Gift successful!</b>\n\nYou have successfully gifted your character to <a href=\"tg://user?id={receiver_id}\">{escape(gift['receiver_first_name'])}</a>!"
+        success_message = f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> <b>Gift successful!</b>\n\nYou have successfully gifted your character to <a href=\"tg://user?id={receiver_id}\">{escape(gift['receiver_first_name'])}</a>!"
         
         # Check if message has media (photo) or is text
         if callback_query.message.photo:
@@ -282,7 +282,7 @@ async def on_gift_callback_query(client, callback_query):
         
         del pending_gifts[(sender_id, receiver_id)]
 
-        cancel_message = "❌ <b>Gift cancelled.</b>"
+        cancel_message = "<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> <b>Gift cancelled.</b>"
         
         # Check if message has media (photo) or is text
         if callback_query.message.photo:
@@ -298,7 +298,7 @@ async def give(client, message):
     
     # Check if user is admin
     if str(sender_id) not in Config.sudo_users:
-        await message.reply_text("🚫 This command is only available to administrators.")
+        await message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to administrators.")
         return
     
     # Command format: /give <character_id> <user_id>
@@ -307,7 +307,7 @@ async def give(client, message):
     if message.reply_to_message:
         # Giving to the user being replied to
         if len(message.command) != 2:
-            await message.reply_text("📝 **Give Character**\n\nUsage when replying: `/give <character_id>`\nExample: `/give 1`")
+            await message.reply_text("<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> **Give Character**\n\nUsage when replying: `/give <character_id>`\nExample: `/give 1`")
             return
             
         character_id = message.command[1]
@@ -318,14 +318,14 @@ async def give(client, message):
     else:
         # Giving to a specific user ID
         if len(message.command) != 3:
-            await message.reply_text("📝 **Give Character**\n\nUsage: `/give <character_id> <user_id>`\nExample: `/give 1 123456789`\n\nOr reply to a user: `/give <character_id>`")
+            await message.reply_text("<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> **Give Character**\n\nUsage: `/give <character_id> <user_id>`\nExample: `/give 1 123456789`\n\nOr reply to a user: `/give <character_id>`")
             return
             
         character_id = message.command[1]
         try:
             receiver_id = int(message.command[2])
         except ValueError:
-            await message.reply_text("❌ Invalid user ID. Please provide a valid number.")
+            await message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID. Please provide a valid number.")
             return
             
         receiver_username = None
@@ -334,7 +334,7 @@ async def give(client, message):
     # Find the character in the database
     character = await collection.find_one({'id': character_id})
     if not character:
-        await message.reply_text(f"❌ Character with ID `{character_id}` not found in the database.")
+        await message.reply_text(f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Character with ID `{character_id}` not found in the database.")
         return
     
     # Check if receiver exists in database, if not create entry
@@ -357,19 +357,19 @@ async def give(client, message):
     # Success message
     if message.reply_to_message:
         await message.reply_text(
-            f"✅ **Character Given!**\n\n"
-            f"🎴 **{character['name']}** ({character['rarity']})\n"
-            f"📺 From: **{character['anime']}**\n"
-            f"👤 Given to: {message.reply_to_message.from_user.mention}\n"
-            f"🆔 Character ID: `{character['id']}`"
+            f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> **Character Given!**\n\n"
+            f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> **{character['name']}** ({character['rarity']})\n"
+            f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> From: **{character['anime']}**\n"
+            f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> Given to: {message.reply_to_message.from_user.mention}\n"
+            f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> Character ID: `{character['id']}`"
         )
     else:
         await message.reply_text(
-            f"✅ **Character Given!**\n\n"
-            f"🎴 **{character['name']}** ({character['rarity']})\n"
-            f"📺 From: **{character['anime']}**\n"
-            f"👤 Given to: User ID `{receiver_id}`\n"
-            f"🆔 Character ID: `{character['id']}`"
+            f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> **Character Given!**\n\n"
+            f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> **{character['name']}** ({character['rarity']})\n"
+            f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> From: **{character['anime']}**\n"
+            f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> Given to: User ID `{receiver_id}`\n"
+            f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> Character ID: `{character['id']}`"
         )
 
 
@@ -418,31 +418,31 @@ async def gift_ptb(update: Update, context: CallbackContext):
     
     # Create keyboard
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("✅ Confirm Gift", callback_data="confirm_gift")],
-        [InlineKeyboardButton("❌ Cancel Gift", callback_data="cancel_gift")]
+        [InlineKeyboardButton("<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Confirm Gift", callback_data="confirm_gift")],
+        [InlineKeyboardButton("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Cancel Gift", callback_data="cancel_gift")]
     ])
     
     # Rarity emoji mapping
     rarity_emojis = {
-        "Common": "⚪️",
-        "Uncommon": "🟢",
-        "Rare": "🔵",
-        "Epic": "🟣",
-        "Legendary": "🟡",
-        "Mythic": "🏵",
-        "Retro": "🍥",
-        "Zenith": "🪩",
-        "Limited Edition": "🍬"
+        "Common": "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji>",
+        "Uncommon": "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji>",
+        "Rare": "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji>",
+        "Epic": "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>"
     }
     
-    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>")
     
-    caption = (f"🎁 <b>Do you want to gift this character?</b>\n\n"
-               f"🎴 <b>Name:</b> {escape(character['name'])}\n"
-               f"📺 <b>Anime:</b> {escape(character['anime'])}\n"
-               f"🌟 <b>Rarity:</b> {rarity_emoji} {character.get('rarity', 'Unknown')}\n"
-               f"🆔 <b>ID:</b> <code>{character['id']}</code>\n\n"
-               f"👤 <b>To:</b> {escape(update.message.reply_to_message.from_user.first_name)}")
+    caption = (f"<tg-emoji emoji-id="5103065598900831870">🤩</tg-emoji> <b>Do you want to gift this character?</b>\n\n"
+               f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> <b>Name:</b> {escape(character['name'])}\n"
+               f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> <b>Anime:</b> {escape(character['anime'])}\n"
+               f"<tg-emoji emoji-id="5102774906924303446">🤩</tg-emoji> <b>Rarity:</b> {rarity_emoji} {character.get('rarity', 'Unknown')}\n"
+               f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> <b>ID:</b> <code>{character['id']}</code>\n\n"
+               f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> <b>To:</b> {escape(update.message.reply_to_message.from_user.first_name)}")
     
     try:
         if 'img_url' in character:
@@ -507,7 +507,7 @@ async def gift_callback_handler(update: Update, context: CallbackContext):
         # Remove from pending
         del pending_gifts[gift_key]
         
-        success_message = f"✅ <b>Gift successful!</b>\n\nYou have successfully gifted your character to <a href=\"tg://user?id={receiver_id}\">{escape(gift['receiver_first_name'])}</a>!"
+        success_message = f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> <b>Gift successful!</b>\n\nYou have successfully gifted your character to <a href=\"tg://user?id={receiver_id}\">{escape(gift['receiver_first_name'])}</a>!"
         
         # Edit the message
         try:
@@ -524,7 +524,7 @@ async def gift_callback_handler(update: Update, context: CallbackContext):
         # Remove from pending
         del pending_gifts[gift_key]
         
-        cancel_message = "❌ <b>Gift cancelled.</b>"
+        cancel_message = "<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> <b>Gift cancelled.</b>"
         
         # Edit the message
         try:
@@ -643,12 +643,12 @@ async def trade_callback_ptb(update: Update, context: CallbackContext):
 
         del pending_trades[trade_key]
 
-        await query.message.edit_text(f"✅ Trade successful! You have exchanged characters.")
+        await query.message.edit_text(f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> Trade successful! You have exchanged characters.")
         await query.answer("Trade completed!")
 
     elif query.data == "cancel_trade":
         del pending_trades[trade_key]
-        await query.message.edit_text("❌ Trade cancelled.")
+        await query.message.edit_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Trade cancelled.")
         await query.answer("Trade cancelled")
 
 
@@ -658,16 +658,16 @@ async def give_ptb(update: Update, context: CallbackContext):
     sender_id = update.effective_user.id
     
     if str(sender_id) not in Config.sudo_users:
-        await update.message.reply_text("🚫 This command is only available to administrators.")
+        await update.message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to administrators.")
         return
     
     if update.message.reply_to_message:
         if not context.args or len(context.args) != 1:
             await update.message.reply_text(
-                "📝 **Give Character**\n\n"
+                "<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> **Give Character**\n\n"
                 "Usage when replying: `/give <character_id>`\n"
                 "Example: `/give 1`",
-                parse_mode='Markdown'
+                parse_mode='HTML'
             )
             return
             
@@ -679,11 +679,11 @@ async def give_ptb(update: Update, context: CallbackContext):
     else:
         if not context.args or len(context.args) != 2:
             await update.message.reply_text(
-                "📝 **Give Character**\n\n"
+                "<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> **Give Character**\n\n"
                 "Usage: `/give <character_id> <user_id>`\n"
                 "Example: `/give 1 123456789`\n\n"
                 "Or reply to a user: `/give <character_id>`",
-                parse_mode='Markdown'
+                parse_mode='HTML'
             )
             return
             
@@ -693,12 +693,12 @@ async def give_ptb(update: Update, context: CallbackContext):
             receiver_username = None
             receiver_first_name = "Unknown"
         except ValueError:
-            await update.message.reply_text("❌ Invalid user ID! Please provide a valid numeric user ID.")
+            await update.message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID! Please provide a valid numeric user ID.")
             return
     
     character = await collection.find_one({'id': character_id})
     if not character:
-        await update.message.reply_text(f"❌ Character with ID `{character_id}` not found in the database.")
+        await update.message.reply_text(f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Character with ID `{character_id}` not found in the database.")
         return
     
     receiver = await user_collection.find_one({'id': receiver_id})
@@ -717,21 +717,21 @@ async def give_ptb(update: Update, context: CallbackContext):
     
     if update.message.reply_to_message:
         await update.message.reply_text(
-            f"✅ **Character Given!**\n\n"
-            f"🎴 **{character['name']}** ({character['rarity']})\n"
-            f"📺 From: **{character['anime']}**\n"
-            f"👤 Given to: {update.message.reply_to_message.from_user.mention_html()}\n"
-            f"🆔 Character ID: `{character['id']}`",
+            f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> **Character Given!**\n\n"
+            f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> **{character['name']}** ({character['rarity']})\n"
+            f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> From: **{character['anime']}**\n"
+            f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> Given to: {update.message.reply_to_message.from_user.mention_html()}\n"
+            f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> Character ID: `{character['id']}`",
             parse_mode='HTML'
         )
     else:
         await update.message.reply_text(
-            f"✅ **Character Given!**\n\n"
-            f"🎴 **{character['name']}** ({character['rarity']})\n"
-            f"📺 From: **{character['anime']}**\n"
-            f"👤 Given to: User ID `{receiver_id}`\n"
-            f"🆔 Character ID: `{character['id']}`",
-            parse_mode='Markdown'
+            f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> **Character Given!**\n\n"
+            f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> **{character['name']}** ({character['rarity']})\n"
+            f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> From: **{character['anime']}**\n"
+            f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> Given to: User ID `{receiver_id}`\n"
+            f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> Character ID: `{character['id']}`",
+            parse_mode='HTML'
         )
 
 

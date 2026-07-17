@@ -16,16 +16,16 @@ async def lockspawn(client, message):
     
     # Check if user is admin
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await message.reply_text("🚫 This command is only available to administrators.")
+        await message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to administrators.")
         return
     
     if len(message.command) != 2:
         await message.reply_text(
-            "📝 **Lock Spawn Usage:**\n\n"
+            "<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> **Lock Spawn Usage:**\n\n"
             "`/lockspawn [character_id]`\n\n"
             "**Example:** `/lockspawn 123`\n\n"
             "This will prevent the character from appearing in spawns.",
-            parse_mode=enums.ParseMode.MARKDOWN
+            parse_mode=enums.ParseMode.HTML
         )
         return
     
@@ -34,17 +34,17 @@ async def lockspawn(client, message):
     # Check if character exists
     character = await collection.find_one({'id': character_id})
     if not character:
-        await message.reply_text(f"❌ Character with ID `{character_id}` not found!")
+        await message.reply_text(f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Character with ID `{character_id}` not found!")
         return
     
     # Check if already locked
     existing_lock = await locked_spawns_collection.find_one({'character_id': character_id})
     if existing_lock:
         await message.reply_text(
-            f"⚠️ **Already Locked!**\n\n"
-            f"🎴 **Character:** {character['name']}\n"
-            f"📺 **Anime:** {character['anime']}\n"
-            f"🆔 **ID:** `{character_id}`\n\n"
+            f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> **Already Locked!**\n\n"
+            f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> **Character:** {character['name']}\n"
+            f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> **Anime:** {character['anime']}\n"
+            f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> **ID:** `{character_id}`\n\n"
             f"This character is already locked from spawning."
         )
         return
@@ -60,27 +60,27 @@ async def lockspawn(client, message):
     })
     
     rarity_emojis = {
-        "Common": "⚪️",
-        "Uncommon": "🟢",
-        "Rare": "🔵",
-        "Epic": "🟣",
-        "Legendary": "🟡",
-        "Mythic": "🏵",
-        "Retro": "🍥",
-        "Star": "⭐",
-        "Zenith": "🪩",
-        "Limited Edition": "🍬"
+        "Common": "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji>",
+        "Uncommon": "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji>",
+        "Rare": "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji>",
+        "Epic": "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji>",
+        "Star": "<tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>"
     }
     
-    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>")
     
     await message.reply_text(
-        f"🔒 **Spawn Locked!**\n\n"
-        f"🎴 **Character:** {character['name']}\n"
-        f"📺 **Anime:** {character['anime']}\n"
-        f"🌟 **Rarity:** {rarity_emoji} {character['rarity']}\n"
-        f"🆔 **ID:** `{character_id}`\n\n"
-        f"✅ This character will no longer appear in spawns."
+        f"<tg-emoji emoji-id="5103032978624219059">🔒</tg-emoji> **Spawn Locked!**\n\n"
+        f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> **Character:** {character['name']}\n"
+        f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> **Anime:** {character['anime']}\n"
+        f"<tg-emoji emoji-id="5102774906924303446">🤩</tg-emoji> **Rarity:** {rarity_emoji} {character['rarity']}\n"
+        f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> **ID:** `{character_id}`\n\n"
+        f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> This character will no longer appear in spawns."
     )
 
 @shivuu.on_message(filters.command("unlockspawn"))
@@ -90,16 +90,16 @@ async def unlockspawn(client, message):
     
     # Check if user is admin
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await message.reply_text("🚫 This command is only available to administrators.")
+        await message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to administrators.")
         return
     
     if len(message.command) != 2:
         await message.reply_text(
-            "📝 **Unlock Spawn Usage:**\n\n"
+            "<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> **Unlock Spawn Usage:**\n\n"
             "`/unlockspawn [character_id]`\n\n"
             "**Example:** `/unlockspawn 123`\n\n"
             "This will allow the character to appear in spawns again.",
-            parse_mode=enums.ParseMode.MARKDOWN
+            parse_mode=enums.ParseMode.HTML
         )
         return
     
@@ -108,18 +108,18 @@ async def unlockspawn(client, message):
     # Check if character is locked
     locked_character = await locked_spawns_collection.find_one({'character_id': character_id})
     if not locked_character:
-        await message.reply_text(f"❌ Character with ID `{character_id}` is not currently locked!")
+        await message.reply_text(f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Character with ID `{character_id}` is not currently locked!")
         return
     
     # Unlock the character
     await locked_spawns_collection.delete_one({'character_id': character_id})
     
     await message.reply_text(
-        f"🔓 **Spawn Unlocked!**\n\n"
-        f"🎴 **Character:** {locked_character['character_name']}\n"
-        f"📺 **Anime:** {locked_character['anime']}\n"
-        f"🆔 **ID:** `{character_id}`\n\n"
-        f"✅ This character can now appear in spawns again."
+        f"<tg-emoji emoji-id="5102650473131805044">🤩</tg-emoji> **Spawn Unlocked!**\n\n"
+        f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> **Character:** {locked_character['character_name']}\n"
+        f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> **Anime:** {locked_character['anime']}\n"
+        f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> **ID:** `{character_id}`\n\n"
+        f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> This character can now appear in spawns again."
     )
 
 @shivuu.on_message(filters.command("lockedspawns"))
@@ -130,9 +130,9 @@ async def lockedspawns(client, message, page=0):
     
     if not locked_characters:
         await message.reply_text(
-            "🔓 **No Locked Spawns**\n\n"
+            "<tg-emoji emoji-id="5102650473131805044">🤩</tg-emoji> **No Locked Spawns**\n\n"
             "There are currently no characters locked from spawning.",
-            parse_mode='markdown'
+            parse_mode='HTML'
         )
         return
     
@@ -158,43 +158,43 @@ async def lockedspawns(client, message, page=0):
         rarity_groups[rarity].append(char)
     
     rarity_emojis = {
-        "Common": "⚪️",
-        "Uncommon": "🟢",
-        "Rare": "🔵",
-        "Epic": "🟣",
-        "Legendary": "🟡",
-        "Mythic": "🏵",
-        "Retro": "🍥",
-        "Star": "⭐",
-        "Zenith": "🪩",
-        "Limited Edition": "🍬"
+        "Common": "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji>",
+        "Uncommon": "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji>",
+        "Rare": "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji>",
+        "Epic": "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji>",
+        "Mythic": "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji>",
+        "Retro": "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji>",
+        "Star": "<tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>",
+        "Limited Edition": "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>"
     }
     
-    message_text = f"🔒 **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
+    message_text = f"<tg-emoji emoji-id="5103032978624219059">🔒</tg-emoji> **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
     
     for rarity in ["Limited Edition", "Star", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]:
         if rarity in rarity_groups:
-            rarity_emoji = rarity_emojis.get(rarity, "✨")
+            rarity_emoji = rarity_emojis.get(rarity, "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>")
             message_text += f"\n{rarity_emoji} **{rarity}:**\n"
             
             for char in rarity_groups[rarity]:
                 message_text += f"• `{char['character_id']}` - {char['character_name']} ({char['anime']})\n"
     
-    message_text += f"\n📊 **Total Locked:** {len(locked_characters)} characters"
+    message_text += f"\n📋 **Total Locked:** {len(locked_characters)} characters"
     
     # Add pagination buttons if needed
     keyboard = None
     if total_pages > 1:
         buttons = []
         if page > 0:
-            buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=f"lockedspawns:{page-1}"))
+            buttons.append(InlineKeyboardButton("<tg-emoji emoji-id="5102932600943544398">🤩</tg-emoji> Previous", callback_data=f"lockedspawns:{page-1}"))
         if page < total_pages - 1:
-            buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"lockedspawns:{page+1}"))
+            buttons.append(InlineKeyboardButton("Next <tg-emoji emoji-id="5102736905053669429">❄️</tg-emoji>", callback_data=f"lockedspawns:{page+1}"))
         
         if buttons:
             keyboard = InlineKeyboardMarkup([buttons])
     
-    await message.reply_text(message_text, parse_mode=enums.ParseMode.MARKDOWN, reply_markup=keyboard)
+    await message.reply_text(message_text, parse_mode=enums.ParseMode.HTML, reply_markup=keyboard)
 
 @shivuu.on_callback_query(filters.create(lambda _, __, query: query.data.startswith("lockedspawns:")))
 async def lockedspawns_callback(client, callback_query):
@@ -231,43 +231,43 @@ async def lockedspawns_callback(client, callback_query):
             rarity_groups[rarity].append(char)
         
         rarity_emojis = {
-            "Common": "⚪️",
-            "Uncommon": "🟢",
-            "Rare": "🔵",
-            "Epic": "🟣",
-            "Legendary": "🟡",
-            "Mythic": "🏵",
-            "Retro": "🍥",
-            "Star": "⭐",
-            "Zenith": "🪩",
-            "Limited Edition": "🍬"
+            "Common": "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji>",
+            "Uncommon": "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji>",
+            "Rare": "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji>",
+            "Epic": "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji>",
+            "Legendary": "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji>",
+            "Mythic": "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji>",
+            "Retro": "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji>",
+            "Star": "<tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji>",
+            "Zenith": "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>",
+            "Limited Edition": "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>"
         }
         
-        message_text = f"🔒 **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
+        message_text = f"<tg-emoji emoji-id="5103032978624219059">🔒</tg-emoji> **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
         
         for rarity in ["Limited Edition", "Star", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]:
             if rarity in rarity_groups:
-                rarity_emoji = rarity_emojis.get(rarity, "✨")
+                rarity_emoji = rarity_emojis.get(rarity, "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>")
                 message_text += f"\n{rarity_emoji} **{rarity}:**\n"
                 
                 for char in rarity_groups[rarity]:
                     message_text += f"• `{char['character_id']}` - {char['character_name']} ({char['anime']})\n"
         
-        message_text += f"\n📊 **Total Locked:** {len(locked_characters)} characters"
+        message_text += f"\n📋 **Total Locked:** {len(locked_characters)} characters"
         
         # Add pagination buttons if needed
         keyboard = None
         if total_pages > 1:
             buttons = []
             if page > 0:
-                buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=f"lockedspawns:{page-1}"))
+                buttons.append(InlineKeyboardButton("<tg-emoji emoji-id="5102932600943544398">🤩</tg-emoji> Previous", callback_data=f"lockedspawns:{page-1}"))
             if page < total_pages - 1:
-                buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"lockedspawns:{page+1}"))
+                buttons.append(InlineKeyboardButton("Next <tg-emoji emoji-id="5102736905053669429">❄️</tg-emoji>", callback_data=f"lockedspawns:{page+1}"))
             
             if buttons:
                 keyboard = InlineKeyboardMarkup([buttons])
         
-        await callback_query.edit_message_text(message_text, parse_mode=enums.ParseMode.MARKDOWN, reply_markup=keyboard)
+        await callback_query.edit_message_text(message_text, parse_mode=enums.ParseMode.HTML, reply_markup=keyboard)
         await callback_query.answer()
         
     except Exception as e:
@@ -278,21 +278,21 @@ async def rarity(client, message):
     """Show all rarities and their spawn rates"""
     
     message_text = (
-        "🎏 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳 𝘙𝘢𝘳𝘪𝘵𝘺 𝘚𝘺𝘴𝘵𝘦𝘮 🎏\n\n"
-        "🎐 𝘙𝘦𝘨𝘶𝘭𝘢𝘳 𝘚𝘱𝘢𝘸𝘯𝘴 (𝘦𝘷𝘦𝘳𝘺 100 𝘮𝘦𝘴𝘴𝘢𝘨𝘦𝘴)\n\n"
-        "⚪️ 𝘊𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🟢 𝘜𝘯𝘤𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🔵 𝘙𝘢𝘳𝘦 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🟣 𝘌𝘱𝘪𝘤 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🟡 𝘓𝘦𝘨𝘦𝘯𝘥𝘢𝘳𝘺 : 2% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🏵 𝘔𝘺𝘵𝘩𝘪𝘤 : 0.8% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🍥 𝘙𝘦𝘵𝘳𝘰 : 0.4% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🪩 𝘡𝘦𝘯𝘪𝘵𝘩 : 0.01% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🍬 𝘓𝘪𝘮𝘪𝘵𝘦𝘥 𝘌𝘥𝘪𝘵𝘪𝘰𝘯 : 0.001% 𝘤𝘩𝘢𝘯𝘤𝘦\n\n"
-        "👾 𝘊𝘶𝘴𝘵𝘰𝘮 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳𝘴 𝘢𝘳𝘦 𝘰𝘳𝘥𝘦𝘳𝘦𝘥 𝘵𝘰 𝘛𝘩𝘦 𝘖𝘸𝘯𝘦𝘳 𝘢𝘯𝘥 𝘵𝘩𝘦𝘺 𝘤𝘢𝘯 𝘰𝘯𝘭𝘺 𝘩𝘢𝘷𝘦 𝘶𝘱 𝘵𝘰 2 𝘖𝘸𝘯𝘦𝘳𝘴. (𝘛𝘩𝘦𝘺 𝘸𝘪𝘭𝘭 𝘯𝘦𝘷𝘦𝘳 𝘴𝘱𝘢𝘸𝘯)"
+        "<tg-emoji emoji-id="5102722031581923128">🎐</tg-emoji> 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳 𝘙𝘢𝘳𝘪𝘵𝘺 𝘚𝘺𝘴𝘵𝘦𝘮 <tg-emoji emoji-id="5102722031581923128">🎐</tg-emoji>\n\n"
+        "<tg-emoji emoji-id="5102763490901231643">👤</tg-emoji> 𝘙𝘦𝘨𝘶𝘭𝘢𝘳 𝘚𝘱𝘢𝘸𝘯𝘴 (𝘦𝘷𝘦𝘳𝘺 100 𝘮𝘦𝘴𝘴𝘢𝘨𝘦𝘴)\n\n"
+        "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji> 𝘊𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji> 𝘜𝘯𝘤𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji> 𝘙𝘢𝘳𝘦 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji> 𝘌𝘱𝘪𝘤 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji> 𝘓𝘦𝘨𝘦𝘯𝘥𝘢𝘳𝘺 : 2% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji> 𝘔𝘺𝘵𝘩𝘪𝘤 : 0.8% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji> 𝘙𝘦𝘵𝘳𝘰 : 0.4% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji> 𝘡𝘦𝘯𝘪𝘵𝘩 : 0.01% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji> 𝘓𝘪𝘮𝘪𝘵𝘦𝘥 𝘌𝘥𝘪𝘵𝘪𝘰𝘯 : 0.001% 𝘤𝘩𝘢𝘯𝘤𝘦\n\n"
+        "👨‍💼 𝘊𝘶𝘴𝘵𝘰𝘮 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳𝘴 𝘢𝘳𝘦 𝘰𝘳𝘥𝘦𝘳𝘦𝘥 𝘵𝘰 𝘛𝘩𝘦 𝘖𝘸𝘯𝘦𝘳 𝘢𝘯𝘥 𝘵𝘩𝘦𝘺 𝘤𝘢𝘯 𝘰𝘯𝘭𝘺 𝘩𝘢𝘷𝘦 𝘶𝘱 𝘵𝘰 2 𝘖𝘸𝘯𝘦𝘳𝘴. (𝘛𝘩𝘦𝘺 𝘸𝘪𝘭𝘭 𝘯𝘦𝘷𝘦𝘳 𝘴𝘱𝘢𝘸𝘯)"
     )
   
-    await message.reply_text(message_text, parse_mode=enums.ParseMode.MARKDOWN)
+    await message.reply_text(message_text, parse_mode=enums.ParseMode.HTML)
 
 
 # python-telegram-bot versions (work with webhooks)
@@ -301,16 +301,16 @@ async def lockspawn_ptb(update: Update, context: CallbackContext):
     sender_id = update.effective_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text("🚫 This command is only available to administrators.")
+        await update.message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to administrators.")
         return
     
     if not context.args or len(context.args) != 1:
         await update.message.reply_text(
-            "📝 **Lock Spawn Usage:**\n\n"
+            "<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> **Lock Spawn Usage:**\n\n"
             "`/lockspawn [character_id]`\n\n"
             "**Example:** `/lockspawn 123`\n\n"
             "This will prevent the character from appearing in spawns.",
-            parse_mode='Markdown'
+            parse_mode='HTML'
         )
         return
     
@@ -318,16 +318,16 @@ async def lockspawn_ptb(update: Update, context: CallbackContext):
     
     character = await collection.find_one({'id': character_id})
     if not character:
-        await update.message.reply_text(f"❌ Character with ID `{character_id}` not found!")
+        await update.message.reply_text(f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Character with ID `{character_id}` not found!")
         return
     
     existing_lock = await locked_spawns_collection.find_one({'character_id': character_id})
     if existing_lock:
         await update.message.reply_text(
-            f"⚠️ **Already Locked!**\n\n"
-            f"🎴 **Character:** {character['name']}\n"
-            f"📺 **Anime:** {character['anime']}\n"
-            f"🆔 **ID:** `{character_id}`\n\n"
+            f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> **Already Locked!**\n\n"
+            f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> **Character:** {character['name']}\n"
+            f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> **Anime:** {character['anime']}\n"
+            f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> **ID:** `{character_id}`\n\n"
             f"This character is already locked from spawning."
         )
         return
@@ -342,20 +342,20 @@ async def lockspawn_ptb(update: Update, context: CallbackContext):
     })
     
     rarity_emojis = {
-        "Common": "⚪️", "Uncommon": "🟢", "Rare": "🔵", "Epic": "🟣",
-        "Legendary": "🟡", "Mythic": "🏵", "Retro": "🍥", "Star": "⭐",
-        "Zenith": "🪩", "Limited Edition": "🍬"
+        "Common": "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji>", "Uncommon": "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji>", "Rare": "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji>", "Epic": "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji>", "Mythic": "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji>", "Retro": "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji>", "Star": "<tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>"
     }
     
-    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "✨")
+    rarity_emoji = rarity_emojis.get(character.get('rarity', 'Common'), "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>")
     
     await update.message.reply_text(
-        f"🔒 **Spawn Locked!**\n\n"
-        f"🎴 **Character:** {character['name']}\n"
-        f"📺 **Anime:** {character['anime']}\n"
-        f"🌟 **Rarity:** {rarity_emoji} {character['rarity']}\n"
-        f"🆔 **ID:** `{character_id}`\n\n"
-        f"✅ This character will no longer appear in spawns."
+        f"<tg-emoji emoji-id="5103032978624219059">🔒</tg-emoji> **Spawn Locked!**\n\n"
+        f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> **Character:** {character['name']}\n"
+        f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> **Anime:** {character['anime']}\n"
+        f"<tg-emoji emoji-id="5102774906924303446">🤩</tg-emoji> **Rarity:** {rarity_emoji} {character['rarity']}\n"
+        f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> **ID:** `{character_id}`\n\n"
+        f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> This character will no longer appear in spawns."
     )
 
 
@@ -364,16 +364,16 @@ async def unlockspawn_ptb(update: Update, context: CallbackContext):
     sender_id = update.effective_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text("🚫 This command is only available to administrators.")
+        await update.message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to administrators.")
         return
     
     if not context.args or len(context.args) != 1:
         await update.message.reply_text(
-            "📝 **Unlock Spawn Usage:**\n\n"
+            "<tg-emoji emoji-id="5103097476148103373">📌</tg-emoji> **Unlock Spawn Usage:**\n\n"
             "`/unlockspawn [character_id]`\n\n"
             "**Example:** `/unlockspawn 123`\n\n"
             "This will allow the character to appear in spawns again.",
-            parse_mode='Markdown'
+            parse_mode='HTML'
         )
         return
     
@@ -381,17 +381,17 @@ async def unlockspawn_ptb(update: Update, context: CallbackContext):
     
     locked_character = await locked_spawns_collection.find_one({'character_id': character_id})
     if not locked_character:
-        await update.message.reply_text(f"❌ Character with ID `{character_id}` is not currently locked!")
+        await update.message.reply_text(f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Character with ID `{character_id}` is not currently locked!")
         return
     
     await locked_spawns_collection.delete_one({'character_id': character_id})
     
     await update.message.reply_text(
-        f"🔓 **Spawn Unlocked!**\n\n"
-        f"🎴 **Character:** {locked_character['character_name']}\n"
-        f"📺 **Anime:** {locked_character['anime']}\n"
-        f"🆔 **ID:** `{character_id}`\n\n"
-        f"✅ This character can now appear in spawns again."
+        f"<tg-emoji emoji-id="5102650473131805044">🤩</tg-emoji> **Spawn Unlocked!**\n\n"
+        f"<tg-emoji emoji-id="5103000796434270751">🎬</tg-emoji> **Character:** {locked_character['character_name']}\n"
+        f"<tg-emoji emoji-id="5102862902214265154">🤩</tg-emoji> **Anime:** {locked_character['anime']}\n"
+        f"<tg-emoji emoji-id="5102638339849192814">🤩</tg-emoji> **ID:** `{character_id}`\n\n"
+        f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> This character can now appear in spawns again."
     )
 
 
@@ -401,9 +401,9 @@ async def lockedspawns_ptb(update: Update, context: CallbackContext, page=0):
     
     if not locked_characters:
         await update.message.reply_text(
-            "🔓 **No Locked Spawns**\n\n"
+            "<tg-emoji emoji-id="5102650473131805044">🤩</tg-emoji> **No Locked Spawns**\n\n"
             "There are currently no characters locked from spawning.",
-            parse_mode='Markdown'
+            parse_mode='HTML'
         )
         return
     
@@ -425,35 +425,35 @@ async def lockedspawns_ptb(update: Update, context: CallbackContext, page=0):
         rarity_groups[rarity].append(char)
     
     rarity_emojis = {
-        "Common": "⚪️", "Uncommon": "🟢", "Rare": "🔵", "Epic": "🟣",
-        "Legendary": "🟡", "Mythic": "🏵", "Retro": "🍥", "Star": "⭐",
-        "Zenith": "🪩", "Limited Edition": "🍬"
+        "Common": "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji>", "Uncommon": "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji>", "Rare": "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji>", "Epic": "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji>",
+        "Legendary": "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji>", "Mythic": "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji>", "Retro": "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji>", "Star": "<tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji>",
+        "Zenith": "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>"
     }
     
-    message_text = f"🔒 **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
+    message_text = f"<tg-emoji emoji-id="5103032978624219059">🔒</tg-emoji> **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
     
     for rarity in ["Limited Edition", "Star", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]:
         if rarity in rarity_groups:
-            rarity_emoji = rarity_emojis.get(rarity, "✨")
+            rarity_emoji = rarity_emojis.get(rarity, "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>")
             message_text += f"\n{rarity_emoji} **{rarity}:**\n"
             
             for char in rarity_groups[rarity]:
                 message_text += f"• `{char['character_id']}` - {char['character_name']} ({char['anime']})\n"
     
-    message_text += f"\n📊 **Total Locked:** {len(locked_characters)} characters"
+    message_text += f"\n📋 **Total Locked:** {len(locked_characters)} characters"
     
     keyboard = None
     if total_pages > 1:
         buttons = []
         if page > 0:
-            buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=f"lockedspawns:{page-1}"))
+            buttons.append(InlineKeyboardButton("<tg-emoji emoji-id="5102932600943544398">🤩</tg-emoji> Previous", callback_data=f"lockedspawns:{page-1}"))
         if page < total_pages - 1:
-            buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"lockedspawns:{page+1}"))
+            buttons.append(InlineKeyboardButton("Next <tg-emoji emoji-id="5102736905053669429">❄️</tg-emoji>", callback_data=f"lockedspawns:{page+1}"))
         
         if buttons:
             keyboard = InlineKeyboardMarkup([buttons])
     
-    await update.message.reply_text(message_text, parse_mode='Markdown', reply_markup=keyboard)
+    await update.message.reply_text(message_text, parse_mode='HTML', reply_markup=keyboard)
 
 
 async def lockedspawns_callback_ptb(update: Update, context: CallbackContext):
@@ -487,35 +487,35 @@ async def lockedspawns_callback_ptb(update: Update, context: CallbackContext):
             rarity_groups[rarity].append(char)
         
         rarity_emojis = {
-            "Common": "⚪️", "Uncommon": "🟢", "Rare": "🔵", "Epic": "🟣",
-            "Legendary": "🟡", "Mythic": "🏵", "Retro": "🍥", "Star": "⭐",
-            "Zenith": "🪩", "Limited Edition": "🍬"
+            "Common": "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji>", "Uncommon": "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji>", "Rare": "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji>", "Epic": "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji>",
+            "Legendary": "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji>", "Mythic": "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji>", "Retro": "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji>", "Star": "<tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji>",
+            "Zenith": "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>", "Limited Edition": "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>"
         }
         
-        message_text = f"🔒 **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
+        message_text = f"<tg-emoji emoji-id="5103032978624219059">🔒</tg-emoji> **Locked Spawn Characters** - Page {page+1}/{total_pages}\n"
         
         for rarity in ["Limited Edition", "Star", "Zenith", "Retro", "Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"]:
             if rarity in rarity_groups:
-                rarity_emoji = rarity_emojis.get(rarity, "✨")
+                rarity_emoji = rarity_emojis.get(rarity, "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji>")
                 message_text += f"\n{rarity_emoji} **{rarity}:**\n"
                 
                 for char in rarity_groups[rarity]:
                     message_text += f"• `{char['character_id']}` - {char['character_name']} ({char['anime']})\n"
         
-        message_text += f"\n📊 **Total Locked:** {len(locked_characters)} characters"
+        message_text += f"\n📋 **Total Locked:** {len(locked_characters)} characters"
         
         keyboard = None
         if total_pages > 1:
             buttons = []
             if page > 0:
-                buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=f"lockedspawns:{page-1}"))
+                buttons.append(InlineKeyboardButton("<tg-emoji emoji-id="5102932600943544398">🤩</tg-emoji> Previous", callback_data=f"lockedspawns:{page-1}"))
             if page < total_pages - 1:
-                buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"lockedspawns:{page+1}"))
+                buttons.append(InlineKeyboardButton("Next <tg-emoji emoji-id="5102736905053669429">❄️</tg-emoji>", callback_data=f"lockedspawns:{page+1}"))
             
             if buttons:
                 keyboard = InlineKeyboardMarkup([buttons])
         
-        await query.edit_message_text(message_text, parse_mode='Markdown', reply_markup=keyboard)
+        await query.edit_message_text(message_text, parse_mode='HTML', reply_markup=keyboard)
         await query.answer()
         
     except Exception as e:
@@ -526,21 +526,21 @@ async def rarity_ptb(update: Update, context: CallbackContext):
     """Show all rarities and their spawn rates - PTB version"""
     
     message_text = (
-        "🎏 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳 𝘙𝘢𝘳𝘪𝘵𝘺 𝘚𝘺𝘴𝘵𝘦𝘮 🎏\n\n"
-        "🎐 𝘙𝘦𝘨𝘶𝘭𝘢𝘳 𝘚𝘱𝘢𝘸𝘯𝘴 (𝘦𝘷𝘦𝘳𝘺 100 𝘮𝘦𝘴𝘴𝘢𝘨𝘦𝘴)\n\n"
-        "⚪️ 𝘊𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🟢 𝘜𝘯𝘤𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🔵 𝘙𝘢𝘳𝘦 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🟣 𝘌𝘱𝘪𝘤 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🟡 𝘓𝘦𝘨𝘦𝘯𝘥𝘢𝘳𝘺 : 2% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🏵 𝘔𝘺𝘵𝘩𝘪𝘤 : 0.8% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🍥 𝘙𝘦𝘵𝘳𝘰 : 0.4% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🪩 𝘡𝘦𝘯𝘪𝘵𝘩 : 0.01% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
-        "🍬 𝘓𝘪𝘮𝘪𝘵𝘦𝘥 𝘌𝘥𝘪𝘵𝘪𝘰𝘯 : 0.001% 𝘤𝘩𝘢𝘯𝘤𝘦\n\n"
-        "👾 𝘊𝘶𝘴𝘵𝘰𝘮 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳𝘴 𝘢𝘳𝘦 𝘰𝘳𝘥𝘦𝘳𝘦𝘥 𝘵𝘰 𝘛𝘩𝘦 𝘖𝘸𝘯𝘦𝘳 𝘢𝘯𝘥 𝘵𝘩𝘦𝘺 𝘤𝘢𝘯 𝘰𝘯𝘭𝘺 𝘩𝘢𝘷𝘦 𝘶𝘱 𝘵𝘰 2 𝘖𝘸𝘯𝘦𝘳𝘴. (𝘛𝘩𝘦𝘺 𝘸𝘪𝘭𝘭 𝘯𝘦𝘷𝘦𝘳 𝘴𝘱𝘢𝘸𝘯)"
+        "<tg-emoji emoji-id="5102722031581923128">🎐</tg-emoji> 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳 𝘙𝘢𝘳𝘪𝘵𝘺 𝘚𝘺𝘴𝘵𝘦𝘮 <tg-emoji emoji-id="5102722031581923128">🎐</tg-emoji>\n\n"
+        "<tg-emoji emoji-id="5102763490901231643">👤</tg-emoji> 𝘙𝘦𝘨𝘶𝘭𝘢𝘳 𝘚𝘱𝘢𝘸𝘯𝘴 (𝘦𝘷𝘦𝘳𝘺 100 𝘮𝘦𝘴𝘴𝘢𝘨𝘦𝘴)\n\n"
+        "<tg-emoji emoji-id="5102863490624784495">🤩</tg-emoji> 𝘊𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5102698301887612539">🍥</tg-emoji> 𝘜𝘯𝘤𝘰𝘮𝘮𝘰𝘯 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5102906715175651186">🚨</tg-emoji> 𝘙𝘢𝘳𝘦 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5102814377673754670">🚨</tg-emoji> 𝘌𝘱𝘪𝘤 : 20% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5103060513659554158">🚨</tg-emoji> 𝘓𝘦𝘨𝘦𝘯𝘥𝘢𝘳𝘺 : 2% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5103065238123578838">🪩</tg-emoji> 𝘔𝘺𝘵𝘩𝘪𝘤 : 0.8% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5102655962100008917">🏵</tg-emoji> 𝘙𝘦𝘵𝘳𝘰 : 0.4% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji> 𝘡𝘦𝘯𝘪𝘵𝘩 : 0.01% 𝘤𝘩𝘢𝘯𝘤𝘦\n"
+        "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji> 𝘓𝘪𝘮𝘪𝘵𝘦𝘥 𝘌𝘥𝘪𝘵𝘪𝘰𝘯 : 0.001% 𝘤𝘩𝘢𝘯𝘤𝘦\n\n"
+        "👨‍💼 𝘊𝘶𝘴𝘵𝘰𝘮 𝘊𝘩𝘢𝘳𝘢𝘤𝘵𝘦𝘳𝘴 𝘢𝘳𝘦 𝘰𝘳𝘥𝘦𝘳𝘦𝘥 𝘵𝘰 𝘛𝘩𝘦 𝘖𝘸𝘯𝘦𝘳 𝘢𝘯𝘥 𝘵𝘩𝘦𝘺 𝘤𝘢𝘯 𝘰𝘯𝘭𝘺 𝘩𝘢𝘷𝘦 𝘶𝘱 𝘵𝘰 2 𝘖𝘸𝘯𝘦𝘳𝘴. (𝘛𝘩𝘦𝘺 𝘸𝘪𝘭𝘭 𝘯𝘦𝘷𝘦𝘳 𝘴𝘱𝘢𝘸𝘯)"
     )
   
-    await update.message.reply_text(message_text, parse_mode='Markdown')
+    await update.message.reply_text(message_text, parse_mode='HTML')
 
 
 # ============== BROADCAST COMMAND ==============
@@ -551,12 +551,12 @@ async def broadcast(client, message):
     sender_id = message.from_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await message.reply_text("🚫 This command is only available to administrators.")
+        await message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to administrators.")
         return
     
     if not message.reply_to_message and len(message.command) < 2:
         await message.reply_text(
-            "📢 **Broadcast Command**\n\n"
+            "<tg-emoji emoji-id="5103061849394382829">🤩</tg-emoji> **Broadcast Command**\n\n"
             "**Usage:**\n"
             "`/broadcast [message]` - Send to all users & groups\n"
             "`/broadcast -users [message]` - Send to users only\n"
@@ -564,7 +564,7 @@ async def broadcast(client, message):
             "**Or:** Reply to any message with `/broadcast`\n\n"
             "**Example:**\n"
             "`/broadcast Hello everyone! New update is here!`",
-            parse_mode=enums.ParseMode.MARKDOWN
+            parse_mode=enums.ParseMode.HTML
         )
         return
     
@@ -586,11 +586,11 @@ async def broadcast(client, message):
     else:
         broadcast_text = " ".join(args)
         if not broadcast_text:
-            await message.reply_text("❌ Please provide a message to broadcast!")
+            await message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Please provide a message to broadcast!")
             return
         is_reply = False
     
-    status_msg = await message.reply_text("📡 Starting broadcast...")
+    status_msg = await message.reply_text("<tg-emoji emoji-id="5102733670943295663">📤</tg-emoji> Starting broadcast...")
     
     success_users = 0
     failed_users = 0
@@ -616,9 +616,9 @@ async def broadcast(client, message):
                 
                 if (i + 1) % 25 == 0:
                     await status_msg.edit_text(
-                        f"📡 **Broadcasting...**\n\n"
-                        f"👥 Users: {success_users}/{total_users} sent\n"
-                        f"❌ Failed: {failed_users}"
+                        f"<tg-emoji emoji-id="5102733670943295663">📤</tg-emoji> **Broadcasting...**\n\n"
+                        f"<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji> Users: {success_users}/{total_users} sent\n"
+                        f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Failed: {failed_users}"
                     )
                     
                 await asyncio.sleep(0.05)
@@ -646,10 +646,10 @@ async def broadcast(client, message):
                 
                 if (i + 1) % 10 == 0:
                     await status_msg.edit_text(
-                        f"📡 **Broadcasting...**\n\n"
-                        f"👥 Users: {success_users} sent, {failed_users} failed\n"
-                        f"💬 Groups: {success_groups}/{total_groups} sent\n"
-                        f"❌ Failed: {failed_groups}"
+                        f"<tg-emoji emoji-id="5102733670943295663">📤</tg-emoji> **Broadcasting...**\n\n"
+                        f"<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji> Users: {success_users} sent, {failed_users} failed\n"
+                        f"<tg-emoji emoji-id="5103046482001397281">🤩</tg-emoji> Groups: {success_groups}/{total_groups} sent\n"
+                        f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Failed: {failed_groups}"
                     )
                     
                 await asyncio.sleep(0.1)
@@ -666,15 +666,15 @@ async def broadcast(client, message):
         target_text = "groups only"
     
     await status_msg.edit_text(
-        f"✅ **Broadcast Complete!**\n\n"
-        f"📢 Target: {target_text}\n\n"
-        f"👥 **Users:**\n"
+        f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> **Broadcast Complete!**\n\n"
+        f"<tg-emoji emoji-id="5103061849394382829">🤩</tg-emoji> Target: {target_text}\n\n"
+        f"<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji> **Users:**\n"
         f"   ✓ Sent: {success_users}\n"
         f"   ✗ Failed: {failed_users}\n\n"
-        f"💬 **Groups:**\n"
+        f"<tg-emoji emoji-id="5103046482001397281">🤩</tg-emoji> **Groups:**\n"
         f"   ✓ Sent: {success_groups}\n"
         f"   ✗ Failed: {failed_groups}\n\n"
-        f"📊 **Total:** {success_users + success_groups} messages sent"
+        f"📋 **Total:** {success_users + success_groups} messages sent"
     )
 
 
@@ -683,14 +683,14 @@ async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
     sender_id = update.effective_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text("🚫 This command is only available to administrators.")
+        await update.message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to administrators.")
         return
     
     args = context.args if context.args else []
     
     if not update.message.reply_to_message and len(args) < 1:
         await update.message.reply_text(
-            "📢 **Broadcast Command**\n\n"
+            "<tg-emoji emoji-id="5103061849394382829">🤩</tg-emoji> **Broadcast Command**\n\n"
             "**Usage:**\n"
             "`/broadcast [message]` - Send to all users & groups\n"
             "`/broadcast -users [message]` - Send to users only\n"
@@ -698,7 +698,7 @@ async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
             "**Or:** Reply to any message with `/broadcast`\n\n"
             "**Example:**\n"
             "`/broadcast Hello everyone! New update is here!`",
-            parse_mode='Markdown'
+            parse_mode='HTML'
         )
         return
     
@@ -718,11 +718,11 @@ async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
     else:
         broadcast_text = " ".join(args)
         if not broadcast_text:
-            await update.message.reply_text("❌ Please provide a message to broadcast!")
+            await update.message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Please provide a message to broadcast!")
             return
         is_reply = False
     
-    status_msg = await update.message.reply_text("📡 Starting broadcast...")
+    status_msg = await update.message.reply_text("<tg-emoji emoji-id="5102733670943295663">📤</tg-emoji> Starting broadcast...")
     
     success_users = 0
     failed_users = 0
@@ -748,10 +748,10 @@ async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
                 
                 if (i + 1) % 25 == 0:
                     await status_msg.edit_text(
-                        f"📡 **Broadcasting...**\n\n"
-                        f"👥 Users: {success_users}/{total_users} sent\n"
-                        f"❌ Failed: {failed_users}",
-                        parse_mode='Markdown'
+                        f"<tg-emoji emoji-id="5102733670943295663">📤</tg-emoji> **Broadcasting...**\n\n"
+                        f"<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji> Users: {success_users}/{total_users} sent\n"
+                        f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Failed: {failed_users}",
+                        parse_mode='HTML'
                     )
                     
                 await asyncio.sleep(0.05)
@@ -779,11 +779,11 @@ async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
                 
                 if (i + 1) % 10 == 0:
                     await status_msg.edit_text(
-                        f"📡 **Broadcasting...**\n\n"
-                        f"👥 Users: {success_users} sent, {failed_users} failed\n"
-                        f"💬 Groups: {success_groups}/{total_groups} sent\n"
-                        f"❌ Failed: {failed_groups}",
-                        parse_mode='Markdown'
+                        f"<tg-emoji emoji-id="5102733670943295663">📤</tg-emoji> **Broadcasting...**\n\n"
+                        f"<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji> Users: {success_users} sent, {failed_users} failed\n"
+                        f"<tg-emoji emoji-id="5103046482001397281">🤩</tg-emoji> Groups: {success_groups}/{total_groups} sent\n"
+                        f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Failed: {failed_groups}",
+                        parse_mode='HTML'
                     )
                     
                 await asyncio.sleep(0.1)
@@ -800,16 +800,16 @@ async def broadcast_ptb(update: Update, context: CallbackContext) -> None:
         target_text = "groups only"
     
     await status_msg.edit_text(
-        f"✅ **Broadcast Complete!**\n\n"
-        f"📢 Target: {target_text}\n\n"
-        f"👥 **Users:**\n"
+        f"<tg-emoji emoji-id="5102962128843704400">🤩</tg-emoji> **Broadcast Complete!**\n\n"
+        f"<tg-emoji emoji-id="5103061849394382829">🤩</tg-emoji> Target: {target_text}\n\n"
+        f"<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji> **Users:**\n"
         f"   ✓ Sent: {success_users}\n"
         f"   ✗ Failed: {failed_users}\n\n"
-        f"💬 **Groups:**\n"
+        f"<tg-emoji emoji-id="5103046482001397281">🤩</tg-emoji> **Groups:**\n"
         f"   ✓ Sent: {success_groups}\n"
         f"   ✗ Failed: {failed_groups}\n\n"
-        f"📊 **Total:** {success_users + success_groups} messages sent",
-        parse_mode='Markdown'
+        f"📋 **Total:** {success_users + success_groups} messages sent",
+        parse_mode='HTML'
     )
 
 
@@ -821,7 +821,7 @@ async def bonk(client, message):
     sender_id = message.from_user.id
     
     if sender_id != int(OWNER_ID):
-        await message.reply_text("🚫 This command is only available to the bot owner.")
+        await message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to the bot owner.")
         return
     
     target_user = None
@@ -834,21 +834,21 @@ async def bonk(client, message):
         try:
             target_id = int(message.command[1])
         except ValueError:
-            await message.reply_text("❌ Invalid user ID!")
+            await message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID!")
             return
     else:
         await message.reply_text(
-            "🔨 **Bonk Command**\n\n"
+            "<tg-emoji emoji-id="5103051253710063171">🤩</tg-emoji> **Bonk Command**\n\n"
             "**Usage:**\n"
             "• Reply to a user's message with `/bonk`\n"
             "• Or use `/bonk [user_id]`\n\n"
             "This will ban the user from using the bot for 2 weeks.",
-            parse_mode=enums.ParseMode.MARKDOWN
+            parse_mode=enums.ParseMode.HTML
         )
         return
     
     if target_id == int(OWNER_ID):
-        await message.reply_text("❌ You can't bonk yourself!")
+        await message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> You can't bonk yourself!")
         return
     
     existing_ban = await banned_users_collection.find_one({'user_id': target_id})
@@ -857,8 +857,8 @@ async def bonk(client, message):
         remaining = unban_date - datetime.now()
         days = remaining.days
         await message.reply_text(
-            f"⚠️ User is already bonked!\n"
-            f"🕐 Remaining: {days} days"
+            f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> User is already bonked!\n"
+            f"<tg-emoji emoji-id="5102857782613248388">🤩</tg-emoji> Remaining: {days} days"
         )
         return
     
@@ -876,12 +876,12 @@ async def bonk(client, message):
     target_name = target_user.first_name if target_user else str(target_id)
     
     await message.reply_text(
-        f"🔨 **BONK!**\n\n"
-        f"👤 **User:** {target_name} (`{target_id}`)\n"
+        f"<tg-emoji emoji-id="5103051253710063171">🤩</tg-emoji> **BONK!**\n\n"
+        f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> **User:** {target_name} (`{target_id}`)\n"
         f"⏰ **Duration:** 2 weeks\n"
-        f"📅 **Unbanned on:** {unban_date.strftime('%Y-%m-%d %H:%M')}\n\n"
+        f"<tg-emoji emoji-id="5102650803844286939">🔎</tg-emoji> **Unbanned on:** {unban_date.strftime('%Y-%m-%d %H:%M')}\n\n"
         f"They won't be able to use the bot until then!",
-        parse_mode=enums.ParseMode.MARKDOWN
+        parse_mode=enums.ParseMode.HTML
     )
 
 
@@ -891,7 +891,7 @@ async def unbonk(client, message):
     sender_id = message.from_user.id
     
     if sender_id != int(OWNER_ID):
-        await message.reply_text("🚫 This command is only available to the bot owner.")
+        await message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to the bot owner.")
         return
     
     target_user = None
@@ -904,22 +904,22 @@ async def unbonk(client, message):
         try:
             target_id = int(message.command[1])
         except ValueError:
-            await message.reply_text("❌ Invalid user ID!")
+            await message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID!")
             return
     else:
         await message.reply_text(
-            "✨ **Unbonk Command**\n\n"
+            "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> **Unbonk Command**\n\n"
             "**Usage:**\n"
             "• Reply to a user's message with `/unbonk`\n"
             "• Or use `/unbonk [user_id]`\n\n"
             "This will remove the ban and allow them to use the bot again.",
-            parse_mode=enums.ParseMode.MARKDOWN
+            parse_mode=enums.ParseMode.HTML
         )
         return
     
     existing_ban = await banned_users_collection.find_one({'user_id': target_id})
     if not existing_ban:
-        await message.reply_text("❌ This user is not bonked!")
+        await message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> This user is not bonked!")
         return
     
     await banned_users_collection.delete_one({'user_id': target_id})
@@ -927,10 +927,10 @@ async def unbonk(client, message):
     target_name = target_user.first_name if target_user else str(target_id)
     
     await message.reply_text(
-        f"✨ **UNBONKED!**\n\n"
-        f"👤 **User:** {target_name} (`{target_id}`)\n\n"
+        f"<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> **UNBONKED!**\n\n"
+        f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> **User:** {target_name} (`{target_id}`)\n\n"
         f"They can now use the bot again!",
-        parse_mode=enums.ParseMode.MARKDOWN
+        parse_mode=enums.ParseMode.HTML
     )
 
 
@@ -939,7 +939,7 @@ async def bonk_ptb(update: Update, context: CallbackContext) -> None:
     sender_id = update.effective_user.id
     
     if sender_id != int(OWNER_ID):
-        await update.message.reply_text("🚫 This command is only available to the bot owner.")
+        await update.message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to the bot owner.")
         return
     
     target_user = None
@@ -952,21 +952,21 @@ async def bonk_ptb(update: Update, context: CallbackContext) -> None:
         try:
             target_id = int(context.args[0])
         except ValueError:
-            await update.message.reply_text("❌ Invalid user ID!")
+            await update.message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID!")
             return
     else:
         await update.message.reply_text(
-            "🔨 **Bonk Command**\n\n"
+            "<tg-emoji emoji-id="5103051253710063171">🤩</tg-emoji> **Bonk Command**\n\n"
             "**Usage:**\n"
             "• Reply to a user's message with `/bonk`\n"
             "• Or use `/bonk [user_id]`\n\n"
             "This will ban the user from using the bot for 2 weeks.",
-            parse_mode='Markdown'
+            parse_mode='HTML'
         )
         return
     
     if target_id == int(OWNER_ID):
-        await update.message.reply_text("❌ You can't bonk yourself!")
+        await update.message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> You can't bonk yourself!")
         return
     
     existing_ban = await banned_users_collection.find_one({'user_id': target_id})
@@ -975,8 +975,8 @@ async def bonk_ptb(update: Update, context: CallbackContext) -> None:
         remaining = unban_date - datetime.now()
         days = remaining.days
         await update.message.reply_text(
-            f"⚠️ User is already bonked!\n"
-            f"🕐 Remaining: {days} days"
+            f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> User is already bonked!\n"
+            f"<tg-emoji emoji-id="5102857782613248388">🤩</tg-emoji> Remaining: {days} days"
         )
         return
     
@@ -994,12 +994,12 @@ async def bonk_ptb(update: Update, context: CallbackContext) -> None:
     target_name = target_user.first_name if target_user else str(target_id)
     
     await update.message.reply_text(
-        f"🔨 **BONK!**\n\n"
-        f"👤 **User:** {target_name} (`{target_id}`)\n"
+        f"<tg-emoji emoji-id="5103051253710063171">🤩</tg-emoji> **BONK!**\n\n"
+        f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> **User:** {target_name} (`{target_id}`)\n"
         f"⏰ **Duration:** 2 weeks\n"
-        f"📅 **Unbanned on:** {unban_date.strftime('%Y-%m-%d %H:%M')}\n\n"
+        f"<tg-emoji emoji-id="5102650803844286939">🔎</tg-emoji> **Unbanned on:** {unban_date.strftime('%Y-%m-%d %H:%M')}\n\n"
         f"They won't be able to use the bot until then!",
-        parse_mode='Markdown'
+        parse_mode='HTML'
     )
 
 
@@ -1008,7 +1008,7 @@ async def unbonk_ptb(update: Update, context: CallbackContext) -> None:
     sender_id = update.effective_user.id
     
     if sender_id != int(OWNER_ID):
-        await update.message.reply_text("🚫 This command is only available to the bot owner.")
+        await update.message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to the bot owner.")
         return
     
     target_user = None
@@ -1021,22 +1021,22 @@ async def unbonk_ptb(update: Update, context: CallbackContext) -> None:
         try:
             target_id = int(context.args[0])
         except ValueError:
-            await update.message.reply_text("❌ Invalid user ID!")
+            await update.message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID!")
             return
     else:
         await update.message.reply_text(
-            "✨ **Unbonk Command**\n\n"
+            "<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> **Unbonk Command**\n\n"
             "**Usage:**\n"
             "• Reply to a user's message with `/unbonk`\n"
             "• Or use `/unbonk [user_id]`\n\n"
             "This will remove the ban and allow them to use the bot again.",
-            parse_mode='Markdown'
+            parse_mode='HTML'
         )
         return
     
     existing_ban = await banned_users_collection.find_one({'user_id': target_id})
     if not existing_ban:
-        await update.message.reply_text("❌ This user is not bonked!")
+        await update.message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> This user is not bonked!")
         return
     
     await banned_users_collection.delete_one({'user_id': target_id})
@@ -1044,10 +1044,10 @@ async def unbonk_ptb(update: Update, context: CallbackContext) -> None:
     target_name = target_user.first_name if target_user else str(target_id)
     
     await update.message.reply_text(
-        f"✨ **UNBONKED!**\n\n"
-        f"👤 **User:** {target_name} (`{target_id}`)\n\n"
+        f"<tg-emoji emoji-id="5102825501639050967">🌟</tg-emoji> **UNBONKED!**\n\n"
+        f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> **User:** {target_name} (`{target_id}`)\n\n"
         f"They can now use the bot again!",
-        parse_mode='Markdown'
+        parse_mode='HTML'
     )
 
 
@@ -1075,7 +1075,7 @@ async def resetm(client, message):
     sender_id = message.from_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await message.reply_text("🚫 This command is only available to administrators.")
+        await message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to administrators.")
         return
     
     target_user = None
@@ -1088,22 +1088,22 @@ async def resetm(client, message):
         try:
             target_id = int(message.command[1])
         except ValueError:
-            await message.reply_text("❌ Invalid user ID!")
+            await message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID!")
             return
     else:
         await message.reply_text(
-            "💒 **Reset Marriage Limit Command**\n\n"
+            "<tg-emoji emoji-id="5102684287409325796">🤩</tg-emoji> **Reset Marriage Limit Command**\n\n"
             "**Usage:**\n"
             "• Reply to a user's message with `/resetm`\n"
             "• Or use `/resetm [user_id]`\n\n"
             "This will reset their daily marriage limit to 0/30.",
-            parse_mode=enums.ParseMode.MARKDOWN
+            parse_mode=enums.ParseMode.HTML
         )
         return
     
     user = await user_collection.find_one({'id': target_id})
     if not user:
-        await message.reply_text(f"❌ User ID `{target_id}` not found in database!")
+        await message.reply_text(f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> User ID `{target_id}` not found in database!")
         return
     
     await user_collection.update_one(
@@ -1114,11 +1114,11 @@ async def resetm(client, message):
     target_name = target_user.first_name if target_user else str(target_id)
     
     await message.reply_text(
-        f"💒 **Marriage Limit Reset!**\n\n"
-        f"👤 **User:** {target_name} (`{target_id}`)\n"
-        f"📊 **Status:** Set to 0/30\n\n"
+        f"<tg-emoji emoji-id="5102684287409325796">🤩</tg-emoji> **Marriage Limit Reset!**\n\n"
+        f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> **User:** {target_name} (`{target_id}`)\n"
+        f"📋 **Status:** Set to 0/30\n\n"
         f"They can now marry up to 30 characters again!",
-        parse_mode=enums.ParseMode.MARKDOWN
+        parse_mode=enums.ParseMode.HTML
     )
 
 
@@ -1127,7 +1127,7 @@ async def resetm_ptb(update: Update, context: CallbackContext) -> None:
     sender_id = update.effective_user.id
     
     if str(sender_id) not in [str(u) for u in Config.sudo_users]:
-        await update.message.reply_text("🚫 This command is only available to administrators.")
+        await update.message.reply_text("<tg-emoji emoji-id="5102581715000362771">🤩</tg-emoji> This command is only available to administrators.")
         return
     
     target_user = None
@@ -1140,22 +1140,22 @@ async def resetm_ptb(update: Update, context: CallbackContext) -> None:
         try:
             target_id = int(context.args[0])
         except ValueError:
-            await update.message.reply_text("❌ Invalid user ID!")
+            await update.message.reply_text("<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> Invalid user ID!")
             return
     else:
         await update.message.reply_text(
-            "💒 **Reset Marriage Limit Command**\n\n"
+            "<tg-emoji emoji-id="5102684287409325796">🤩</tg-emoji> **Reset Marriage Limit Command**\n\n"
             "**Usage:**\n"
             "• Reply to a user's message with `/resetm`\n"
             "• Or use `/resetm [user_id]`\n\n"
             "This will reset their daily marriage limit to 0/30.",
-            parse_mode='Markdown'
+            parse_mode='HTML'
         )
         return
     
     user = await user_collection.find_one({'id': target_id})
     if not user:
-        await update.message.reply_text(f"❌ User ID `{target_id}` not found in database!")
+        await update.message.reply_text(f"<tg-emoji emoji-id="5102920111178647010">🤩</tg-emoji> User ID `{target_id}` not found in database!")
         return
     
     await user_collection.update_one(
@@ -1166,11 +1166,11 @@ async def resetm_ptb(update: Update, context: CallbackContext) -> None:
     target_name = target_user.first_name if target_user else str(target_id)
     
     await update.message.reply_text(
-        f"💒 **Marriage Limit Reset!**\n\n"
-        f"👤 **User:** {target_name} (`{target_id}`)\n"
-        f"📊 **Status:** Set to 0/30\n\n"
+        f"<tg-emoji emoji-id="5102684287409325796">🤩</tg-emoji> **Marriage Limit Reset!**\n\n"
+        f"<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> **User:** {target_name} (`{target_id}`)\n"
+        f"📋 **Status:** Set to 0/30\n\n"
         f"They can now marry up to 30 characters again!",
-        parse_mode='Markdown'
+        parse_mode='HTML'
     )
 
 
