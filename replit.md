@@ -1,3 +1,24 @@
+# User Preferences
+
+- All bot message strings use `parse_mode='HTML'` and animated `<tg-emoji emoji-id="ID">` tags.
+
+# How to Run
+
+Run command: `python -m shivu`  (configured in the "Telegram Bot" workflow)
+
+## Required Secrets (must be set before starting)
+
+| Secret | Description |
+|---|---|
+| `TELEGRAM_BOT_TOKEN` | From [@BotFather](https://t.me/BotFather) |
+| `MONGODB_URL` | MongoDB connection string (Atlas or self-hosted) |
+| `TELEGRAM_API_ID` | From [my.telegram.org/apps](https://my.telegram.org/apps) — needed for Pyrogram features |
+| `TELEGRAM_API_HASH` | From [my.telegram.org/apps](https://my.telegram.org/apps) — needed for Pyrogram features |
+
+Optional (have defaults in `shivu/config.py`): `OWNER_ID`, `SUDO_USERS`, `GROUP_ID`, `BOT_USERNAME`, `SUPPORT_CHAT`, `UPDATE_CHAT`, `CHARA_CHANNEL_ID`, `UPLOADING_USERS`.
+
+---
+
 # Overview
 
 This is a Telegram character catcher bot called "Waifu & Husbando Catcher" that operates as a gamified character collection system. The bot sends anime character images to Telegram groups after every 100 messages, and users can guess the character names to add them to their personal collections. The system includes trading, gifting, favorites, and leaderboard features to create an engaging community-driven game.

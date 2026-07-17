@@ -1,3 +1,7 @@
+# Replit import archive — not needed in version control
+zipFile.zip
+*.zip
+
 #Added by IzumiCypherX for local tesing purposes
 test/
 *test.py
