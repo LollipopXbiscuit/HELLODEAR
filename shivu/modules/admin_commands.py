@@ -194,9 +194,9 @@ async def lockedspawns(client, message, page=0):
     if total_pages > 1:
         buttons = []
         if page > 0:
-            buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=f"lockedspawns:{page-1}"))
+            buttons.append(InlineKeyboardButton("Previous", icon_custom_emoji_id="5102857782613248388", callback_data=f"lockedspawns:{page-1}"))
         if page < total_pages - 1:
-            buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"lockedspawns:{page+1}"))
+            buttons.append(InlineKeyboardButton("Next", icon_custom_emoji_id="5102932600943544398", callback_data=f"lockedspawns:{page+1}"))
         
         if buttons:
             keyboard = InlineKeyboardMarkup([buttons])
@@ -267,9 +267,9 @@ async def lockedspawns_callback(client, callback_query):
         if total_pages > 1:
             buttons = []
             if page > 0:
-                buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=f"lockedspawns:{page-1}"))
+                buttons.append(InlineKeyboardButton("Previous", icon_custom_emoji_id="5102857782613248388", callback_data=f"lockedspawns:{page-1}"))
             if page < total_pages - 1:
-                buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"lockedspawns:{page+1}"))
+                buttons.append(InlineKeyboardButton("Next", icon_custom_emoji_id="5102932600943544398", callback_data=f"lockedspawns:{page+1}"))
             
             if buttons:
                 keyboard = InlineKeyboardMarkup([buttons])
@@ -460,9 +460,9 @@ async def lockedspawns_ptb(update: Update, context: CallbackContext, page=0):
     if total_pages > 1:
         buttons = []
         if page > 0:
-            buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=f"lockedspawns:{page-1}"))
+            buttons.append(InlineKeyboardButton("Previous", icon_custom_emoji_id="5102857782613248388", callback_data=f"lockedspawns:{page-1}"))
         if page < total_pages - 1:
-            buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"lockedspawns:{page+1}"))
+            buttons.append(InlineKeyboardButton("Next", icon_custom_emoji_id="5102932600943544398", callback_data=f"lockedspawns:{page+1}"))
         
         if buttons:
             keyboard = InlineKeyboardMarkup([buttons])
@@ -522,9 +522,9 @@ async def lockedspawns_callback_ptb(update: Update, context: CallbackContext):
         if total_pages > 1:
             buttons = []
             if page > 0:
-                buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=f"lockedspawns:{page-1}"))
+                buttons.append(InlineKeyboardButton("Previous", icon_custom_emoji_id="5102857782613248388", callback_data=f"lockedspawns:{page-1}"))
             if page < total_pages - 1:
-                buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"lockedspawns:{page+1}"))
+                buttons.append(InlineKeyboardButton("Next", icon_custom_emoji_id="5102932600943544398", callback_data=f"lockedspawns:{page+1}"))
             
             if buttons:
                 keyboard = InlineKeyboardMarkup([buttons])

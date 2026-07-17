@@ -70,8 +70,8 @@ async def trade(client, message):
     
     keyboard = InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("Confirm Trade", callback_data="confirm_trade")],
-            [InlineKeyboardButton("Cancel Trade", callback_data="cancel_trade")]
+            [InlineKeyboardButton("Confirm Trade", icon_custom_emoji_id="5103087490349139576", callback_data="confirm_trade")],
+            [InlineKeyboardButton("Cancel Trade", icon_custom_emoji_id="5102962128843704400", callback_data="cancel_trade")]
         ]
     )
 
@@ -189,8 +189,8 @@ async def gift(client, message):
     
     keyboard = InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("✅ Confirm Gift", callback_data="confirm_gift")],
-            [InlineKeyboardButton("❌ Cancel Gift", callback_data="cancel_gift")]
+            [InlineKeyboardButton("Confirm Gift", icon_custom_emoji_id="5103087490349139576", callback_data="confirm_gift")],
+            [InlineKeyboardButton("Cancel Gift", icon_custom_emoji_id="5102962128843704400", callback_data="cancel_gift")]
         ]
     )
 
@@ -426,8 +426,8 @@ async def gift_ptb(update: Update, context: CallbackContext):
     
     # Create keyboard
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("✅ Confirm Gift", callback_data="confirm_gift")],
-        [InlineKeyboardButton("❌ Cancel Gift", callback_data="cancel_gift")]
+        [InlineKeyboardButton("Confirm Gift", icon_custom_emoji_id="5103087490349139576", callback_data="confirm_gift")],
+        [InlineKeyboardButton("Cancel Gift", icon_custom_emoji_id="5102962128843704400", callback_data="cancel_gift")]
     ])
     
     # Rarity emoji mapping
@@ -592,8 +592,8 @@ async def trade_ptb(update: Update, context: CallbackContext):
     pending_trades[(sender_id, receiver_id)] = (sender_character_id, receiver_character_id)
 
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Confirm Trade", callback_data="confirm_trade")],
-        [InlineKeyboardButton("Cancel Trade", callback_data="cancel_trade")]
+        [InlineKeyboardButton("Confirm Trade", icon_custom_emoji_id="5103087490349139576", callback_data="confirm_trade")],
+        [InlineKeyboardButton("Cancel Trade", icon_custom_emoji_id="5102962128843704400", callback_data="cancel_trade")]
     ])
 
     await update.message.reply_text(
