@@ -727,7 +727,7 @@ async def remove_character_from_user(update: Update, context: CallbackContext) -
                 f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> <b>Character Removed!</b>\n\n'
                 f'<tg-emoji emoji-id="5102843841149405078">🕐</tg-emoji> Removed: {character["name"]} (#{character_id})\n'
                 f'<tg-emoji emoji-id="5103039000168367836">👥</tg-emoji> From: <a href="tg://user?id={user_id}">{user_name}</a>\n'
-                f'<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> Remaining: {remaining_count} copies',
+                f'<tg-emoji emoji-id="5102882435725527517">📋</tg-emoji> Remaining: {remaining_count} copies',
                 parse_mode='HTML'
             )
         else:
@@ -956,7 +956,7 @@ async def update(update: Update, context: CallbackContext) -> None:
                 parse_mode='HTML'
             )
 
-        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Updated Done in Database!\n\n<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> {users_updated} user collection(s) synced.\n\nNote: Channel caption may take a moment to update.')
+        await update.message.reply_text(f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> Updated Done in Database!\n\n<tg-emoji emoji-id="5102882435725527517">📋</tg-emoji> {users_updated} user collection(s) synced.\n\nNote: Channel caption may take a moment to update.')
     except Exception as e:
         await update.message.reply_text(f'I guess did not added bot in channel.. or character uploaded Long time ago.. Or character not exits.. orr Wrong id')
 
@@ -1007,7 +1007,7 @@ async def migrate_rarities(update: Update, context: CallbackContext) -> None:
         
         success_message = (
             f'<tg-emoji emoji-id="5102962128843704400">❌</tg-emoji> <b>Migration Completed!</b>\n\n'
-            f'<tg-emoji emoji-id='5102882435725527517'>📋</tg-emoji> <b>Characters updated:</b>\n'
+            f'<tg-emoji emoji-id="5102882435725527517">📋</tg-emoji> <b>Characters updated:</b>\n'
             f'• Celestial → Retro: {result_celestial.modified_count}\n'
             f'• Arcane → Zenith: {result_arcane.modified_count}\n\n'
             f'<tg-emoji emoji-id="5102587667825035890">👾</tg-emoji> <b>User collections updated:</b>\n'
