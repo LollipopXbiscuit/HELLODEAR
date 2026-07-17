@@ -22,7 +22,7 @@ rarity_styles = {
     "Star": "<tg-emoji emoji-id="5102990767685634240">🚨</tg-emoji>",
     "Zenith": "<tg-emoji emoji-id="5103127253156367234">🤩</tg-emoji>",
     "Limited Edition": "<tg-emoji emoji-id="5103087490349139576">🤩</tg-emoji>",
-    "Custom": "👨‍💼"
+    "Custom": '<tg-emoji emoji-id="5102630299670415053">💎</tg-emoji>'
 }
 
 def get_format_text(level):
